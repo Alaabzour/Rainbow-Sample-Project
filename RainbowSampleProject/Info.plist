@@ -20,10 +20,29 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>RainbowSampleProject want to access your Camera</string>
+	<key>NSContactsUsageDescription</key>
+	<string>RainbowSampleProject want to access your Contacts</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>RainbowSampleProject want to access your Microphone</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>RainbowSampleProject want to access your Photo Library</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>INStartAudioCallIntent</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

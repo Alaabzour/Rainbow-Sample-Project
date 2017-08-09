@@ -7,6 +7,11 @@
 //
 
 #import "AppDelegate.h"
+#import "ContactsViewController.h"
+#import "ConversationsViewController.h"
+#import "SettingsViewController.h"
+#import "LoginViewController.h"
+#import <Rainbow/Rainbow.h>
 
 @interface AppDelegate ()
 
@@ -17,6 +22,59 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
+    if (NO) {
+        LoginViewController *masterViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+        self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
+        self.navigationController = self.navigationController;
+    }
+    else{
+        _tabBarController = [[UITabBarController alloc] init];
+        
+        
+        UIViewController *contactsViewCntroller = [[ContactsViewController alloc] init];
+        UINavigationController *contactsNavigationViewCntroller = [[UINavigationController alloc]initWithRootViewController:contactsViewCntroller];
+        
+        contactsNavigationViewCntroller.tabBarItem.title = @"Contacts" ;
+        contactsNavigationViewCntroller.tabBarItem.image = [UIImage imageNamed:@"contacts-icon"];
+        contactsNavigationViewCntroller.tabBarItem.selectedImage=[UIImage imageNamed:@"contacts-selected-icon"];
+        
+        UIViewController *conversationsViewController = [[ConversationsViewController alloc] init];
+        UINavigationController *conversationsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:conversationsViewController];
+        
+        conversationsNavigationViewController.tabBarItem.title= @"Conversations" ;
+        conversationsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"conversations-icon"];
+        conversationsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"conversations-selected-icon"];
+        
+        
+        UIViewController *settingsViewController = [[SettingsViewController alloc] init];
+        UINavigationController *settingsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];
+        
+        settingsNavigationViewController.tabBarItem.title= @"Settings" ;
+        settingsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"settings-icon"];
+        settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
+        
+        
+        [_tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,settingsNavigationViewController,nil]];
+        
+        [[UITabBar appearance] setTintColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
+        
+         self.navigationController = [[UINavigationController alloc] initWithRootViewController:_tabBarController];
+        
+    }
+    
+    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName,nil]];
+    self.window.rootViewController = self.navigationController;
+    [self.window makeKeyAndVisible];
+
+
     return YES;
 }
 
