@@ -157,7 +157,7 @@
 }
 
 -(void) didLogin:(NSNotification *) notification {
-    
+    // test
    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
     
