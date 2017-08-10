@@ -56,7 +56,10 @@
       Contact *contact = (Contact *)[notification.object objectForKey:@"contact"];
     if (_aContact == contact) {
         _aContact = contact;
-        [self.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            
+        });
     }
    
    [self.activityIndicator stopAnimating];
@@ -388,26 +391,42 @@
 
 -(void) didRemoveContact:(NSNotification *) notification {
     NSLog(@"deleted");
-    [self.activityIndicator stopAnimating];
-    [self.tableView reloadData];
+    
+       dispatch_async(dispatch_get_main_queue(), ^{
+         [self.activityIndicator stopAnimating];
+         [self.tableView reloadData];
+        
+    });
 }
 
 -(void) didInviteContact:(NSNotification *) notification {
     NSLog(@"Invited");
-    [self.activityIndicator stopAnimating];
-    [self.tableView reloadData];
+   
+       dispatch_async(dispatch_get_main_queue(), ^{
+            [self.activityIndicator stopAnimating];
+            [self.tableView reloadData];
+        
+    });
 }
 -(void) didAddContact:(NSNotification *) notification {
     NSLog(@"Added");
-    [self.activityIndicator stopAnimating];
-     [self.tableView reloadData];
+    
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.activityIndicator stopAnimating];
+            [self.tableView reloadData];
+        
+    });
 }
 
 
 -(void) didFailedToInviteContact:(NSNotification *) notification {
     NSLog(@"failed to add");
-    [self.activityIndicator stopAnimating];
-    [self.tableView reloadData];
+ 
+       dispatch_async(dispatch_get_main_queue(), ^{
+           [self.activityIndicator stopAnimating];
+           [self.tableView reloadData];
+        
+    });
 }
 
 @end

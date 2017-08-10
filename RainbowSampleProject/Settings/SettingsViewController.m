@@ -227,7 +227,7 @@
 
 - (void)changeStatus:(UIButton *)sender
 {
-    [self.activityIndicator startAnimating];
+    
     selectedStatus = (int)sender.tag;
     switch (sender.tag) {
         case 1:
@@ -249,13 +249,21 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateMyContact:) name:kContactsManagerServiceDidUpdateMyContact object:nil];
  
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.activityIndicator stopAnimating];
+        [self.tableView reloadData];
+        
+    });
 }
 
 -(void) didUpdateMyContact:(NSNotification *) notification {
-    [self.activityIndicator stopAnimating];
+    
      selectedStatus = (int)currentUser.contact.presence.presence;
-     [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.activityIndicator stopAnimating];
+        [self.tableView reloadData];
+        
+    });
 }
 
 @end

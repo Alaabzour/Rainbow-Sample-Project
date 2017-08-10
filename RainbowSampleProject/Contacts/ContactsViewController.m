@@ -14,6 +14,7 @@
 @interface ContactsViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     NSTimer* timer;
     NSMutableArray * contactsArray;
+    NSMutableArray * invitedcontactsArray;
     NSMutableArray * allContactsArray;
     NSMutableArray * contactsSearchResultsArray;
     UISearchBar *searchbar;
@@ -67,6 +68,7 @@
     
     allContactsArray = [NSMutableArray new];
     contactsArray = [NSMutableArray new];
+    invitedcontactsArray = [NSMutableArray new];
 
 }
 
@@ -100,7 +102,10 @@
         isAllContactsSelected = YES;
     }
     
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
 }
 
 #pragma mark - Manage Contacts Methods
@@ -148,12 +153,25 @@
     }
     if(![allContactsArray containsObject:contact]){
         if (contact.emailAddresses.count) {
-            [allContactsArray addObject:contact];
+            if (contact.requestedInvitation.status == 1){
+                if(![invitedcontactsArray containsObject:contact]){
+                     [invitedcontactsArray addObject:contact];
+                }
+               
+            }
+            else{
+               
+                [allContactsArray addObject:contact];
+            }
+            
         }
 
     }
     
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    
 }
 
 -(void) didLogin:(NSNotification *) notification {
@@ -196,7 +214,13 @@
    
     if(![allContactsArray containsObject:contact]){
         if (contact.emailAddresses.count) {
-            [allContactsArray addObject:contact];
+            if (contact.requestedInvitation.status == 1){
+                [invitedcontactsArray addObject:contact];
+            }
+            else{
+                [allContactsArray addObject:contact];
+            }
+           
         }
         
     }
@@ -204,10 +228,22 @@
         for (int i =0; i < allContactsArray.count; i++) {
             if ([[allContactsArray objectAtIndex:i] isEqual:contact]) {
                 if (contact.isInRoster || contact.sentInvitation.status) {
-                     [allContactsArray replaceObjectAtIndex:i withObject:contact];
+                    if (contact.requestedInvitation.status == 1){
+                        [invitedcontactsArray replaceObjectAtIndex:i withObject:contact];
+                    }
+                    else{
+                       [allContactsArray replaceObjectAtIndex:i withObject:contact];
+                    }
+                    
                 }
                 else{
-                    [allContactsArray removeObjectAtIndex:i];
+                    if (contact.requestedInvitation.status == 1){
+                        [invitedcontactsArray removeObjectAtIndex:i];
+                    }
+                    else{
+                        [allContactsArray removeObjectAtIndex:i];
+                    }
+                    
                 }
                
                 break;
@@ -216,8 +252,12 @@
         
     }
     
-    [self.activityIndicator stopAnimating];
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
+    
+    
 }
 
 #pragma - mark Manage Invitation
@@ -245,33 +285,44 @@
 }
 -(void) didReciveInvitaion:(NSNotification *) notification {
     NSLog(@"Recive");
-    [self.activityIndicator stopAnimating];
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
 }
 
 
 -(void) didAcceptInvitaion:(NSNotification *) notification {
     NSLog(@"Accept");
     
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+       
+    });
 }
 
 -(void) didDeclineInvitaion:(NSNotification *) notification {
     NSLog(@"decline");
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        
+    });
 }
 
 -(void) didInviteContact:(NSNotification *) notification {
     NSLog(@"invites");
-    [self.activityIndicator stopAnimating];
-    
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
 }
 
 -(void) didFailedToInviteContact:(NSNotification *) notification {
     NSLog(@"failed");
-    [self.activityIndicator stopAnimating];
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
 }
 
 -(void) didRemoveContact:(NSNotification *) notification {
@@ -280,8 +331,10 @@
     Contact * deletedContact = notification.object;
     [allContactsArray removeObject:deletedContact];
     [contactsArray removeObject:deletedContact];
-    [self.tableView reloadData];
-    [self.activityIndicator stopAnimating];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
 }
 
 #pragma mark - showContactsInfoMethod
@@ -384,7 +437,19 @@
     }
     else{
         if (isAllContactsSelected) {
-            return allContactsArray.count;
+            if (invitedcontactsArray.count) {
+                if (section == 0) {
+                    return invitedcontactsArray.count;
+                }
+                else{
+                    return allContactsArray.count;
+                }
+                
+            }
+            else{
+                return allContactsArray.count;
+            }
+            
         }
          return contactsArray.count;
     }
@@ -401,7 +466,8 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     }
    
-     cell.declineButton.hidden = YES;
+    
+    cell.declineButton.hidden = YES;
     Contact *aContact;
     if (isSearching == YES) {
         if (contactsSearchResultsArray.count) {
@@ -411,9 +477,18 @@
     }
     else{
         if (isAllContactsSelected) {
-            if (allContactsArray.count) {
-                aContact = [allContactsArray objectAtIndex:indexPath.row];
+            if (indexPath.section == 0) {
+                if (invitedcontactsArray.count){
+                    aContact = [invitedcontactsArray objectAtIndex:indexPath.row];
+                    
+                }
             }
+            else{
+                if (allContactsArray.count) {
+                    aContact = [allContactsArray objectAtIndex:indexPath.row];
+                }
+            }
+            
         }
         else{
             if (contactsArray.count) {
@@ -610,23 +685,54 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 44;
+    if (invitedcontactsArray.count && isAllContactsSelected){
+        if (section == 1) {
+            return 22;
+        }
+  
+    }
+     return 44;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if (isAllContactsSelected) {
+        if (invitedcontactsArray.count) {
+            return 2;
+        }
+        return 1;
+    }
+    
     return 1;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 44)];
-    view.backgroundColor = [UIColor whiteColor];
-    [view addSubview:[self setupSegmentControl]];
-    return view;
+    if (invitedcontactsArray.count){
+        if (section == 0) {
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 44)];
+            view.backgroundColor = [UIColor whiteColor];
+            [view addSubview:[self setupSegmentControl]];
+            return view;
+        }
+        else {
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 44)];
+            view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+            return view;
+        }
+       
+    }
+    else{
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 44)];
+        view.backgroundColor = [UIColor whiteColor];
+        [view addSubview:[self setupSegmentControl]];
+        return view;
+    }
+  
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Contact *aContact;
+   
     if (isSearching == YES) {
         if (contactsSearchResultsArray.count) {
             aContact = [contactsSearchResultsArray objectAtIndex:indexPath.row];
@@ -635,18 +741,27 @@
     }
     else{
         if (isAllContactsSelected) {
-            if (allContactsArray.count) {
-                aContact = [allContactsArray objectAtIndex:indexPath.row];
+            if (indexPath.section == 0) {
+                if (invitedcontactsArray.count){
+                    aContact = [invitedcontactsArray objectAtIndex:indexPath.row];
+                    
+                }
             }
+            else{
+                if (allContactsArray.count) {
+                    aContact = [allContactsArray objectAtIndex:indexPath.row];
+                }
+            }
+            
         }
         else{
             if (contactsArray.count) {
                 aContact = [contactsArray objectAtIndex:indexPath.row];
             }
         }
-        
+  
     }
-    
+  
     if (aContact.isRainbowUser) {
         // start conversation with contact
     }
@@ -677,14 +792,20 @@
         isSearching = NO;
 
     }
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
      isSearching = NO;
      searchBar.text = nil;
      [searchBar resignFirstResponder];
-     [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
    
 }
 
@@ -699,8 +820,10 @@
    
     [[ServicesManager sharedInstance].contactsManagerService searchRemoteContactsWithPattern:searchedText withCompletionHandler:^(NSString *searchPattern, NSArray<Contact *> *foundContacts) {
         contactsSearchResultsArray = [NSMutableArray arrayWithArray:foundContacts];
-        [self.tableView reloadData];
-         [self.activityIndicator stopAnimating];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [self.activityIndicator stopAnimating];
+        });
     }];
     
 }

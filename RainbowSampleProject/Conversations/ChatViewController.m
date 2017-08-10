@@ -53,13 +53,16 @@
 - (void) didReceiveNewMessage : (NSNotification *) notification {
    
     Conversation * myconversation  = notification.object;
-    [messagesArray addObject:myconversation.lastMessage.body];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-        NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
-        [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-    });
+    if (myconversation != nil) {
+        [messagesArray addObject:myconversation.lastMessage.body];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        });
+
+    }
     
 }
 #pragma mark - TableView Methods
@@ -228,22 +231,27 @@
    
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     int height = MIN(keyboardSize.height,keyboardSize.width);
-    //int width = MAX(keyboardSize.height,keyboardSize.width);
-    [UIView animateWithDuration:0.0 animations:^{
-        self.containerViewBottomConstraint.constant = height;
-         [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
-        //[self.view setFrame:CGRectMake(0,-(height-44),width,self.tableView.frame.size.height)];
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.0 animations:^{
+            self.containerViewBottomConstraint.constant = height;
+            [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
+            
+        }];
+    });
+   
     
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
-    
-    [UIView animateWithDuration:0.0 animations:^{
-       
-       self.containerViewBottomConstraint.constant = 0;
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.0 animations:^{
+            
+            self.containerViewBottomConstraint.constant = 0;
+        }];
+    });
+
+   
    
 }
 
@@ -253,7 +261,6 @@
 
 - (IBAction)sendMessage:(id)sender {
    
-    
     [[ServicesManager sharedInstance].conversationsManagerService sendMessage:_MessageTextView.text fileAttachment:nil to:conversation completionHandler:^(Message *message, NSError *error) {
         [messagesArray addObject:_MessageTextView.text];
       

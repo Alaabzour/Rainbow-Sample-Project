@@ -120,10 +120,38 @@
 - (void) getConversations {
     [self.activityIndicator stopAnimating];
     NSArray<Conversation *> *conversationsArray = [ServicesManager sharedInstance].conversationsManagerService.conversations;
-    conversationsMuttableArray = [NSMutableArray arrayWithArray:conversationsArray];
+    conversationsMuttableArray = [self sortArray:[NSMutableArray arrayWithArray:conversationsArray]];
     // when success it invoke which method?
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
     
     [self.activityIndicator stopAnimating];
+}
+
+- (void) didUpdateConversation :(NSNotification *) notification {
+    
+    Conversation * updatedConversation = (Conversation *)notification.object;
+    if (updatedConversation != nil) {
+        if(![conversationsMuttableArray containsObject:updatedConversation]){
+            [conversationsMuttableArray addObject:updatedConversation];
+            conversationsMuttableArray = [self sortArray:conversationsMuttableArray];
+        }
+        else{
+            for (int i =0; i < conversationsMuttableArray.count; i++) {
+                if ([[conversationsMuttableArray objectAtIndex:i] isEqual:updatedConversation]) {
+                    [conversationsMuttableArray replaceObjectAtIndex:i withObject:updatedConversation];
+                    conversationsMuttableArray = [self sortArray:conversationsMuttableArray];
+                    break;
+                }
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            
+        });
+
+    }
+    
 }
 
 - (NSString *) getFormattedFromDate : (NSDate *) date {
@@ -138,5 +166,13 @@
 }
 
 
-
+- (NSMutableArray *) sortArray : (NSMutableArray *) array {
+    NSSortDescriptor *dateDescriptor = [NSSortDescriptor
+                                        sortDescriptorWithKey:@"lastUpdateDate"
+                                        ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:dateDescriptor];
+    NSArray *sortedEventArray = [array
+                                 sortedArrayUsingDescriptors:sortDescriptors];
+    return [NSMutableArray arrayWithArray:sortedEventArray];
+}
 @end
