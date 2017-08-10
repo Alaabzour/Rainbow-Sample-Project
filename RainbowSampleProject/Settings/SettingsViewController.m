@@ -133,6 +133,7 @@
             [tableView registerNib:[UINib nibWithNibName:@"SettingsTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
             cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
         return cell;
         

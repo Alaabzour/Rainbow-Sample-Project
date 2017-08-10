@@ -11,6 +11,7 @@
 @interface MessageTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *MessageImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *contactImageView;
+@property (weak, nonatomic) IBOutlet UILabel *messagebodyLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *myUserImageView;
 @end

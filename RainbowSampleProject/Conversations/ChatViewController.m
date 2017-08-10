@@ -8,12 +8,17 @@
 
 #import "ChatViewController.h"
 #import "MessageTableViewCell.h"
+#import <Rainbow/Rainbow.h>
+
 
 @interface ChatViewController () <UITextViewDelegate>
 
 @end
 
-@implementation ChatViewController
+@implementation ChatViewController {
+    NSMutableArray * messagesArray;
+    Conversation *conversation;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,6 +29,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
 
+    messagesArray = [NSMutableArray array];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -34,18 +40,32 @@
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    Conversation *conversation = [[ServicesManager sharedInstance].conversationsManagerService startConversationWithPeer:_aContact];
-    Conversation *conversation2 = [[ServicesManager sharedInstance].conversationsManagerService getConversationWithPeerJID:_aContact.jid];
-    MessagesBrowser * messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:conversation withPageSize:10 preloadMessages:NO];
-    NSLog(@"%@",messages.browsingCache);
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    conversation = [[ServicesManager sharedInstance].conversationsManagerService startConversationWithPeer:_aContact];
+//    Conversation *conversation2 = [[ServicesManager sharedInstance].conversationsManagerService getConversationWithPeerJID:_aContact.jid];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
+    
+  
 }
 
+- (void) didReceiveNewMessage : (NSNotification *) notification {
+   
+    Conversation * myconversation  = notification.object;
+    [messagesArray addObject:myconversation.lastMessage.body];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    });
+    
+}
 #pragma mark - TableView Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 10;
+    return messagesArray.count;
     
 }
 
@@ -58,12 +78,15 @@
         [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     }
+    
     if (indexPath.row %2 == 0) {
         cell.MessageImageView.image = [self balloonImageForSending];
     }
     else{
         cell.MessageImageView.image = [self balloonImageForReceiving];
     }
+    
+    cell.messagebodyLabel.text = [messagesArray objectAtIndex:indexPath.row];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -83,13 +106,22 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row %2 == 0) {
-         return 164;
+  
+   
+
+    static NSString *CellIdentifier = @"MessageCell";
+    
+    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier ];
+    
+    if (cell == nil) {
+        [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier ];
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     }
-    else{
-         return 64;
-    }
-    return 64;
+
+    CGSize labelSize = (CGSize){cell.messagebodyLabel.frame.size.width, MAXFLOAT};
+    CGRect requiredSize = [[messagesArray objectAtIndex:indexPath.row] boundingRectWithSize:labelSize  options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: cell.messagebodyLabel.font} context:nil];
+    
+    return (requiredSize.size.height + 50);
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -156,19 +188,17 @@
     
 }
 
-//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-//    
-//}
 
 - (void)textViewDidChange:(UITextView *)textView{
+    
     if ([textView.text  length] ==0 ) {
-       _MessageTextView.text = @" New Message ...";
+        _MessageTextView.text = @" New Message ...";
         _MessageTextView.textColor = [UIColor colorWithRed:190.0/255.0 green:190.0/255.0 blue:190.0/255.0 alpha:1];
         
         [self.sendButton setEnabled:NO];
        
         _heightConstraint.constant = 44;
-        [_MessageTextView resignFirstResponder];
+       [_MessageTextView resignFirstResponder];
         
         [self.view layoutIfNeeded];
     }
@@ -210,7 +240,6 @@
 -(void)keyboardDidHide:(NSNotification *)notification
 {
     
-   
     [UIView animateWithDuration:0.0 animations:^{
        
        self.containerViewBottomConstraint.constant = 0;
@@ -218,4 +247,32 @@
    
 }
 
+- (IBAction)showAttachmentMethod:(id)sender {
+    
+}
+
+- (IBAction)sendMessage:(id)sender {
+   
+    
+    [[ServicesManager sharedInstance].conversationsManagerService sendMessage:_MessageTextView.text fileAttachment:nil to:conversation completionHandler:^(Message *message, NSError *error) {
+        [messagesArray addObject:_MessageTextView.text];
+      
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            _MessageTextView.text = @" ";
+            _MessageTextView.textColor = [UIColor colorWithRed:190.0/255.0 green:190.0/255.0 blue:190.0/255.0 alpha:1];
+            [self.sendButton setEnabled:NO];
+        });
+      
+      
+    } attachmentUploadProgressHandler:^(Message *message, double totalBytesSent, double totalBytesExpectedToSend) {
+        NSLog(@"total byte send  : %f",totalBytesSent);
+        NSLog(@"total byte expected to send  : %f",totalBytesExpectedToSend);
+      
+    }];
+    
+   
+}
 @end

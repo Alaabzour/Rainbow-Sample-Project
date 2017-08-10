@@ -43,10 +43,16 @@
                                 <constraint firstAttribute="height" constant="25" id="idb-E8-dc4"/>
                             </constraints>
                             <state key="normal" image="send-icon"/>
+                            <connections>
+                                <action selector="sendMessage:" destination="-1" eventType="touchUpInside" id="iEG-dn-Toi"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dio-Q9-rwJ">
                             <rect key="frame" x="8" y="9" width="25" height="25"/>
                             <state key="normal" image="attached-icon"/>
+                            <connections>
+                                <action selector="showAttachmentMethod:" destination="-1" eventType="touchUpInside" id="30v-IT-Ch2"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
