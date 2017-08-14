@@ -9,11 +9,13 @@
 #import "ContactsViewController.h"
 #import "ContactsTableViewCell.h"
 #import "ContactInfoViewController.h"
+#import "ChatViewController.h"
 #import <Rainbow/Rainbow.h>
 
 @interface ContactsViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     NSTimer* timer;
     NSMutableArray * contactsArray;
+    
     NSMutableArray * invitedcontactsArray;
     NSMutableArray * allContactsArray;
     NSMutableArray * contactsSearchResultsArray;
@@ -32,7 +34,7 @@
     [super viewDidLoad];
     [self setup];
     [self.activityIndicator startAnimating];
-    [self connectToRainbowServer];
+     [self connectToRainbowServer];
     //[self connectToSandboxServer];
     isAllContactsSelected = NO;
     // Do any additional setup after loading the view from its nib.
@@ -69,6 +71,7 @@
     allContactsArray = [NSMutableArray new];
     contactsArray = [NSMutableArray new];
     invitedcontactsArray = [NSMutableArray new];
+    
 
 }
 
@@ -151,22 +154,27 @@
         }
        
     }
+    
     if(![allContactsArray containsObject:contact]){
-        if (contact.emailAddresses.count) {
-            if (contact.requestedInvitation.status == 1){
-                if(![invitedcontactsArray containsObject:contact]){
-                     [invitedcontactsArray addObject:contact];
-                }
-               
-            }
-            else{
-               
-                [allContactsArray addObject:contact];
-            }
-            
+        if (contact.emailAddresses.count && contact.requestedInvitation.status != 1 && contact.sentInvitation.status != 1) {
+            [allContactsArray addObject:contact];
         }
-
+        
     }
+//    if(![invitedcontactsArray containsObject:contact]){
+//        if (contact.requestedInvitation.status == 1){
+//             [invitedcontactsArray addObject:contact];
+//        }
+//       
+//    }
+//    if(![pendingcontactsArray containsObject:contact]){
+//        if (contact.sentInvitation.status == 1){
+//            [pendingcontactsArray addObject:contact];
+//        }
+//        
+//    }
+   
+    
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
@@ -175,18 +183,18 @@
 }
 
 -(void) didLogin:(NSNotification *) notification {
-    // test
    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
     
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReciveInvitaion:) name:kContactsManagerServiceDidAddInvitation object:nil];
-//    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name:kContactsManagerServiceDidUpdateContact object:nil];
 
 }
 
 
 -(void) didUpdadeContact:(NSNotification *) notification {
+    
     Contact *contact = (Contact *)[notification.object objectForKey:@"contact"];
     
     if(![contactsArray containsObject:contact]){
@@ -195,10 +203,12 @@
         }
     
     }
+    
     else{
         for (int i =0; i < contactsArray.count; i++) {
             if ([[contactsArray objectAtIndex:i] isEqual:contact]) {
                 if (contact.isInRoster) {
+                    
                      [contactsArray replaceObjectAtIndex:i withObject:contact];
                 }
                 else{
@@ -211,41 +221,26 @@
         }
        
     }
-   
+    
     if(![allContactsArray containsObject:contact]){
-        if (contact.emailAddresses.count) {
-            if (contact.requestedInvitation.status == 1){
-                [invitedcontactsArray addObject:contact];
-            }
-            else{
-                [allContactsArray addObject:contact];
-            }
-           
+        if (contact.emailAddresses.count && contact.requestedInvitation.status != 1) {
+            [allContactsArray addObject:contact];
         }
         
     }
+    
     else{
         for (int i =0; i < allContactsArray.count; i++) {
             if ([[allContactsArray objectAtIndex:i] isEqual:contact]) {
-                if (contact.isInRoster || contact.sentInvitation.status) {
-                    if (contact.requestedInvitation.status == 1){
-                        [invitedcontactsArray replaceObjectAtIndex:i withObject:contact];
-                    }
-                    else{
-                       [allContactsArray replaceObjectAtIndex:i withObject:contact];
-                    }
+                if (contact.isInRoster) {
                     
+                    [allContactsArray replaceObjectAtIndex:i withObject:contact];
                 }
                 else{
-                    if (contact.requestedInvitation.status == 1){
-                        [invitedcontactsArray removeObjectAtIndex:i];
-                    }
-                    else{
-                        [allContactsArray removeObjectAtIndex:i];
-                    }
                     
+                    [allContactsArray removeObjectAtIndex:i];
                 }
-               
+                
                 break;
             }
         }
@@ -272,8 +267,8 @@
         
     }
     else{
-        if (contactsArray.count) {
-            aContact = [contactsArray objectAtIndex:sender.tag];
+        if (invitedcontactsArray.count) {
+            aContact = [invitedcontactsArray objectAtIndex:sender.tag];
         }
         
     }
@@ -285,6 +280,22 @@
 }
 -(void) didReciveInvitaion:(NSNotification *) notification {
     NSLog(@"Recive");
+    Invitation *invitaion = (Invitation *)notification.object;
+    Contact *contact = (Contact *) invitaion.peer;
+    if (contact.requestedInvitation.status == 1) {
+        if(![invitedcontactsArray containsObject:contact]){
+            [invitedcontactsArray addObject:contact];
+            
+        }
+    }
+    else{
+        if(![allContactsArray containsObject:contact]){
+            [allContactsArray addObject:contact];
+            
+        }
+    }
+   
+   
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
         [self.activityIndicator stopAnimating];
@@ -338,7 +349,25 @@
 }
 
 #pragma mark - showContactsInfoMethod
+-(void)acceptInvitationMethod:(UIButton *)sender
+{
+    Contact *aContact;
+    if (isSearching == YES) {
+        if (contactsSearchResultsArray.count) {
+            aContact = [contactsSearchResultsArray objectAtIndex:sender.tag];
+        }
+        
+    }
+    else{
+        if (invitedcontactsArray.count) {
+            aContact = [invitedcontactsArray objectAtIndex:sender.tag];
+        }
+        
+    }
+    [[ServicesManager sharedInstance].contactsManagerService acceptInvitation:aContact.requestedInvitation];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAcceptInvitaion:) name:kContactsManagerServiceDidUpdateInvitation object:nil];
 
+}
 -(void)showContactsInfoMethod:(UIButton *)sender
 {
     
@@ -351,9 +380,9 @@
     }
     else{
         if (isAllContactsSelected) {
-            if (allContactsArray.count) {
-                aContact = [allContactsArray objectAtIndex:sender.tag];
-            }
+           
+            aContact = [allContactsArray objectAtIndex:sender.tag];
+            
         }
         else{
             if (contactsArray.count) {
@@ -364,20 +393,11 @@
     }
     
     if (aContact.isRainbowUser) {
-        if (aContact.requestedInvitation.status == 1) {
-            // accept invitaion
-            [[ServicesManager sharedInstance].contactsManagerService acceptInvitation:aContact.requestedInvitation];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAcceptInvitaion:) name:kContactsManagerServiceDidUpdateInvitation object:nil];
-            
-            
-            
-        }
-        else{
-            ContactInfoViewController * viewController = [[ContactInfoViewController alloc]initWithNibName:@"ContactInfoViewController" bundle:nil];
-            viewController.aContact = aContact;
-            viewController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:viewController animated:YES];
-        }
+        
+        ContactInfoViewController * viewController = [[ContactInfoViewController alloc]initWithNibName:@"ContactInfoViewController" bundle:nil];
+        viewController.aContact = aContact;
+        viewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:viewController animated:YES];
         
     }
     else{
@@ -439,13 +459,14 @@
         if (isAllContactsSelected) {
             if (invitedcontactsArray.count) {
                 if (section == 0) {
-                    return invitedcontactsArray.count;
+                    return invitedcontactsArray.count; 
                 }
                 else{
                     return allContactsArray.count;
                 }
                 
             }
+            
             else{
                 return allContactsArray.count;
             }
@@ -482,6 +503,11 @@
                     aContact = [invitedcontactsArray objectAtIndex:indexPath.row];
                     
                 }
+                else{
+                    if (allContactsArray.count) {
+                        aContact = [allContactsArray objectAtIndex:indexPath.row];
+                    }
+                }
             }
             else{
                 if (allContactsArray.count) {
@@ -498,6 +524,11 @@
        
         
     }
+   
+   
+    [cell.showInfoButton removeTarget:nil
+                       action:NULL
+             forControlEvents:UIControlEventTouchUpInside];
     
     if (aContact.isRainbowUser) {
          cell.infoButtonWidthConstraint.constant = 28;
@@ -514,10 +545,12 @@
             [cell.showInfoButton setTitle:nil forState:UIControlStateNormal];
             [cell.showInfoButton setImage:[UIImage imageNamed:@"accept-icon"] forState:UIControlStateNormal];
             cell.declineButton.hidden = NO;
+             [cell.showInfoButton addTarget:self action:@selector(acceptInvitationMethod:) forControlEvents:UIControlEventTouchUpInside];
         }
         else{
             [cell.showInfoButton setTitle:nil forState:UIControlStateNormal];
             [cell.showInfoButton setImage:[UIImage imageNamed:@"contact-info-icon"] forState:UIControlStateNormal];
+             [cell.showInfoButton addTarget:self action:@selector(showContactsInfoMethod:) forControlEvents:UIControlEventTouchUpInside];
         }
   
     }
@@ -530,6 +563,7 @@
         }
         else{
              [cell.showInfoButton setTitle:@"Invite" forState:UIControlStateNormal];
+             [cell.showInfoButton addTarget:self action:@selector(showContactsInfoMethod:) forControlEvents:UIControlEventTouchUpInside];
         }
         
        
@@ -602,7 +636,7 @@
     cell.showInfoButton.tag = indexPath.row;
     cell.declineButton.tag = indexPath.row;
     
-    [cell.showInfoButton addTarget:self action:@selector(showContactsInfoMethod:) forControlEvents:UIControlEventTouchUpInside];
+   
     [cell.declineButton addTarget:self action:@selector(declineInvitaionMethod:) forControlEvents:UIControlEventTouchUpInside];
    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -697,8 +731,9 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     if (isAllContactsSelected) {
         if (invitedcontactsArray.count) {
-            return 2;
+           return 2;
         }
+      
         return 1;
     }
     
@@ -746,6 +781,11 @@
                     aContact = [invitedcontactsArray objectAtIndex:indexPath.row];
                     
                 }
+                else{
+                    if (allContactsArray.count) {
+                        aContact = [allContactsArray objectAtIndex:indexPath.row];
+                    }
+                }
             }
             else{
                 if (allContactsArray.count) {
@@ -762,10 +802,15 @@
   
     }
   
-    if (aContact.isRainbowUser) {
+    if (aContact.isRainbowUser && aContact.canChatWith) {
         // start conversation with contact
+        ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
+        viewController.aContact = aContact;
+        viewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:viewController animated:YES];
     }
     else{
+        
         ContactInfoViewController * viewController = [[ContactInfoViewController alloc]initWithNibName:@"ContactInfoViewController" bundle:nil];
         viewController.aContact = aContact;
         viewController.hidesBottomBarWhenPushed = YES;

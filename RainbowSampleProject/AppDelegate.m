@@ -24,9 +24,10 @@
     // Override point for customization after application launch.
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+   
     
-    MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
-    if (NO) {
+   // MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
+    if (/* DISABLES CODE */ (NO)) {
         LoginViewController *masterViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
         self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
         self.navigationController = self.navigationController;
@@ -41,14 +42,14 @@
         contactsNavigationViewCntroller.tabBarItem.title = @"Contacts" ;
         contactsNavigationViewCntroller.tabBarItem.image = [UIImage imageNamed:@"contacts-icon"];
         contactsNavigationViewCntroller.tabBarItem.selectedImage=[UIImage imageNamed:@"contacts-selected-icon"];
-        
+        contactsNavigationViewCntroller.tabBarItem.badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].contactsManagerService.totalNbOfPendingInvitations];
         UIViewController *conversationsViewController = [[ConversationsViewController alloc] init];
         UINavigationController *conversationsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:conversationsViewController];
         
         conversationsNavigationViewController.tabBarItem.title= @"Conversations" ;
         conversationsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"conversations-icon"];
         conversationsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"conversations-selected-icon"];
-        
+        conversationsNavigationViewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations];
         
         UIViewController *settingsViewController = [[SettingsViewController alloc] init];
         UINavigationController *settingsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];

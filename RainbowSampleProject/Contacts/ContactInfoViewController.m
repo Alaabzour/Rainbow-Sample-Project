@@ -8,9 +8,12 @@
 
 #import "ContactInfoViewController.h"
 #import "UserInfoTableViewCell.h"
+#import "ChatViewController.h"
 #import "UserSubInfoTableViewCell.h"
+#import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
-@interface ContactInfoViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface ContactInfoViewController () <UITableViewDelegate,UITableViewDataSource,MFMailComposeViewControllerDelegate>
 
 @end
 
@@ -180,8 +183,19 @@
             else{
                 cell.titleLabel.text = @"Email";
             }
+            
+            cell.iconButton.userInteractionEnabled = YES;
+            
+            cell.iconButton.tag = indexPath.row - 1;
+            
+            
+            [cell.iconButton addTarget:self action:@selector(sendEmailtapGesture:) forControlEvents:UIControlEventTouchUpInside];
+        
+            
             cell.subTitleLabel.text = currentEmail.address;
-            cell.iconImageView.image = [UIImage imageNamed:@"email-icon"];
+            
+            [cell.iconButton setImage:[UIImage imageNamed:@"email-icon"] forState:UIControlStateNormal];
+           
         }
         else if ((indexPath.row > emailAdresses.count) && (indexPath.row <= phoneNumbers.count+emailAdresses.count)) {
             PhoneNumber * phoneNumber = [phoneNumbers objectAtIndex:indexPath.row - emailAdresses.count - 1];
@@ -195,7 +209,8 @@
             else{
                 cell.titleLabel.text = @"Work mobile";
             }
-            cell.iconImageView.image = [UIImage imageNamed:@"call-icon"];
+            [cell.iconButton setImage:[UIImage imageNamed:@"call-icon"] forState:UIControlStateNormal];
+           
             cell.subTitleLabel.text = phoneNumber.number;
         }
         
@@ -207,12 +222,13 @@
                         if (invitationStatus.status == 1){
                            cell.titleLabel.text = @"Invitaion sent";
                             cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-                            cell.iconImageView.image = nil;
+                              [cell.iconButton setImage:nil forState:UIControlStateNormal];
                         }
                         else{
                             cell.titleLabel.text = @"Add Contact to my Network";
                             cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-                            cell.iconImageView.image = [UIImage imageNamed:@"add-contact-icon"];
+                            [cell.iconButton setImage:[UIImage imageNamed:@"add-contact-icon"] forState:UIControlStateNormal];
+                            
                         }
                         
                     }
@@ -221,12 +237,13 @@
                         if (invitationStatus.status == 1){
                             cell.titleLabel.text = @"Invitaion sent";
                             cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-                            cell.iconImageView.image = nil;
+                            [cell.iconButton setImage:nil forState:UIControlStateNormal];
                         }
                         else{
                             cell.titleLabel.text = @"Invite Contact to Rainbow";
                             cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-                            cell.iconImageView.image = [UIImage imageNamed:@"add-contact-icon"];
+                             [cell.iconButton setImage:[UIImage imageNamed:@"add-contact-icon"] forState:UIControlStateNormal];
+                            
                         }
                         
                     }
@@ -238,12 +255,13 @@
                     if (invitationStatus.status == 1){
                         cell.titleLabel.text = @"Invitaion sent";
                         cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-                        cell.iconImageView.image = nil;
+                        [cell.iconButton setImage:nil forState:UIControlStateNormal];
                     }
                     else{
                         cell.titleLabel.text = @"Remove Contact from my Network";
                         cell.titleLabel.textColor = [UIColor redColor];
-                        cell.iconImageView.image = [UIImage imageNamed:@"remove-contact-icon"];
+                        
+                        [cell.iconButton setImage:[UIImage imageNamed:@"remove-contact-icon"] forState:UIControlStateNormal];
                     }
                     
                     
@@ -253,7 +271,9 @@
             else{
                 cell.titleLabel.text = @"Start Conversation";
                 cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-                cell.iconImageView.image = [UIImage imageNamed:@"start-conversation-icon"];
+                
+                [cell.iconButton setImage:[UIImage imageNamed:@"start-conversation-icon"] forState:UIControlStateNormal];
+                
             }
             cell.subTitleLabel.text = @"";
             cell.titleTopConstraint.constant = 16;
@@ -264,7 +284,9 @@
             cell.subTitleLabel.text = @"";
             cell.titleTopConstraint.constant = 16;
             cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-            cell.iconImageView.image = [UIImage imageNamed:@"start-conversation-icon"];
+           
+            [cell.iconButton setImage:[UIImage imageNamed:@"start-conversation-icon"] forState:UIControlStateNormal];
+            
         }
         
     
@@ -380,11 +402,95 @@
         }
         else{
             //start conversation
+            ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
+            viewController.aContact = _aContact;
+            viewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:viewController animated:YES];
+            
         }
                
     }
     
 
+}
+
+#pragma mark - send Email Methods
+- (void) sendEmailtapGesture: (UIImageView *)sender
+{
+
+    MFMailComposeViewController *mailComposer = [[MFMailComposeViewController alloc]init];
+    
+    if ([MFMailComposeViewController canSendMail] && mailComposer) {
+        // Email Subject
+        NSString *emailTitle = @"Test";
+        // Email Content
+        NSString *messageBody = @"This is a test message from iOS";
+        // To address
+        NSArray<EmailAddress *> * emailAdresses = _aContact.emailAddresses;
+        EmailAddress * currentEmail = [emailAdresses objectAtIndex:sender.tag];
+        NSArray *toRecipents = [NSArray arrayWithObject:currentEmail.address];
+        
+        MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+        mc.mailComposeDelegate = self;
+        [mc setSubject:emailTitle];
+        [mc setMessageBody:messageBody isHTML:NO];
+        [mc setToRecipients:toRecipents];
+        
+        // Present mail view controller on screen
+        [self presentViewController:mc animated:YES completion:NULL];
+       
+    }
+   
+}
+
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    NSString * statusMessage;
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            statusMessage = @"Mail saved";
+            break;
+        case MFMailComposeResultSent:
+            statusMessage = @"Mail sent";
+            break;
+        case MFMailComposeResultFailed:
+            statusMessage = [NSString stringWithFormat:@"Mail sent failure: %@", [error localizedDescription]];
+            break;
+        default:
+            break;
+    }
+    // Close the Mail Interface
+    [self dismissViewControllerAnimated:YES completion:NULL];
+    
+    if (statusMessage != nil) {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:nil
+                                     message:statusMessage
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        
+        
+        UIAlertAction* yesButton = [UIAlertAction
+                                    actionWithTitle:@"Ok"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        
+                                    }];
+        
+        
+        [alert addAction:yesButton];
+        
+        // show alert
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+   
+    
+   
 }
 
 #pragma mark - Status Methods
@@ -408,6 +514,7 @@
         
     });
 }
+
 -(void) didAddContact:(NSNotification *) notification {
     NSLog(@"Added");
     

@@ -27,6 +27,11 @@
     self.title = @"Conversations";
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
    
+   
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     [self getConversations];
 }
 
@@ -119,12 +124,18 @@
 
 - (void) getConversations {
     [self.activityIndicator stopAnimating];
+    conversationsMuttableArray = [NSMutableArray array];
     NSArray<Conversation *> *conversationsArray = [ServicesManager sharedInstance].conversationsManagerService.conversations;
     conversationsMuttableArray = [self sortArray:[NSMutableArray arrayWithArray:conversationsArray]];
     // when success it invoke which method?
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
     
     [self.activityIndicator stopAnimating];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations];
+    });
+
 }
 
 - (void) didUpdateConversation :(NSNotification *) notification {
@@ -147,7 +158,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-            
+            [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations];
         });
 
     }

@@ -23,12 +23,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
 }
 
 - (void) setup {
@@ -48,6 +51,30 @@
   
     
 }
+#pragma mark - Keyboaed Notification
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+     [self.view layoutIfNeeded];
+   
+    dispatch_async(dispatch_get_main_queue(), ^{
+         [self.view setFrame:CGRectMake(0,-30,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height)];
+    });
+    
+    
+}
+
+-(void)keyboardDidHide:(NSNotification *)notification
+{
+     [self.view layoutIfNeeded];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view setFrame:CGRectMake(0,0,[UIScreen mainScreen].bounds.size.width,[UIScreen mainScreen].bounds.size.height)];
+    });
+    
+    
+    
+}
 
 #pragma mark - UITextField Delegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
@@ -56,6 +83,7 @@
 
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    [self.view endEditing:YES];
      return YES;
 }
 
@@ -74,7 +102,6 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField*)textField
 {
-   
     if (textField == _emailTextField) {
         
         [_passwordTextField becomeFirstResponder];
@@ -102,7 +129,7 @@
 }
 
 - (void) connectToSandboxServer {
-   
+  
     
     [[ServicesManager sharedInstance].loginManager setUsername:_emailTextField.text andPassword:_passwordTextField.text];
     
@@ -118,6 +145,20 @@
     });
 }
 
+#pragma mark - UISegmentedControl Method
+- (IBAction)changeHostName:(UISegmentedControl *)segment {
+    if(segment.selectedSegmentIndex == 0)
+    {
+        selectedIndex = 0;
+        
+    }
+    else{
+        selectedIndex = 1;
+    }
+    
+}
+
+#pragma mark - Login Methods
 - (IBAction)doLogin:(id)sender {
     [self.activityIndicator startAnimating];
     if (selectedIndex == 1) {
@@ -128,24 +169,25 @@
     }
 }
 
-
-- (IBAction)changeHostName:(UISegmentedControl *)segment {
-    if(segment.selectedSegmentIndex == 0)
-    {
-        selectedIndex = 0;
-        
-    }
-    else{
-        selectedIndex = 1;
-    }
-
-}
-
 -(void) didLogin:(NSNotification *) notification {
     [self.activityIndicator stopAnimating];
     // go to main pages
-    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    [self setupTabbarFunction];
     
+  
+}
+
+- (void) getContactFunction{
+    
+}
+
+- (void) getConversationFunction {
+    
+}
+
+- (void) setupTabbarFunction {
+    
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
     
     UIViewController *contactsViewCntroller = [[ContactsViewController alloc] init];
     UINavigationController *contactsNavigationViewCntroller = [[UINavigationController alloc]initWithRootViewController:contactsViewCntroller];
@@ -175,7 +217,6 @@
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
     
     [self.navigationController pushViewController:tabBarController animated:YES];
-  
 }
 
 -(void) failedToConnect:(NSNotification *) notification {
@@ -208,5 +249,9 @@
     
     
     
+}
+
+#pragma mark - Reset Passeord Method
+- (IBAction)resetPassword:(id)sender {
 }
 @end

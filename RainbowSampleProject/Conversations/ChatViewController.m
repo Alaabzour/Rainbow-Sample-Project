@@ -45,8 +45,11 @@
     conversation = [[ServicesManager sharedInstance].conversationsManagerService startConversationWithPeer:_aContact];
 //    Conversation *conversation2 = [[ServicesManager sharedInstance].conversationsManagerService getConversationWithPeerJID:_aContact.jid];
 
+    [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:conversation];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
     
+    [self.MessageTextView becomeFirstResponder];
   
 }
 

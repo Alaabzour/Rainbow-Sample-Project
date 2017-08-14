@@ -37,25 +37,25 @@
                         <color key="textColor" red="0.41194480659999999" green="0.39608418940000001" blue="0.39199054239999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hzL-xk-ehV">
-                        <rect key="frame" x="276" y="17" width="28" height="28"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="abw-93-tUY">
+                        <rect key="frame" x="276" y="18" width="28" height="28"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="28" id="1eG-6S-miL"/>
-                            <constraint firstAttribute="height" constant="28" id="e9N-IV-veM"/>
+                            <constraint firstAttribute="height" constant="28" id="aHY-Ll-kOZ"/>
+                            <constraint firstAttribute="width" constant="28" id="xJb-qd-UlR"/>
                         </constraints>
-                    </imageView>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="hzL-xk-ehV" secondAttribute="trailing" constant="8" id="AbP-Qf-WDV"/>
+                    <constraint firstItem="abw-93-tUY" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="89g-eR-cGd"/>
                     <constraint firstItem="XQH-Uc-PzA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="BzX-1K-7Ta"/>
                     <constraint firstItem="XQH-Uc-PzA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="E0J-aC-XYz"/>
                     <constraint firstItem="nSg-q2-MJ5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="Ei1-im-IqH"/>
-                    <constraint firstItem="hzL-xk-ehV" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="ZeZ-eg-41W"/>
                     <constraint firstItem="nSg-q2-MJ5" firstAttribute="top" secondItem="XQH-Uc-PzA" secondAttribute="bottom" constant="5" id="bQG-Ds-Whp"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="abw-93-tUY" secondAttribute="trailing" constant="8" id="hrc-Yr-Ndu"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="iconImageView" destination="hzL-xk-ehV" id="yJt-GO-6EY"/>
+                <outlet property="iconButton" destination="abw-93-tUY" id="MEe-oT-aHZ"/>
                 <outlet property="subTitleLabel" destination="nSg-q2-MJ5" id="GOc-41-Cow"/>
                 <outlet property="titleLabel" destination="XQH-Uc-PzA" id="llW-8e-ih5"/>
                 <outlet property="titleTopConstraint" destination="BzX-1K-7Ta" id="4lj-4i-MMT"/>

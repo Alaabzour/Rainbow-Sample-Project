@@ -38,32 +38,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Contacts/ContactInfoViewController.m"
-            timestampString = "524046822.821978"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Rainbow.framework/Headers/ConversationsManagerService.h"
-            timestampString = "523793928.951371"
+            timestampString = "524318033.391053"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "125"
-            endingLineNumber = "125"
-            landmarkName = "-messagesBrowserForConversation:withPageSize:preloadMessages:"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "-markAsReadByMeAllMessageForConversation:"
             landmarkType = "6">
          </BreakpointContent>
       </BreakpointProxy>
@@ -89,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Contacts/ContactsViewController.m"
-            timestampString = "524062696.726126"
+            filePath = "RainbowSampleProject/Login/LoginViewController.m"
+            timestampString = "524315471.265942"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "-didRemoveContact:"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "-didLogin:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -105,13 +89,61 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Contacts/ContactsViewController.m"
-            timestampString = "524062696.726126"
+            filePath = "RainbowSampleProject/Login/LoginViewController.m"
+            timestampString = "524315471.265942"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
-            landmarkName = "-showContactsInfoMethod:"
+            startingLineNumber = "224"
+            endingLineNumber = "224"
+            landmarkName = "-failedToConnect:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[LoginViewController failedToConnect:]"
+                  moduleName = "RainbowSampleProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/asaltech/Documents/Rainbow%20-%20ios/RainbowSampleProject/Login/LoginViewController.m"
+                  timestampString = "524406254.702608"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "224"
+                  endingLineNumber = "224"
+                  offsetFromSymbolStart = "47">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__39-[LoginViewController failedToConnect:]_block_invoke"
+                  moduleName = "RainbowSampleProject"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/asaltech/Documents/Rainbow%20-%20ios/RainbowSampleProject/Login/LoginViewController.m"
+                  timestampString = "524406254.707062"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "224"
+                  endingLineNumber = "224"
+                  offsetFromSymbolStart = "23">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RainbowSampleProject/Login/LoginViewController.m"
+            timestampString = "524314850.389776"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "-connectToRainbowServer"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -121,30 +153,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Contacts/ContactsViewController.m"
-            timestampString = "524062696.726126"
+            filePath = "RainbowSampleProject/Rainbow.framework/Headers/ConversationsManagerService.h"
+            timestampString = "524318034.07957"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
-            landmarkName = "-didReciveInvitaion:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Contacts/ContactsViewController.m"
-            timestampString = "524062696.726126"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "190"
-            endingLineNumber = "190"
-            landmarkName = "-didUpdadeContact:"
-            landmarkType = "7">
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "-messagesBrowserForConversation:withPageSize:preloadMessages:"
+            landmarkType = "6">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

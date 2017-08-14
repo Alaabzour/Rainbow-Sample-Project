@@ -96,12 +96,28 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVU-iz-hqb">
+                    <rect key="frame" x="191" y="337" width="140" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="2j0-uK-6g5"/>
+                        <constraint firstAttribute="width" constant="140" id="cbw-c0-I9V"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="Forgot Password?">
+                        <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    </state>
+                    <connections>
+                        <action selector="resetPassword:" destination="-1" eventType="touchUpInside" id="EJd-Vj-NEa"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.16301029919999999" green="0.50267833470000001" blue="0.72447270149999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="kVU-iz-hqb" firstAttribute="top" secondItem="TcE-NI-6QQ" secondAttribute="bottom" id="30E-6A-dcJ"/>
                 <constraint firstItem="TcE-NI-6QQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="44" id="Bn1-fS-1ks"/>
                 <constraint firstItem="TcE-NI-6QQ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Bnb-JH-953"/>
                 <constraint firstItem="dVZ-ot-ViV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="44" id="EeV-DL-Zbp"/>
+                <constraint firstAttribute="trailing" secondItem="kVU-iz-hqb" secondAttribute="trailing" constant="44" id="FJU-hL-9eJ"/>
                 <constraint firstAttribute="trailing" secondItem="TcE-NI-6QQ" secondAttribute="trailing" constant="44" id="GB5-3W-ppa"/>
                 <constraint firstItem="sFf-o8-EDv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="85" id="Huj-kj-yQH"/>
                 <constraint firstAttribute="trailing" secondItem="Rl1-Vr-ynC" secondAttribute="trailing" constant="44" id="JDG-Pj-fWj"/>
