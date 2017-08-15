@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		460D15741F25ECE000521ABE /* ConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 460D15721F25ECE000521ABE /* ConversationsViewController.m */; };
 		460D15751F25ECE000521ABE /* ConversationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 460D15731F25ECE000521ABE /* ConversationsViewController.xib */; };
+		463873511F42F3B9003E2450 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4638734F1F42F3B9003E2450 /* CallViewController.m */; };
+		463873521F42F3B9003E2450 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 463873501F42F3B9003E2450 /* CallViewController.xib */; };
 		464C1C801F36FFC100E0D1D1 /* ConversationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 464C1C7E1F36FFC100E0D1D1 /* ConversationTableViewCell.m */; };
 		464C1C811F36FFC100E0D1D1 /* ConversationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 464C1C7F1F36FFC100E0D1D1 /* ConversationTableViewCell.xib */; };
 		464C1C861F37318000E0D1D1 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 464C1C841F37318000E0D1D1 /* ChatViewController.m */; };
@@ -81,6 +83,9 @@
 		460D15711F25ECE000521ABE /* ConversationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConversationsViewController.h; path = Conversations/ConversationsViewController.h; sourceTree = "<group>"; };
 		460D15721F25ECE000521ABE /* ConversationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConversationsViewController.m; path = Conversations/ConversationsViewController.m; sourceTree = "<group>"; };
 		460D15731F25ECE000521ABE /* ConversationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConversationsViewController.xib; path = Conversations/ConversationsViewController.xib; sourceTree = "<group>"; };
+		4638734E1F42F3B9003E2450 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallViewController.h; path = Conversations/CallViewController.h; sourceTree = "<group>"; };
+		4638734F1F42F3B9003E2450 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallViewController.m; path = Conversations/CallViewController.m; sourceTree = "<group>"; };
+		463873501F42F3B9003E2450 /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CallViewController.xib; path = Conversations/CallViewController.xib; sourceTree = "<group>"; };
 		464C1C7D1F36FFC100E0D1D1 /* ConversationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConversationTableViewCell.h; path = Conversations/ConversationTableViewCell.h; sourceTree = "<group>"; };
 		464C1C7E1F36FFC100E0D1D1 /* ConversationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConversationTableViewCell.m; path = Conversations/ConversationTableViewCell.m; sourceTree = "<group>"; };
 		464C1C7F1F36FFC100E0D1D1 /* ConversationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConversationTableViewCell.xib; path = Conversations/ConversationTableViewCell.xib; sourceTree = "<group>"; };
@@ -171,6 +176,9 @@
 				464C1C831F37318000E0D1D1 /* ChatViewController.h */,
 				464C1C841F37318000E0D1D1 /* ChatViewController.m */,
 				464C1C851F37318000E0D1D1 /* ChatViewController.xib */,
+				4638734E1F42F3B9003E2450 /* CallViewController.h */,
+				4638734F1F42F3B9003E2450 /* CallViewController.m */,
+				463873501F42F3B9003E2450 /* CallViewController.xib */,
 			);
 			name = Conversations;
 			sourceTree = "<group>";
@@ -453,6 +461,7 @@
 			files = (
 				460D15751F25ECE000521ABE /* ConversationsViewController.xib in Resources */,
 				46697D2C1F306AD8008696CB /* SettingsViewController.xib in Resources */,
+				463873521F42F3B9003E2450 /* CallViewController.xib in Resources */,
 				464C1C9B1F373E8500E0D1D1 /* MessageTableViewCell.xib in Resources */,
 				46CF309D1F39D93E001D827F /* SettingsTableViewCell.xib in Resources */,
 				464C1C871F37318000E0D1D1 /* ChatViewController.xib in Resources */,
@@ -500,6 +509,7 @@
 				464C1C801F36FFC100E0D1D1 /* ConversationTableViewCell.m in Sources */,
 				46F09C1A1F24C7B00081F7D7 /* ContactsViewController.m in Sources */,
 				46F09BD71F24B7EB0081F7D7 /* main.m in Sources */,
+				463873511F42F3B9003E2450 /* CallViewController.m in Sources */,
 				4655A35D1F28BA0B00C94608 /* UserSubInfoTableViewCell.m in Sources */,
 				464C1C9A1F373E8500E0D1D1 /* MessageTableViewCell.m in Sources */,
 				4655A3571F2879A800C94608 /* UserInfoTableViewCell.m in Sources */,

@@ -39,6 +39,12 @@
     isAllContactsSelected = NO;
     // Do any additional setup after loading the view from its nib.
 }
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -161,21 +167,7 @@
         }
         
     }
-//    if(![invitedcontactsArray containsObject:contact]){
-//        if (contact.requestedInvitation.status == 1){
-//             [invitedcontactsArray addObject:contact];
-//        }
-//       
-//    }
-//    if(![pendingcontactsArray containsObject:contact]){
-//        if (contact.sentInvitation.status == 1){
-//            [pendingcontactsArray addObject:contact];
-//        }
-//        
-//    }
-   
-    
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
@@ -232,7 +224,9 @@
     else{
         for (int i =0; i < allContactsArray.count; i++) {
             if ([[allContactsArray objectAtIndex:i] isEqual:contact]) {
-                if (contact.isInRoster) {
+                // check status ..
+                
+                if (contact.isInRoster && contact.requestedInvitation.status != 1 ) {
                     
                     [allContactsArray replaceObjectAtIndex:i withObject:contact];
                 }
@@ -247,7 +241,22 @@
         
     }
     
+    // remove contact from invitation array when status changes to accepted
+   
+    if ([invitedcontactsArray containsObject:contact] && contact.requestedInvitation.status != 1) {
+        [invitedcontactsArray removeObject:contact];
+        
+    }
+   
+    
+    
     dispatch_async(dispatch_get_main_queue(), ^{
+        if (invitedcontactsArray.count == 0) {
+            [[self navigationController] tabBarItem].badgeValue = nil;
+        }
+        else{
+            [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",invitedcontactsArray.count];
+        }
         [self.tableView reloadData];
         [self.activityIndicator stopAnimating];
     });
@@ -294,9 +303,17 @@
             
         }
     }
-   
+  
    
     dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if (invitedcontactsArray.count == 0) {
+            [[self navigationController] tabBarItem].badgeValue = nil;
+        }
+        else{
+            [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",invitedcontactsArray.count];
+        }
+        
         [self.tableView reloadData];
         [self.activityIndicator stopAnimating];
     });
@@ -314,6 +331,7 @@
 
 -(void) didDeclineInvitaion:(NSNotification *) notification {
     NSLog(@"decline");
+   
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
         
@@ -338,7 +356,6 @@
 
 -(void) didRemoveContact:(NSNotification *) notification {
     NSLog(@"deleted");
-#warning REMOVE CONTACT!
     Contact * deletedContact = notification.object;
     [allContactsArray removeObject:deletedContact];
     [contactsArray removeObject:deletedContact];
@@ -365,7 +382,7 @@
         
     }
     [[ServicesManager sharedInstance].contactsManagerService acceptInvitation:aContact.requestedInvitation];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAcceptInvitaion:) name:kContactsManagerServiceDidUpdateInvitation object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAcceptInvitaion:) name:kContactsManagerServiceDidUpdateInvitation object:aContact];
 
 }
 -(void)showContactsInfoMethod:(UIButton *)sender
@@ -729,7 +746,8 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    if (isAllContactsSelected) {
+
+    if (isAllContactsSelected && !isSearching) {
         if (invitedcontactsArray.count) {
            return 2;
         }
@@ -864,11 +882,13 @@
    
    
     [[ServicesManager sharedInstance].contactsManagerService searchRemoteContactsWithPattern:searchedText withCompletionHandler:^(NSString *searchPattern, NSArray<Contact *> *foundContacts) {
-        contactsSearchResultsArray = [NSMutableArray arrayWithArray:foundContacts];
         dispatch_async(dispatch_get_main_queue(), ^{
+            contactsSearchResultsArray = [NSMutableArray arrayWithArray:foundContacts];
             [self.tableView reloadData];
             [self.activityIndicator stopAnimating];
         });
+       
+      
     }];
     
 }

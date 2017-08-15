@@ -32,6 +32,10 @@
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self getContactInforamtion];
+
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
 }
 
 - (void) viewWillDisappear:(BOOL)animated{
@@ -175,6 +179,11 @@
         NSArray<EmailAddress *> * emailAdresses = _aContact.emailAddresses;
         NSArray<PhoneNumber *> * phoneNumbers = _aContact.phoneNumbers;
         cell.titleTopConstraint.constant = 0;
+        [cell.iconButton removeTarget:nil
+                                   action:NULL
+                         forControlEvents:UIControlEventTouchUpInside];
+        cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+        
         if (indexPath.row <= emailAdresses.count ) {
             EmailAddress * currentEmail = [emailAdresses objectAtIndex:indexPath.row -1];
             if (currentEmail.type == 0) {
@@ -212,6 +221,10 @@
             [cell.iconButton setImage:[UIImage imageNamed:@"call-icon"] forState:UIControlStateNormal];
            
             cell.subTitleLabel.text = phoneNumber.number;
+            
+            cell.iconButton.tag = indexPath.row - emailAdresses.count - 1;
+            
+            [cell.iconButton addTarget:self action:@selector(callPhone:) forControlEvents:UIControlEventTouchUpInside];
         }
         
         else if ((indexPath.row > phoneNumbers.count+emailAdresses.count) && !_aContact.isBot){
@@ -412,6 +425,18 @@
     }
     
 
+}
+
+#pragma mark - call phone number 
+
+- (void) callPhone : (UIButton *) sender {
+    NSArray<PhoneNumber *> * phoneNumbers = _aContact.phoneNumbers;
+    PhoneNumber * selectedPhoneNumber = [phoneNumbers objectAtIndex:sender.tag];
+    NSString *phoneNumber = [@"tel://" stringByAppendingString:selectedPhoneNumber.number];
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber] options:@{} completionHandler:^(BOOL success) {
+        NSLog(@"Success");
+    }];
 }
 
 #pragma mark - send Email Methods

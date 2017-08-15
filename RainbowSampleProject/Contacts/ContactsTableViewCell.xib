@@ -32,7 +32,7 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oOi-3W-ADZ">
-                        <rect key="frame" x="70" y="28" width="206" height="18"/>
+                        <rect key="frame" x="70" y="28" width="180" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -87,10 +87,10 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="3cZ-Bc-5tC" firstAttribute="leading" secondItem="oOi-3W-ADZ" secondAttribute="trailing" constant="8" id="0E3-5M-CIJ"/>
                     <constraint firstItem="X7A-to-S2H" firstAttribute="top" secondItem="bkV-eY-fWt" secondAttribute="bottom" constant="-12.5" id="3Ce-bR-gRq"/>
                     <constraint firstItem="c1x-mD-jf9" firstAttribute="leading" secondItem="X7A-to-S2H" secondAttribute="trailing" constant="8" id="5LJ-cH-TTh"/>
                     <constraint firstItem="3cZ-Bc-5tC" firstAttribute="leading" secondItem="uDN-Q7-zsv" secondAttribute="trailing" constant="4" id="5YU-pM-pBk"/>
+                    <constraint firstItem="uDN-Q7-zsv" firstAttribute="leading" secondItem="oOi-3W-ADZ" secondAttribute="trailing" constant="2" id="9P9-Db-oNL"/>
                     <constraint firstItem="3cZ-Bc-5tC" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="BCm-Gm-mjD"/>
                     <constraint firstItem="c1x-mD-jf9" firstAttribute="top" secondItem="oOi-3W-ADZ" secondAttribute="bottom" id="BKP-ET-08E"/>
                     <constraint firstItem="X7A-to-S2H" firstAttribute="leading" secondItem="bkV-eY-fWt" secondAttribute="trailing" constant="-12" id="BtY-IM-u2a"/>
@@ -117,7 +117,7 @@
     </objects>
     <resources>
         <image name="contact-info-icon" width="50" height="50"/>
-        <image name="decline-icon" width="50" height="50"/>
+        <image name="decline-icon" width="25" height="25"/>
         <image name="placeholder" width="112" height="112"/>
     </resources>
 </document>

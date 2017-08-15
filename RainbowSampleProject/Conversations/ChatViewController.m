@@ -9,7 +9,7 @@
 #import "ChatViewController.h"
 #import "MessageTableViewCell.h"
 #import <Rainbow/Rainbow.h>
-
+#import "CallViewController.h"
 
 @interface ChatViewController () <UITextViewDelegate>
 
@@ -22,16 +22,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-    self.title = @"Chat";
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+   
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
 
     messagesArray = [NSMutableArray array];
+    
+    UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
+    self.navigationItem.rightBarButtonItem = callButton;
     // Do any additional setup after loading the view from its nib.
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -50,9 +52,24 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
     
     [self.MessageTextView becomeFirstResponder];
+    
+    self.navigationController.navigationBar.barTintColor = [UIColor groupTableViewBackgroundColor];
+    UILabel * titleLabel = [[UILabel alloc] init];
+    titleLabel.text = @"Chat";
+    titleLabel.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationItem.titleView = titleLabel;
+    
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
   
 }
 
+-(void) callButtonClicked:(id)sender {
+    CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
+    
+    viewController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    
+}
 - (void) didReceiveNewMessage : (NSNotification *) notification {
    
     Conversation * myconversation  = notification.object;
