@@ -9,38 +9,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Rainbow.framework/Headers/Contact.h"
-            timestampString = "522833629.231642"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
-            landmarkName = "sentInvitation"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Rainbow.framework/Headers/Contact.h"
-            timestampString = "522835547.231584"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
-            landmarkName = "requestedInvitation"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Settings/SettingsViewController.m"
             timestampString = "523962098.505817"
             startingColumnNumber = "9223372036854775807"
@@ -74,45 +42,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Login/LoginViewController.m"
-            timestampString = "524315471.265942"
+            timestampString = "524314850.389776"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
-            landmarkName = "-failedToConnect:"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "-connectToRainbowServer"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[LoginViewController failedToConnect:]"
-                  moduleName = "RainbowSampleProject"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/asaltech/Documents/Rainbow%20-%20ios/RainbowSampleProject/Login/LoginViewController.m"
-                  timestampString = "524487594.959841"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "224"
-                  endingLineNumber = "224"
-                  offsetFromSymbolStart = "47">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__39-[LoginViewController failedToConnect:]_block_invoke"
-                  moduleName = "RainbowSampleProject"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/asaltech/Documents/Rainbow%20-%20ios/RainbowSampleProject/Login/LoginViewController.m"
-                  timestampString = "524487594.964261"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "224"
-                  endingLineNumber = "224"
-                  offsetFromSymbolStart = "23">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -121,13 +57,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Login/LoginViewController.m"
-            timestampString = "524314850.389776"
+            filePath = "RainbowSampleProject/Conversations/CallViewController.m"
+            timestampString = "524582573.995735"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "-connectToRainbowServer"
+            startingLineNumber = "36"
+            endingLineNumber = "36"
+            landmarkName = "-didCallSuccess:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RainbowSampleProject/Conversations/CallViewController.m"
+            timestampString = "524582573.995735"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "-didUpdateCall:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RainbowSampleProject/Conversations/CallViewController.m"
+            timestampString = "524582563.210878"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "-statusChanged:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

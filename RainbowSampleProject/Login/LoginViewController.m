@@ -216,7 +216,7 @@
     
     [[UITabBar appearance] setTintColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
     
-    [self.navigationController pushViewController:tabBarController animated:YES];
+    [self.navigationController pushViewController:tabBarController animated:NO];
 }
 
 -(void) failedToConnect:(NSNotification *) notification {

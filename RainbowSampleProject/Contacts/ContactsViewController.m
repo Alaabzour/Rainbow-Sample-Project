@@ -10,6 +10,7 @@
 #import "ContactsTableViewCell.h"
 #import "ContactInfoViewController.h"
 #import "ChatViewController.h"
+#import "CallViewController.h"
 #import <Rainbow/Rainbow.h>
 
 @interface ContactsViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
@@ -329,6 +330,8 @@
     });
 }
 
+
+
 -(void) didDeclineInvitaion:(NSNotification *) notification {
     NSLog(@"decline");
    
@@ -414,7 +417,7 @@
         ContactInfoViewController * viewController = [[ContactInfoViewController alloc]initWithNibName:@"ContactInfoViewController" bundle:nil];
         viewController.aContact = aContact;
         viewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self.navigationController pushViewController:viewController animated:NO];
         
     }
     else{
@@ -822,17 +825,23 @@
   
     if (aContact.isRainbowUser && aContact.canChatWith) {
         // start conversation with contact
-        ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
+//        ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
+//        viewController.aContact = aContact;
+//        viewController.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:viewController animated:NO];
+        CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         viewController.aContact = aContact;
-        viewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self presentViewController:viewController animated:NO completion:^{
+            
+        }];
     }
     else{
         
         ContactInfoViewController * viewController = [[ContactInfoViewController alloc]initWithNibName:@"ContactInfoViewController" bundle:nil];
         viewController.aContact = aContact;
         viewController.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:viewController animated:YES];
+        [self.navigationController pushViewController:viewController animated:NO];
     }
 }
 

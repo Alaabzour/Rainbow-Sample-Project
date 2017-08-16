@@ -29,8 +29,7 @@
 
     messagesArray = [NSMutableArray array];
     
-    UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
-    self.navigationItem.rightBarButtonItem = callButton;
+   
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -60,14 +59,21 @@
     self.navigationItem.titleView = titleLabel;
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    
+  // check if call is available
+    
+    UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
+    self.navigationItem.rightBarButtonItem = callButton;
   
 }
 
 -(void) callButtonClicked:(id)sender {
     CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
-    
-    viewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
+    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+   // viewController.aContact = _aContact;
+    [self presentViewController:viewController animated:NO completion:^{
+        
+    }];
     
 }
 - (void) didReceiveNewMessage : (NSNotification *) notification {

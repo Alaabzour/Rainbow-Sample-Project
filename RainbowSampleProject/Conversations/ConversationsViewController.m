@@ -119,7 +119,7 @@
     Conversation * conversation = [conversationsMuttableArray objectAtIndex:indexPath.row];
     viewController.aContact = conversation.peer;
     viewController.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self.navigationController pushViewController:viewController animated:NO];
 }
 
 #pragma - mark Retrieving conversation from a contact
