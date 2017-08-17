@@ -1,4 +1,4 @@
-# Rainbow-Sample-Project
+# Rainbow-Sample-Project 
 
 ## How to integrate Rainbow iOS SDK into existing app
 
@@ -69,4 +69,6 @@ dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), 
 
 });
 ```
+
+
 
