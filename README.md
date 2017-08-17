@@ -33,15 +33,19 @@
 - Import Rainbow
 
 
-```#import <Rainbow/Rainbow.h>```
+```objective-c
+#import <Rainbow/Rainbow.h>
+```
 
 - Set your username and your password
 
-```[[ServicesManager sharedInstance].loginManager setUsername:@"myRainbowUser@domain.com" andPassword:@"MyPassword"];```
+```objective-c
+[[ServicesManager sharedInstance].loginManager setUsername:@"myRainbowUser@domain.com" andPassword:@"MyPassword"];
+```
 
 - Monitor login manager notifications
 
-```
+```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
 -(void) didLogin:(NSNotification *) notification {
 NSLog(@"DID LOGIN");
@@ -50,13 +54,15 @@ NSLog(@"DID LOGIN");
 
 - Connect to Rainbow official
 
-```[[ServicesManager sharedInstance].loginManager connect];```
+```objective-c
+[[ServicesManager sharedInstance].loginManager connect];
+```
 
 You are now connecting to Rainbow server, login manager notifications will give you feedback on the connection status (DidLogin, DidFailedToAuthenticate).
 
 - Connect to Rainbow sanbox mode
 
-```
+```objective-c
 [[NSNotificationCenter defaultCenter] postNotificationName:kChangeServerURLNotification object:@{ @"serverURL": @"your sandbox URL"}];     
 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 [[ServicesManager sharedInstance].loginManager connect];
