@@ -1,4 +1,5 @@
 # Rainbow-Sample-Project
+
 # How to integrate Rainbow iOS SDK into existing app
 
 ## Integrate frameworks
@@ -6,20 +7,20 @@
 - Drag-n-Drop WebRTC.framework into your xcode project
 - Add in your info.plist the following entries : 
 - UIBackgroundModes (type Array)
-- Item 0 (type String) 
-- audio
+    - Item 0 (type String) 
+    - audio
 - NSCameraUsageDescription (type String) 
-- a text explaining that you want access to camera
+    - a text explaining that you want access to camera
 - NSMicrophoneUsageDescription (type String) 
-- a text explaining that you want access to  microphone
+    - a text explaining that you want access to  microphone
 - NSAppTransportSecurity (type Dictionary)
 - NSAllowsArbitraryLoads (type Boolean) YES
 - NSContactsUsageDescription (type String) 
-- a text explaining that you want access to contacts
+    - a text explaining that you want access to contacts
 - NSPhotoLibraryUsageDescription (type String) 
-- a text explaining that you want access to photo library
+    - a text explaining that you want access to photo library
 - NSUserActivityTypes (type Array)
-- Item 0 (type String) INStartAudioCallIntent
+    - Item 0 (type String) INStartAudioCallIntent
 
 - Disable bitcode :
 - Select your project, select your target, select Build settings, search Enable Bitcode, select NO
