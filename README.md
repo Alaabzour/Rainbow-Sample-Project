@@ -3,23 +3,16 @@
 ## Description
 ###### add a description about rainbow sdk
 ---
-## Table of Contents
 
-| Title | Description |
-| --- | --- |
-| `git status` | List all *new or modified* files |
-| `git diff` | [Contribution guidelines for this project](../master/Managing_Contacts.md) |
-
----
 ## Installation
 
 ###  Add Rainbow to your iOS Project
 It's time to add Rainbow to your app. To do this you'll need an iOS project and a Rainbow configuration  for your app.
 
-1. Download RainbowSDK.framework from following link.
-2. Download WebRTC.framework from following link.
-3. Drag-n-Drop RainbowSDK.framework into your xcode project
-4. Drag-n-Drop WebRTC.framework into your xcode project
+1. Download the framework SDK zip (this is a ~100MB file and may take some time).
+2. Unzip and see next steps for which Frameworks to include in to your project.
+3. Drag-n-Drop RainbowSDK.framework into your xcode project.
+4. Drag-n-Drop WebRTC.framework into your xcode project.
 
 ### Configure the SDK
 
@@ -35,10 +28,11 @@ It's time to add Rainbow to your app. To do this you'll need an iOS project and 
     - `NSAllowsArbitraryLoads` (type Boolean) YES
     - `NSContactsUsageDescription` (type String) 
         - `a text explaining that you want access to contacts`
-    - `NSPhotoLibraryUsageDescription (type String) 
+    - `NSPhotoLibraryUsageDescription` (type String) 
         - `a text explaining that you want access to photo library`
     - `NSUserActivityTypes` (type Array)
-        - `Item 0 (type String) INStartAudioCallIntent`
+        - `Item 0` (type String)
+            - `INStartAudioCallIntent`
 
 - Disable bitcode :
     - Select your project, select your target, select Build settings, search Enable Bitcode, select NO
@@ -46,21 +40,21 @@ It's time to add Rainbow to your app. To do this you'll need an iOS project and 
 - Add RainbowSDK framework and WebRTC framework into embebed binaries
     - Select your project, select your target, select General, drag-n-drop RainbowSDK.framework and WebRTC.framework from Navigator to the Embedded Binaries section.
 
-
-# Connect to Rainbow
-- Import Rainbow
+### Initialize Rainbow in your app
+The final step is to add initialization code to your application. You may have already done this as part of adding Rainbow to your app.
+1. Import the Rainbow module in your UIApplicationDelegate subclass:
 
 ```objective-c
 #import <Rainbow/Rainbow.h>
 ```
 
-- Set your username and your password
+2. Set your username and your password
 
 ```objective-c
 [[ServicesManager sharedInstance].loginManager setUsername:@"myRainbowUser@domain.com" andPassword:@"MyPassword"];
 ```
 
-- Monitor login manager notifications
+3. Monitor login manager notifications
 
 ```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
@@ -69,7 +63,17 @@ NSLog(@"DID LOGIN");
 }
 ```
 
-- Connect to Rainbow official
+
+## Table of Contents
+
+| Title | Description |
+| --- | --- |
+| `git status` | List all *new or modified* files |
+| `git diff` | [Contribution guidelines for this project](../master/Managing_Contacts.md) |
+
+---
+
+4. Connect to Rainbow official
 
 ```objective-c
 [[ServicesManager sharedInstance].loginManager connect];
