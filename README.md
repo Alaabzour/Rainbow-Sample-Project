@@ -1,8 +1,13 @@
 # Rainbow-Sample-Project 
 
-## How to integrate Rainbow iOS SDK into existing app
+# Description
 
-### Integrate frameworks
+# Table of Contents
+
+# Installation
+
+###  How to integrate Rainbow iOS SDK into existing app
+
 - Drag-n-Drop RainbowSDK.framework into your xcode project
 - Drag-n-Drop WebRTC.framework into your xcode project
 - Add in your info.plist the following entries : 
@@ -31,7 +36,6 @@
 
 ### Connect to Rainbow
 - Import Rainbow
-
 
 ```objective-c
 #import <Rainbow/Rainbow.h>
