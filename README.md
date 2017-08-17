@@ -29,7 +29,7 @@
     - Select your project, select your target, select General, drag-n-drop RainbowSDK.framework and WebRTC.framework from Navigator to the Embedded Binaries section.
 
 
-## Connect to Rainbow
+### Connect to Rainbow
 - Import Rainbow
 
 
