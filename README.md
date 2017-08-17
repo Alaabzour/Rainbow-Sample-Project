@@ -62,9 +62,9 @@ The final step is to add initialization code to your application. You may have a
 NSLog(@"DID LOGIN");
 }
 ```
+---
 
-
-## Table of Contents
+## Next steps
 
 | Title | Description |
 | --- | --- |
