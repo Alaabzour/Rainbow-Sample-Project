@@ -60,7 +60,7 @@ The final step is to add initialization code to your application. You may have a
 ```objective-c
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
 -(void) didLogin:(NSNotification *) notification {
-NSLog(@"DID LOGIN");
+  NSLog(@"DID LOGIN");
 }
 ```
 ---
