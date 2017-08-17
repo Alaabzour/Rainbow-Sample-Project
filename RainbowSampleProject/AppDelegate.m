@@ -11,6 +11,7 @@
 #import "ConversationsViewController.h"
 #import "SettingsViewController.h"
 #import "LoginViewController.h"
+#import "RecentViewController.h"
 #import <Rainbow/Rainbow.h>
 
 @interface AppDelegate ()
@@ -43,6 +44,7 @@
         contactsNavigationViewCntroller.tabBarItem.image = [UIImage imageNamed:@"contacts-icon"];
         contactsNavigationViewCntroller.tabBarItem.selectedImage=[UIImage imageNamed:@"contacts-selected-icon"];
         //contactsNavigationViewCntroller.tabBarItem.badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].contactsManagerService.totalNbOfPendingInvitations];
+        
         UIViewController *conversationsViewController = [[ConversationsViewController alloc] init];
         UINavigationController *conversationsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:conversationsViewController];
         
@@ -50,6 +52,13 @@
         conversationsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"conversations-icon"];
         conversationsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"conversations-selected-icon"];
        // conversationsNavigationViewController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations];
+        
+        UIViewController *recentsViewController = [[RecentViewController alloc] init];
+        UINavigationController *recentsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:recentsViewController];
+        
+        recentsNavigationViewController.tabBarItem.title= @"Recents" ;
+        recentsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"past-not-selected-icon"];
+        recentsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"past-selected-icon"];
         
         UIViewController *settingsViewController = [[SettingsViewController alloc] init];
         UINavigationController *settingsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];
@@ -59,7 +68,7 @@
         settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
         
         
-        [_tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,settingsNavigationViewController,nil]];
+        [_tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,recentsNavigationViewController,settingsNavigationViewController,nil]];
         
         [[UITabBar appearance] setTintColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
         

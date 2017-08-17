@@ -33,6 +33,9 @@
     currentUser = [[ServicesManager sharedInstance] myUser];
     // get myuser status
     selectedStatus = (int)currentUser.contact.presence.presence;
+   
+   
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
  
 }
 
@@ -45,7 +48,7 @@
 #pragma mark - TableView Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return 1;
     
 }
 
@@ -53,7 +56,7 @@
     
     UITableViewCell *cell;
     
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         static NSString *CellIdentifier = @"ContactsInfoCell";
         
         UserInfoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -124,7 +127,7 @@
         return cell;
         
     }
-    else if (indexPath.row == 2) {
+    else if (indexPath.section == 2) {
         static NSString *CellIdentifier = @"SettingsCell";
         
         SettingsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -138,7 +141,7 @@
         return cell;
         
     }
-    else if (indexPath.row == 1){
+    else if (indexPath.section == 1){
         static NSString *CellIdentifier = @"ContactStatusCell";
         
         ContactStatusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -200,13 +203,53 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
         return 144;
     }
-    else if (indexPath.row == 2) {
+    else if (indexPath.section == 2) {
         return 44;
     }
     return 202;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0){
+        return 0;
+    }
+    return 22;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
+    
+    
+    return 3;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section != 0){
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 22)];
+        UILabel* label = [[UILabel alloc]initWithFrame:CGRectMake(10.0, 0.0, tableView.frame.size.width-20, 22)];
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor darkGrayColor];
+        label.font = [UIFont systemFontOfSize:12.0];
+        if (section == 1) {
+             label.text = @"change your presence";
+        }
+        else{
+             label.text = @"Logout from Rainbow";
+        }
+       
+        [view addSubview:label];
+        view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        return view;
+        
+    }
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -355,8 +355,8 @@
 		46F09C241F25CDF00081F7D7 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				46762C141F458855005069DD /* Recent */,
 				46CF30981F39ABBC001D827F /* AppDelegate */,
+				46762C141F458855005069DD /* Recent */,
 				46CF30921F39A032001D827F /* Login */,
 				46697D271F306ABC008696CB /* Settings */,
 				460D15701F25ECAE00521ABE /* Conversations */,
