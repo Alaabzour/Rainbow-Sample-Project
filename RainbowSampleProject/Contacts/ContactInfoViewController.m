@@ -103,7 +103,7 @@
         cell.contactNameLabel.text = [NSString stringWithFormat:@"%@ %@",_aContact.title? _aContact.title:@"",_aContact.fullName];
         cell.contactJobTitle.text = _aContact.jobTitle;
         cell.contactTitle.text = _aContact.companyName?  _aContact.companyName:@" ";
-        cell.statusLabel.text = _aContact.presence.status;
+       // cell.statusLabel.text = _aContact.presence.status;
         if (_aContact.photoData != nil) {
              cell.contactImageView.image = [UIImage imageWithData:_aContact.photoData];
         }

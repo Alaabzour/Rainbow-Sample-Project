@@ -35,8 +35,8 @@
     [super viewDidLoad];
     [self setup];
     [self.activityIndicator startAnimating];
-     [self connectToRainbowServer];
-    //[self connectToSandboxServer];
+     //[self connectToRainbowServer];
+    [self connectToSandboxServer];
     isAllContactsSelected = NO;
     // Do any additional setup after loading the view from its nib.
 }
@@ -123,7 +123,7 @@
 - (void) connectToRainbowServer {
      [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
     
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];//MAbedAlKareem
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
     
     [[ServicesManager sharedInstance].loginManager setUsername:@"abzour@asaltech.com" andPassword:@"Asal@123"];
     
@@ -139,7 +139,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
     
-    [[ServicesManager sharedInstance].loginManager setUsername:@"abzour@asaltech.com" andPassword:@"Password_123"];
+    [[ServicesManager sharedInstance].loginManager setUsername:@"MAbedAlKareem@asaltech.com" andPassword:@"Password_123"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
     
