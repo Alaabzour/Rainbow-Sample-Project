@@ -1,14 +1,16 @@
 # Rainbow-Sample-Project 
+---
 ### Description
+---
 ### Table of Contents
+---
 | Command | Description |
 | --- | --- |
 | `git status` | List all *new or modified* files |
 | `git diff` | Show file differences that **haven't been** staged |
 
----
 # Installation
-
+---
 ###  Add Rainbow to your iOS Project
 
 - Drag-n-Drop RainbowSDK.framework into your xcode project
