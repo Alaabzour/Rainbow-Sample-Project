@@ -8,7 +8,7 @@
 | Title | Description |
 | --- | --- |
 | `git status` | List all *new or modified* files |
-| `git diff` | [Contribution guidelines for this project](Rainbow-Sample-Project/Managing Contacts.md) |
+| `git diff` | [Contribution guidelines for this project](../master/Managing_Contacts.md) |
 
 ---
 ## Installation
