@@ -27,6 +27,8 @@
 		46697D2C1F306AD8008696CB /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46697D2A1F306AD8008696CB /* SettingsViewController.xib */; };
 		46697D301F307B85008696CB /* ContactStatusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46697D2E1F307B85008696CB /* ContactStatusTableViewCell.m */; };
 		46697D311F307B85008696CB /* ContactStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46697D2F1F307B85008696CB /* ContactStatusTableViewCell.xib */; };
+		46762C181F45887C005069DD /* RecentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46762C161F45887C005069DD /* RecentViewController.m */; };
+		46762C191F45887C005069DD /* RecentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46762C171F45887C005069DD /* RecentViewController.xib */; };
 		46CF30961F39A0AB001D827F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF30941F39A0AB001D827F /* LoginViewController.m */; };
 		46CF30971F39A0AB001D827F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46CF30951F39A0AB001D827F /* LoginViewController.xib */; };
 		46CF309C1F39D93E001D827F /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF309A1F39D93E001D827F /* SettingsTableViewCell.m */; };
@@ -110,6 +112,9 @@
 		46697D2D1F307B85008696CB /* ContactStatusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactStatusTableViewCell.h; path = Settings/ContactStatusTableViewCell.h; sourceTree = "<group>"; };
 		46697D2E1F307B85008696CB /* ContactStatusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactStatusTableViewCell.m; path = Settings/ContactStatusTableViewCell.m; sourceTree = "<group>"; };
 		46697D2F1F307B85008696CB /* ContactStatusTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactStatusTableViewCell.xib; path = Settings/ContactStatusTableViewCell.xib; sourceTree = "<group>"; };
+		46762C151F45887C005069DD /* RecentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentViewController.h; path = Recent/RecentViewController.h; sourceTree = "<group>"; };
+		46762C161F45887C005069DD /* RecentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecentViewController.m; path = Recent/RecentViewController.m; sourceTree = "<group>"; };
+		46762C171F45887C005069DD /* RecentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RecentViewController.xib; path = Recent/RecentViewController.xib; sourceTree = "<group>"; };
 		46CF30931F39A0AB001D827F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Login/LoginViewController.h; sourceTree = "<group>"; };
 		46CF30941F39A0AB001D827F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Login/LoginViewController.m; sourceTree = "<group>"; };
 		46CF30951F39A0AB001D827F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = Login/LoginViewController.xib; sourceTree = "<group>"; };
@@ -218,6 +223,16 @@
 				46697D2A1F306AD8008696CB /* SettingsViewController.xib */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		46762C141F458855005069DD /* Recent */ = {
+			isa = PBXGroup;
+			children = (
+				46762C151F45887C005069DD /* RecentViewController.h */,
+				46762C161F45887C005069DD /* RecentViewController.m */,
+				46762C171F45887C005069DD /* RecentViewController.xib */,
+			);
+			name = Recent;
 			sourceTree = "<group>";
 		};
 		46CF30921F39A032001D827F /* Login */ = {
@@ -340,6 +355,7 @@
 		46F09C241F25CDF00081F7D7 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				46762C141F458855005069DD /* Recent */,
 				46CF30981F39ABBC001D827F /* AppDelegate */,
 				46CF30921F39A032001D827F /* Login */,
 				46697D271F306ABC008696CB /* Settings */,
@@ -471,6 +487,7 @@
 				46F09BE51F24B7EB0081F7D7 /* LaunchScreen.storyboard in Resources */,
 				4655A3531F276B9E00C94608 /* ContactInfoViewController.xib in Resources */,
 				46697D311F307B85008696CB /* ContactStatusTableViewCell.xib in Resources */,
+				46762C191F45887C005069DD /* RecentViewController.xib in Resources */,
 				4655A35E1F28BA0B00C94608 /* UserSubInfoTableViewCell.xib in Resources */,
 				46F09C1B1F24C7B00081F7D7 /* ContactsViewController.xib in Resources */,
 				46CF30971F39A0AB001D827F /* LoginViewController.xib in Resources */,
@@ -501,6 +518,7 @@
 			files = (
 				460D15741F25ECE000521ABE /* ConversationsViewController.m in Sources */,
 				46F09C211F24CECA0081F7D7 /* ContactsTableViewCell.m in Sources */,
+				46762C181F45887C005069DD /* RecentViewController.m in Sources */,
 				464C1C861F37318000E0D1D1 /* ChatViewController.m in Sources */,
 				46F09BDA1F24B7EB0081F7D7 /* AppDelegate.m in Sources */,
 				46CF30961F39A0AB001D827F /* LoginViewController.m in Sources */,
