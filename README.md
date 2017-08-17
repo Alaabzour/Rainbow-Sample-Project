@@ -14,25 +14,31 @@
 ## Installation
 
 ###  Add Rainbow to your iOS Project
+It's time to add Rainbow to your app. To do this you'll need an iOS project and a Rainbow configuration  for your app.
 
-- Drag-n-Drop RainbowSDK.framework into your xcode project
-- Drag-n-Drop WebRTC.framework into your xcode project
-- Add in your info.plist the following entries : 
-    - UIBackgroundModes (type Array)
-        - Item 0 (type String) 
-            - audio
-    - NSCameraUsageDescription (type String) 
-        - a text explaining that you want access to camera
-    - NSMicrophoneUsageDescription (type String) 
-        - a text explaining that you want access to  microphone
-    - NSAppTransportSecurity (type Dictionary)
-    - NSAllowsArbitraryLoads (type Boolean) YES
-    - NSContactsUsageDescription (type String) 
-        - a text explaining that you want access to contacts
-    - NSPhotoLibraryUsageDescription (type String) 
-        - a text explaining that you want access to photo library
-    - NSUserActivityTypes (type Array)
-        - Item 0 (type String) INStartAudioCallIntent
+1. Download RainbowSDK.framework from following link.
+2. Download WebRTC.framework from following link.
+3. Drag-n-Drop RainbowSDK.framework into your xcode project
+4. Drag-n-Drop WebRTC.framework into your xcode project
+
+### Configure the SDK
+
+- Add in your *info.plist* the following entries : 
+    - `UIBackgroundModes` (type Array)
+        - `Item 0` (type String)
+            - `audio`
+    - `NSCameraUsageDescription` (type String) 
+        - `a text explaining that you want access to camera`
+    - `NSMicrophoneUsageDescription` (type String) 
+        - `a text explaining that you want access to  microphone`
+    - `NSAppTransportSecurity` (type Dictionary)
+    - `NSAllowsArbitraryLoads` (type Boolean) YES
+    - `NSContactsUsageDescription` (type String) 
+        - `a text explaining that you want access to contacts`
+    - `NSPhotoLibraryUsageDescription (type String) 
+        - `a text explaining that you want access to photo library`
+    - `NSUserActivityTypes` (type Array)
+        - `Item 0 (type String) INStartAudioCallIntent`
 
 - Disable bitcode :
     - Select your project, select your target, select Build settings, search Enable Bitcode, select NO
