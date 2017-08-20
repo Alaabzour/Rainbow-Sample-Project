@@ -139,6 +139,8 @@ Once you have called the `connect()` method, you will begin receiving events fro
 
 Here is the complete list of the events that you can subscribe on:
 
+#### Connection Events
+
 | Name | Description |
 |------|------------|
 | **`kLoginManagerDidLoginSucceeded`** | Fired when the SDK is connected to Rainbow and ready to be used |
@@ -149,6 +151,10 @@ Here is the complete list of the events that you can subscribe on:
 | **`kLoginManagerDidChangeServer`** | Fired when the message has been received by the server |
 | **`kLoginManagerDidChangeUser`** | Fired when the SDK is connected to Sandbox Server |
 | **`kLoginManagerTryToReconnect`** | Fired when the SDK tries to reconnect |
+
+#### Contacts Events
+| Name | Description |
+|------|------------|
 | **`kContactsManagerServiceDidAddContact`** | Fired when the SDK has successfully retrieve you contacts |
 | **`kContactsManagerServiceDidUpdateContact`** | Fired when the a contact is updated |
 | **`kContactsManagerServiceDidRemoveContact`** | Fired when the contact is removed from your contacts list |
@@ -163,6 +169,11 @@ Here is the complete list of the events that you can subscribe on:
 | **`kContactsManagerServiceDidRemoveInvitation`** |  |
 | **`kContactsManagerServiceDidUpdateInvitationPendingNumber`** |  |
 | **`kContactsManagerServiceLocalAccessGrantedNotification`** | Fired when the addressBook access is granted) |
+
+#### Conversation Events
+
+| Name | Description |
+|------|------------|
 | **`kConversationsManagerDidAddConversation`** | Fired when the SDK has successfully retrieve you conversation |
 | **`kConversationsManagerDidRemoveConversation`** | Fired when the you remove a conversation  |
 | **`kConversationsManagerDidRemoveAllConversations`** | Fired when the you remove all conversation |
@@ -176,6 +187,7 @@ Here is the complete list of the events that you can subscribe on:
 
 
 ## Instant Messaging
+---
 
 ### Listen to incoming messages and answer to them
 
@@ -389,289 +401,6 @@ The following values are accepted:
 
 Notice: Values other than the ones listed will not be taken into account.
 
-
-## Bubbles
-
-### Retrieve the list of existing bubbles
-
-Once connected, the Rainbow SDK will automatically retrieve the list of bubbles from the server. You can access to them by using the following API:
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onready', function() {
-    // do something when the connection to Rainbow is up
-    let bubbles = rainbowSDK.bubbles.getAll();
-});
-
-```
-
-Each new bubble created will then be added to that list automatically.
-
-
-### Retrieve a bubble information
-
-Accessing individually an existing bubble can be done using the API `getBubbleByJid()` or `getBubbleById()`
-
-```js
-
-    ...
-    // Retrieve the bubble information when receiving a message in that bubble
-    let bubble = rainbowSDK.bubbles.getBubbleByJid(message.fromBubbleJid);
-});
-
-```
-
-
-### Create a new Bubble
-
-A new bubble can be created by calling the following API
-
-```js
-
-...
-let withHistory = true // Allow newcomers to have access to the bubble messages since the creation of the bubble
-rainbowSDK.bubbles.createBubble("My new Bubble", "A little description of my bubble", withHistory).then(function(bubble) {
-    // do something with the bubble created
-    ...
-}).catch(function(err) {
-    // do something if the creation of the bubble failed (eg. providing the same name as an existing bubble)
-    ...
-});
-
-```
-
-### Add customData to a Bubble
-
-May be added to an existing Bubble calling the following API
-Please consider asking your administrator specific limitations: number max of string key : string value, max string size for key and value
-
-```js
-
-...
-let customDatas = { "customData" :  {
-    "one": "The One", "another" : "No idea"
-}};
-rainbowSDK.bubbles.setBubbleCustomData(bubble, customDatas).then(function(bubble) {
-    // do something with the bubble
-    ...
-}).catch(function(err) {
-    // do something if something went wrong by addinf customData to the bubble (eg. too much customData, too long)
-    ...
-});
-
-```
-
-
-### Add a contact to a bubble
-
-Once you have created a bubble, you can invite a contact. Insert the following code
-
-```js
-
-...
-
-let invitedAsModerator = false;     // To set to true if you want to invite someone as a moderator
-let sendAnInvite = true;            // To set to false if you want to add someone to a bubble without having to invite him first
-let inviteReason = "bot-invite";    // Define a reason for the invite (part of the invite received by the recipient)
-
-rainbowSDK.bubbles.inviteContactToBubble(aContact, aBubble, invitedAsModerator, sendAnInvite, inviteReason).then(function(bubbleUpdated) {
-    // do something with the invite sent
-    ...
-}).catch(function(err) {
-    // do something if the invitation failed (eg. bad reference to a buble)
-    ...
-});
-
-```
-
-
-### Remove a contact from a bubble
-
-A contact can be removed from a bubble even if he hasn't yet accepted the invitation. For removing him, add the following code
-
-```js
-
-...
-
-rainbowSDK.bubbles.removeContactFromBubble(aContact, aBubble).then(function(bubbleUpdated) {
-    // do something with once the contact has been removed
-    ...
-}).catch(function(err) {
-    // do something if there is a trouble when removing the conact
-    ...
-});
-
-```
-
-
-### Be notified when a contact changes his affiliation with a bubble 
-
-When a recipient accepts or decline your invite or when he leaves the bubble, you can receive a notification of his affiliation change by listening to the following event:
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onbubbleaffiliationchanged', function(bubble) {
-    // do something the affiliation of a user in that bubble changes
-    ...
-});
-
-```
-
-
-### Be notified when the affiliation of the connected user changes with a bubble
-
-When a moderator removes you from a bubble, you can receive a notification of your new affiliation with the bubble by listening the following event:
-
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onbubbleownaffiliationchanged', function(bubble) {
-    // do something when your affiliation changes for that bubble
-    ...
-});
-
-```
-
-
-### Leave a bubble
-
-Depending your role in the bubble, you can or not leave it:
- - If you are a **moderator** or the **owner** of this bubble, you can leave it only if there is an other **active** moderator (that can be the owner or not).
- - If you are a **participant**, you can leave it when you want.
-
-For both cases, you have to call the following API
-
-```js
-
-...
-rainbowSDK.bubbles.leaveBubble(aBubble).then(function() {
-    // do something once leaved the bubble
-    ...
-}).catch(function(err) {
-    // do something if you can't leave the bubble
-    ...
-});
-
-```
-
-
-### Close a bubble
-
-If you are the **owner** of a bubble or a **moderator**, you can close it. When a bubble is closed, all participants (including owner and moderators) can only read the content of the bubble but can't put new message into it (they are no more part of the bubble).
-
-For closing a bubble, you have to call the following API
-
-```js
-
-...
-rainbowSDK.bubbles.closeBubble(aBubble).then(function(bubbleClosed) {
-    // do something once the bubble is closed
-    ...
-}).catch(function(err) {
-    // do something if you can't close the bubble
-    ...
-});
-
-```
-
-
-### Delete a bubble
-
-If you are the **owner** of a bubble or a **moderator**, you can delete it. When a bubble is deleted, the bubble is removed from the bubble list and can't be accessed by the participants (including owner and moderators). The content of the bubble is no more accessible.
-
-For deleting a bubble, you have to call following API:
-
-```js
-
-...
-rainbowSDK.bubbles.deleteBubble(aBubble).then(function() {
-    // do something once the bubble has been deleted
-    ...
-}).catch(function(err) {
-    // do something if you can't delete the bubble
-    ...
-});
-
-```
-
-
-### Be notified when a request to join a bubble is received 
-
-When someone wants to add the connected user to a bubble the event `rainbow_onbubbleinvitationreceived` is fired:
-
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onbubbleinvitationreceived', function(bubble) {
-    // do something wih this bubble
-    ...
-});
-
-```
-
-
-### Accepting a request to join a bubble
-
-When a request to join a bubble is received from someone, you can accept it by calling the API `acceptInvitationToJoinBubble()` like in the following:
-
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onbubbleinvitationreceived', function(bubble) {
-    // Accept this invitation
-    nodeSDK.bubbles.acceptInvitationToJoinBubble(jsonMessage).then(function(updatedBubble) => {
-        // Do something once the invitation has been accepted
-        ...
-    }).catch((err) => {
-        // Do something in case of error
-        ...
-    });
-});
-
-```
-
-
-### Declining a request to join a bubble
-
-You can decline a request to join a bubble by calling the API `declineInvitationToJoinBubble()` like in the following:
-
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onbubbleinvitationreceived', function(bubble) {
-    // Accept this invitation
-    nodeSDK.bubbles.declineInvitationToJoinBubble(jsonMessage).then(function(updatedBubble) => {
-        // Do something once the invitation has been declined
-        ...
-    }).catch((err) => {
-        // Do something in case of error
-        ...
-    });
-});
-
-```
-
-
-### Get the list of pending invitation to join a bubble
-
-At anytime, you can get the list of pending invitation by calling the API `getAllPendingBubbles()`:
-
-
-```js
-
-...
-    let pendingInvitations = nodeSDK.bubbles.getAllPendingBubbles();
-    // Do something with this list
-    ...
-});
-
-```
 
 
 ## Proxy management
