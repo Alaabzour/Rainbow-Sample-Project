@@ -385,13 +385,10 @@ At any time, you can stop the connection to Rainbow by calling the API `stop()`.
 
 ```
 
-### API Return codes
----
-
 
 
 ## Features provided
-
+---
 Here is the list of features supported by the Rainbow-iOS-SDK
 
 
