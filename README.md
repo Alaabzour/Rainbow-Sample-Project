@@ -189,71 +189,79 @@ Here is the complete list of the events that you can subscribe on:
 ## Instant Messaging
 ---
 
-### Listen to incoming messages and answer to them
+### Retrieve Conversations
+Retrieving all messages done as follow,
 
-Listening to instant messages that come from other users is very easy. You just have to use the `events` public property and to subscribe to the `rainbow_onmessagereceived` event:
+```objective-c
+ NSArray<Conversation *> *conversationsArray = [ServicesManager sharedInstance].conversationsManagerService.conversations;
+ 
+```
+This will show you a list of all conversations you make.
 
-```js
+If you want to listen to changes of all conversations you can use this `kConversationsManagerDidUpdateConversation` notification as follow,
 
-...
-rainbowSDK.events.on('rainbow_onmessagereceived', function(message) {
-    // test if the message comes from a bubble of from a conversation with one participant
-    if(message.type == "groupchat") {
-        // Send the answer to the bubble
-        messageSent = rainbowSDK.im.sendMessageToBubbleJid('The message answer', message.fromBubbleJid);
-    }
-    else {
-        // send the answer to the user directly otherwise
-        messageSent = rainbowSDK.im.sendMessageToJid('The message answer', message.fromJid);
-    }
-});
-
+```objective-c
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
+ 
 ```
 
-### Managing additionnal content
-
-You can add extra content when sending a message to a user:
-
-- Define the language of the message
-
-- Define an additionnal text format
-
-- Define a subject
-
-Modify your code like in the following to add extra content:
+```objective-c
+ Conversation * updatedConversation = (Conversation *)notification.object;
+ // do some thing with this updatedConversation ...
+ ...
+ 
+```
 
 
-```js
+### Listen to incoming messages and answer to them
 
-...
-// Send a message in English to a user with a markdown format and a subject
-messageSent = rainbowSDK.im.sendMessageToJid('A message', user.jid, "en", {"type": "text/markdown", "message": "**A message**"}, "My Title");
+#### Listen to incoming messages
 
-// Send a message in English to a bubble with a markdown format and a subject
-messageSent = rainbowSDK.im.sendMessageToBubbleJid('A message for a bubble', bubble.jid, "en", {"type": "text/markdown", "message": "**A message** for a _bubble_"}, "My ‡Title");
+Listening to instant messages that come from other users is very easy. You just have to use the  `kConversationsManagerDidReceiveNewMessageForConversation` event:
 
+```objective-c
+
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
+ 
+ ...
+ 
+ - (void) didReceiveNewMessage : (NSNotification *) notification {
+   
+    Conversation * receivedConversation  = notification.object;
+    //do something with **recivedConversation** object
+    
+ }
+```
+
+#### Sending a new message
+You can send a new message to contact as follow ,
+
+```objective-c
+ [[ServicesManager sharedInstance].conversationsManagerService sendMessage:@"Message to send" fileAttachment:nil to:conversation completionHandler:^(Message *message, NSError *error) {
+        // do something with **message**
+        ...
+        
+        });
+      
+      
+    } attachmentUploadProgressHandler:^(Message *message, double totalBytesSent, double totalBytesExpectedToSend) {
+        NSLog(@"total byte send  : %f",totalBytesSent);
+        NSLog(@"total byte expected to send  : %f",totalBytesExpectedToSend);
+      
+    }];
 ```
 
 
 ### Manually send a 'read' receipt
 
-By default or if the `sendReadReceipt` property is not set, the 'read' receipt is sent automatically to the sender when the message is received so than the sender knows that the message as been read.
+If you want to mark all messages as read for a conversation you can use `markAsReadByMeAllMessageForConversation` method, as follow,
 
-If you want to send it manually  when you want, you have to set this parameter to false and use the method `markMessageAsRead()`
-
-```js
-
+```objective-c
 ...
-rainbowSDK.events.on('rainbow_onmessagereceived', function(message) {
-    // do something with the message received 
-    ...
-    // send manually a 'read' receipt to the sender
-    rainbowSDK.im.markMessageAsRead(message);
-});
+  [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:conversation];
 
 ```
 
-Notice: You not have to send receipt for message having the property `isEvent` equals to true. This is specific Bubble messages indicating that someone entered the bubble or juste leaved it.
 
 
 
@@ -261,41 +269,7 @@ Notice: You not have to send receipt for message having the property `isEvent` e
 
 Receipts allow to know if the message has been successfully delivered to your recipient. Use the ID of your originated message to be able to link with the receipt received.
 
-When the server receives the message you just sent, a receipt is sent to you:
 
-```js
-
-...
-rainbowSDK.events.on('rainbow_onmessageserverreceiptreceived', function(receipt) {
-    // do something when the message has been received by the Rainbow server
-    ...
-});
-
-```
-
-Then, when the recipient receives the message, the following receipt is sent to you:
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onmessagereceiptreceived', function(receipt) {
-    // do something when the message has been received by the recipient
-    ...
-});
-
-```
-
-Finally, when the recipient read the message, the following receipt is sent to you:
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_onmessagereceiptreadreceived', function(receipt) {
-    // do something when the message has been read by the recipient
-    ...
-});
-
-```
 
 
 ## Contacts
