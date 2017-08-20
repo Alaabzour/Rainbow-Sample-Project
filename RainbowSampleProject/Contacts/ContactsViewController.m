@@ -613,7 +613,7 @@
                 cell.statusLabel.backgroundColor = [UIColor lightGrayColor];
                 break;
             case 1://Available
-                if (aContact.isConnectedWithMobile) {
+                if ([aContact.presence.status isEqualToString:@"mobile"]) {
                     cell.statusTextLabel.text = @"Available on Mobile";
                 }
                 else{

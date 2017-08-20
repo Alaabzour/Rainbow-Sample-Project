@@ -78,9 +78,9 @@
 }
 - (void) didReceiveNewMessage : (NSNotification *) notification {
    
-    Conversation * myconversation  = notification.object;
-    if (myconversation != nil) {
-        [messagesArray addObject:myconversation.lastMessage.body];
+    Conversation * receivedConversation  = notification.object;
+    if (receivedConversation != nil) {
+        [messagesArray addObject:receivedConversation.lastMessage.body];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
