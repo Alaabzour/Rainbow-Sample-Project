@@ -1,9 +1,10 @@
-ALE Rainbow SDK for iOS
+# ALE Rainbow SDK for iOS
 ---
 
 Welcome to the Alcatel-Lucent Enterprise **Rainbow Software Development Kit for iOS**!
 
 The Alcatel-Lucent Enterprise (ALE) Rainbow Software Development Kit (SDK) is an npm package for connecting your iOS application to Rainbow.
+
 
 
 ## Preamble
@@ -15,6 +16,7 @@ This documentation will help you to use it.
 
 
 ## Rainbow developper account
+---
 
 Your need a Rainbow **developer** account in order to use the Rainbow SDK for iOS.
 
@@ -22,13 +24,16 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
 
 
 ## Install
+---
 
 1. Download the framework SDK zip .
 2. Unzip and see next steps for which Frameworks to include in to your project.
 3. Drag-n-Drop RainbowSDK.framework into your xcode project.
 4. Drag-n-Drop WebRTC.framework into your xcode project.
 
+
 ## Configuration
+---
 
 - Add in your *info.plist* the following entries : 
     - `UIBackgroundModes` (type Array)
@@ -53,8 +58,10 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
 
 - Add RainbowSDK framework and WebRTC framework into embebed binaries
     - Select your project, select your target, select General, drag-n-drop RainbowSDK.framework and WebRTC.framework from Navigator to the Embedded Binaries section.
-    
+   
+   
 ## Usage
+---
 
 1. Import the Rainbow module in your UIApplicationDelegate subclass:
 
@@ -79,7 +86,9 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
 
 That's all! Your application should be connected to Rainbow, congratulation!
 
+
 ## Events
+---
 
 ### Listen to events
 
