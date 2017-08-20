@@ -162,9 +162,17 @@ Here is the complete list of the events that you can subscribe on:
 | **`kContactsManagerServiceDidUpdateInvitation`** | Fired when  an invitation is updated (status changed) |
 | **`kContactsManagerServiceDidRemoveInvitation`** |  |
 | **`kContactsManagerServiceDidUpdateInvitationPendingNumber`** |  |
-
-
-
+| **`kContactsManagerServiceLocalAccessGrantedNotification`** | Fired when the addressBook access is granted) |
+| **`kConversationsManagerDidAddConversation`** | Fired when the SDK has successfully retrieve you conversation |
+| **`kConversationsManagerDidRemoveConversation`** | Fired when the you remove a conversation  |
+| **`kConversationsManagerDidRemoveAllConversations`** | Fired when the you remove all conversation |
+| **`kConversationsManagerDidUpdateConversation`** | Fired when the conversation is updated |
+| **`kConversationsManagerDidStartConversation`** | Fired when you start a conversation with contact |
+| **`kConversationsManagerDidStopConversation`** | Fired when you stop a conversation with contact |
+| **`kConversationsManagerDidReceiveNewMessageForConversation`** | Fired when the conversation receive a new message |
+| **`kConversationsManagerDidReceiveComposingMessage`** |  |
+| **`kConversationsManagerDidAckMessageNotification`** |  |
+| **`kConversationsManagerDidUpdateMessagesUnreadCount`** | Fired when the SDK did update Messages unread count |
 
 
 ## Instant Messaging
