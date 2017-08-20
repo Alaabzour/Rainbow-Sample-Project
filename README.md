@@ -380,245 +380,73 @@ Notice: With this SDK version, if the contact uses several devices at the same t
 
 ### Change presence manually
 
-The SDK for Node.js allows to change the presence of the connected user by calling the following api:
+The SDK for iOS allows to change the presence of the connected user by calling the following api:
 
-```js
+```objective-c
 
-...
-rainbowSDK.presence.setPresenceTo(rainbowSDK.presence.RAINBOW_PRESENCE_DONOTDISTURB).then(function() {
-    // do something when the presence has been changed
-    ...
-}).catch(function(err) {
-    // do something if the presence has not been changed
-    ...
-});
+  [[ServicesManager sharedInstance].contactsManagerService changeMyPresence:[Presence presenceAvailable]];
 
 ```
 
-The following values are accepted:
+The following Methods are supported:
 
 | Presence constant | value | Meaning |
 |------------------ | ----- | ------- |
-| **RAINBOW_PRESENCE_ONLINE** | "online" | The connected user is seen as **available** |
-| **RAINBOW_PRESENCE_DONOTDISTURB** | "dnd" | The connected user is seen as **do not disturb** |
-| **RAINBOW_PRESENCE_AWAY** | "away" | The connected user is seen as **away** |
-| **RAINBOW_PRESENCE_INVISIBLE** | "invisible" | The connected user is connected but **seen as offline** |
+| **`presenceAvailable`** | "online" | The connected user is seen as **available** |
+| **`presenceDoNotDistrub`** | "dnd" | The connected user is seen as **do not disturb** |
+| **`presenceAway`** | "away" | The connected user is seen as **away** |
+| **`presenceExtendedAway`** | "invisible" | The connected user is connected but **seen as offline** |
 
-Notice: Values other than the ones listed will not be taken into account.
-
-
-
-## Proxy management
-
-### Configuration
-
-If you need to access to Rainbow through an HTTP proxy, you have to add the following part to your `options` parameter:
-
-```js
-
-...
-proxy: {
-    host: '192.168.0.254',
-    port: 8080,             // Default to 80 if not provided
-    protocol: 'http'       // Default to 'http' if not provided
-}
-
-```
 
 
 ## Serviceability
-
-### Retrieving SDK version
-
-You can retrieve the SDK Node.JS version by calling the API `version`
-
-```js
-
-let version = rainbowSDK.version;
-
-```
-
-
-### Logging to the console
-
-By default, the Rainbow SDK for Node.js logs to the shell console used (ie. that starts the Node.js process).
-
-You can disable it by setting the parameter `enableConsoleLogs` to false
-
-```js
-
-...
-logs: {
-    enableConsoleLogs: false
-    ...
-}
-
-```
-
-
-### Logging to files
-
-By default, the SDK logs information in the shell console that starts the Node.js process.
-
-You can save these logs into a file by setting the parameter `enableFileLogs` to true. (False by default).
-
-```js
-
-...
-logs: {
-    enableFileLogs: true
-    ...
-}
-```
-
-You can modify the path where the logs are saved and the log level by modifying the parameter `file` like the following:
-
-```js
-...
-logs: {
-    file: {
-        path: '/var/tmp/mypath/',
-        level: 'error'
-    }
-}
-
-```
-
-The available log levels are: `error`, `warn`, `info` and `debug`
-
-Notice: Each day a new file is created.
-
+---
 
 ### Stopping the SDK
 
-At any time, you can stop the connection to Rainbow by calling the API `stop()`. This will stop all services. The only way to reconnect is to call the API `start()` again.
+At any time, you can stop the connection to Rainbow by calling the API `stop()`. This will stop all services. The only way to reconnect is to call the API `disconnect` again.
 
-```js
+```objective-c
 
-...
-rainbowSDK.events.on('rainbow_onstopped', () => {
-    // do something when the SDK has been stopped
-    ...
-});
-
-
-rainbowSDK.stop().then((res) => {
-    // Do something when the SDK has been stopped
-    ...
-});
 
 ```
-
-
-### Auto-reconnection
-
-When the SDK for Node.JS is disconnected from Rainbow, attempts are made to try to reconnect automatically.
-
-This reconnection step can be followed by listening to events `rainbow_ondisconnected`, `rainbow_onreconnecting`, `rainbow_onconnected` and `rainbow_onready`.
-
-```js
-
-...
-rainbowSDK.events.on('rainbow_ondisconnected', () => {
-    // do something when the SDK has been disconnected
-    ...
-});
-
-
-rainbowSDK.events.on('rainbow_onreconnecting', () => {
-    // do something when the SDK tries to reconnect to Rainbow
-    ...
-});
-
-rainbowSDK.events.on('rainbow_onconnected', () => {
-    // do something when the SDK has connected to Rainbow
-    ...
-});
-
-rainbowSDK.events.on('rainbow_onready', () => {
-    // do something when the SDK is ready to be used 
-    ...
-});
-
-```
-
 
 ### API Return codes
+---
 
-Here is the table and description of the API return codes:
-
-| Return code | Label | Message | Meaning |
-|------------------ | ----- | ------ | ------ |
-| 1 | **"SUCCESSFULL"** | "" | The request has been successfully executed |
-| -1 | **"INTERNALERROR"** | "An error occured. See details for more information" | A error occurs. Check the details property for more information on this issue |
-| -2 | **"UNAUTHORIZED"** | "The email or the password is not correct" | Either the login or the password is not correct. Check your Rainbow account |
-| -4 | **"XMPPERROR"** | "An error occured. See details for more information" | An error occurs regarding XMPP. Check the details property for more information on this issue |
-| -16 | **"BADREQUEST"** | "One or several parameters are not valid for that request." | You entered bad parameters for that request. Check this documentation for the list of correct values |
-
-When there is an issue calling an API, an error object is returned like in the following example:
-
-```js
-
-{
-    code: -1                // The error code
-    label: "INTERNALERROR"  // The error label
-    msg: "..."              // The error message
-    details: ...            // The JS error
-}
-
-```
-
-Notice: In case of successfull request, this object is returned only when there is no other information returned.
 
 
 ## Features provided
 
-Here is the list of features supported by the Rainbow-Node-SDK
+Here is the list of features supported by the Rainbow-iOS-SDK
 
 
 ### Instant Messaging
 
  - Send and receive One-to-One messages
 
- - XEP-0045: Multi-user Chat: Send and receive messages in Bubbles
+ - Message Delivery Receipts (received and read)
 
- - XEP-0184: Message Delivery Receipts (received and read)
+ - Retrieving or creating a conversation from a contact
 
- - XEP-0280: Message Carbon
-
+ - Listening for a incoming message
 
 ### Contacts
 
  - Get the list of contacts
 
  - Get contact individually
-
-
-### Bubbles
-
- - Create a new Bubble
  
- - Get the list of bubbles
+ - Managing contacts updates
+ 
+ - Displaying contact full information
+ 
+ - Searching for a contact by name
+ 
+ - Adding the contact to the user network
+ 
+ - Removing the contact from the user network
 
- - Get bubble individually
-
- - Invite contact to a bubble
-
- - Remove contact from a bubble
-
- - Leave a bubble
-
- - Delete a bubble
-
- - Be notified of an invitation to join a bubble
-
- - Be notified when affiliation of users changes in a bubble
-
- - Be notified when my affiliation changes in a bubble
-
- - Accept to join a bubble
-
- - Decline to join a bubble
 
 
 ### Presence
@@ -628,12 +456,3 @@ Here is the list of features supported by the Rainbow-Node-SDK
 - Set the user connected presence
 
 
-### Serviciability
-
- - Support of connection through an HTTP Proxy 
-
- - Logs into file & console
-
- - XEP-0199: XMPP Ping
-
- - REST token automatic renewal and auto-relogin
