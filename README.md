@@ -1,5 +1,6 @@
 # Rainbow-Sample-Project 
 ---
+
 ## Description
 ---
 ###### add a description about rainbow sdk
@@ -66,6 +67,7 @@ The final step is to add initialization code to your application. You may have a
 ---
 
 ## Next steps
+---
 Learn about Rainbow :
 - [Managing Contacts](../master/Managing_Contacts.md)
     - how  to use the SDK for retrieving the existing contacts, searching for a contact by name, retrieving full information on a contact found and finally adding him to the network or removing him
