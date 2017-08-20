@@ -315,6 +315,46 @@ Accessing individually an existing contact can be done using the API `fetchRemot
 }
 ```
 
+
+### Searching for a contact by name
+You can search for a contact by his name as follow,
+
+```objective-c
+[[ServicesManager sharedInstance].contactsManagerService searchRemoteContactsWithPattern:searchedText withCompletionHandler:^(NSString *searchPattern, NSArray<Contact *> *foundContacts) {
+       // do something with **foundContacts**
+      
+    }];
+    
+```
+
+### Adding the contact to the user network
+You can add a Rainbow user to your network or invite a local contact to use Rainbow, by using this notification:`kContactsManagerServiceDidInviteContact` as follow,
+
+```objective-c
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didInviteContact:) name:kContactsManagerServiceDidInviteContact object:nil];
+ 
+```
+
+``` objective-c
+-(void) didInviteContact:(NSNotification *) notification {
+    NSLog(@"Invited");
+}
+```
+
+### Removing the contact from the user network
+You can remove a contact from your network using this notification:`kContactsManagerServiceDidRemoveContact` as follow,
+
+```objective-c
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveContact:) name:kContactsManagerServiceDidRemoveContact object:nil];
+```
+
+```objective-c
+
+-(void) didRemoveContact:(NSNotification *) notification {
+    NSLog(@"Removed");
+  
+}
+```
 ### Listen to contact presence change
 
 When the presence of a contact changes, the following event is fired:
