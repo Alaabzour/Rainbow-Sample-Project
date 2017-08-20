@@ -141,19 +141,30 @@ Here is the complete list of the events that you can subscribe on:
 
 | Name | Description |
 |------|------------|
-| **`kContactsManagerServiceDidAddContact`** | Fired when the SDK has successfully started (not yet signed in) |
-| **`kContactsManagerServiceDidUpdateContact`** | Fired when the SDK has been successfully stopped (all services have been stopped) |
-| **`kContactsManagerServiceDidRemoveContact`** | Fired when the connection is successfull with Rainbow (signin complete) |
-| **`kContactsManagerServiceDidInviteContact`** | Fired when the connection can't be done with Rainbow (ie. issue on sign-in) |
-| **`kContactsManagerServiceDidFailedToInviteContact`** | Fired when the SDK lost the connection with Rainbow |
-| **`kContactsManagerServiceDidUpdateMyContact`** | Fired when the SDK tries to reconnect |
-| **`kContactsManagerServiceDidChangeContactDisplayUserSettings`** | Fired when the SDK didn't succeed to reconnect and stop trying |
-| **`kContactsManagerServiceLocalAccessGrantedNotification`** | Fired when something goes wrong (ie: bad 'configurations' parameter...) |
-| **`kContactsManagerServiceClickToCallMobile`** | Fired when the SDK is connected to Rainbow and ready to be used |
-| **`kContactsManagerServiceDidAddInvitation`** | Fired when a one-to-one message is received |
-| **`kContactsManagerServiceDidUpdateInvitation`** | Fired when the message has been received by the server |
-| **`kContactsManagerServiceDidRemoveInvitation`** | Fired when the message has been received by the recipient |
-| **`kContactsManagerServiceDidUpdateInvitationPendingNumber`** | Fired when the message has been read by the recipient |
+| **`kLoginManagerDidLoginSucceeded`** | Fired when the SDK is connected to Rainbow and ready to be used |
+| **`kLoginManagerDidLogoutSucceeded`** | Fired when the SDK has successfully logout from the server |
+| **`kLoginManagerDidLostConnection`** | Fired when the SDK lost the connection with Rainbow |
+| **`kLoginManagerDidReconnect`** | Fired when the SDK didn't succeed to reconnect |
+| **`kLoginManagerDidFailedToAuthenticate`** |Fired when something goes wrong (ie: bad 'configurations' parameter...) |
+| **`kLoginManagerDidChangeServer`** | Fired when the message has been received by the server |
+| **`kLoginManagerDidChangeUser`** | Fired when the SDK is connected to Sandbox Server |
+| **`kLoginManagerTryToReconnect`** | Fired when the SDK tries to reconnect |
+| **`kContactsManagerServiceDidAddContact`** | Fired when the SDK has successfully retrieve you contacts |
+| **`kContactsManagerServiceDidUpdateContact`** | Fired when the a contact is updated |
+| **`kContactsManagerServiceDidRemoveContact`** | Fired when the contact is removed from your contacts list |
+| **`kContactsManagerServiceDidInviteContact`** | Fired when you invite contact to Rainbow or add a rainbow user to your contact list |
+| **`kContactsManagerServiceDidFailedToInviteContact`** | Fired when the SDK is failed to invite |
+| **`kContactsManagerServiceDidUpdateMyContact`** | Fired when you update your information |
+| **`kContactsManagerServiceDidChangeContactDisplayUserSettings`** | notification sent when device contact display parameter is changed |
+| **`kContactsManagerServiceLocalAccessGrantedNotification`** | Fired when the addressBook access is granted) |
+| **`kContactsManagerServiceClickToCallMobile`** |  |
+| **`kContactsManagerServiceDidAddInvitation`** | Fired when a new invitation is added (could be a sent or received one) |
+| **`kContactsManagerServiceDidUpdateInvitation`** | Fired when  an invitation is updated (status changed) |
+| **`kContactsManagerServiceDidRemoveInvitation`** |  |
+| **`kContactsManagerServiceDidUpdateInvitationPendingNumber`** |  |
+
+
+
 
 
 ## Instant Messaging
