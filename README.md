@@ -299,56 +299,62 @@ rainbowSDK.events.on('rainbow_onmessagereceiptreadreceived', function(receipt) {
 
 
 ## Contacts
+---
 
 ### Retrieve the list of contacts
 
-Once connected, the Rainbow SDK will automatically retrieve the list of contacts from the server. You can access to them by using the following API:
+Once connected, you can retrieve the list of your contact as follow,
 
-```js
+```objective-c
+ [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
+    
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
+ 
+```
 
-...
-rainbowSDK.events.on('rainbow_onready', function() {
-    // do something when the connection to Rainbow is up
-    let contacts = rainbowSDK.contacts.getAll();
-});
+```objective-c
+-(void) didAddContact:(NSNotification *) notification {
+ 
+    Contact *contact = (Contact *)notification.object;
+    // add contact object to your contactsArray 
+    
+}
 
 ```
 
-Note: This is the fixed list of contacts of the connected user.
-
+**Note**: `requestAddressBookAccess`  will add your local contact to your contact list, so you can invite them to use Rainbow.
 
 ### Retrieve a contact information
 
-Accessing individually an existing contact can be done using the API `getContactByJid()`, `getContactById()` or `getContactByLoginEmail()`
+Accessing individually an existing contact can be done using the API `fetchRemoteContactDetail:`
 
-```js
-
-    ...
-    // Retrieve the contact information when receiving a message from him
-    rainbowSDK.contacts.getContactByJid(message.fromJid).then(function(contact) {
-        // do something with the contact found
-    }).catch(function(err) {
-        // do something on error 
-    });
-});
+```objective-c
+  [[ServicesManager sharedInstance].contactsManagerService fetchRemoteContactDetail:_aContact];
+    
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetInfo:) name:kContactsManagerServiceDidUpdateContact object:nil];
 
 ```
 
-Regarding the method `getContactByJid()`, if the contact is not found in the list of contacts, a request is sent to the server to retrieve it (limited set of information depending privacy rules).
-
+```objective-c
+-(void) didGetInfo:(NSNotification *) notification {
+     Contact *contact = (Contact *)[notification.object objectForKey:@"contact"];  
+}
+```
 
 ### Listen to contact presence change
 
 When the presence of a contact changes, the following event is fired:
 
-```js
-
-...
-rainbowSDK.events.on('rainbow_oncontactpresencechanged', function(contact) {
-    // do something when the presence of a contact changes
-    let presence = contact.presence;    // Presence information
-    let status = contact.status;        // Additionnal information if exists
-});
+```objective-c
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name: kContactsManagerServiceDidUpdateContact object:nil];
+  
+```
+```objective-c
+-(void) didUpdadeContact:(NSNotification *) notification {
+    
+    Contact *contact = (Contact *)[notification.object objectForKey:@"contact"];
+    // check property **presence**
+}
 
 ```
 
@@ -356,20 +362,19 @@ The presence and status of a Rainbow user can take several values as described i
 
 | Presence | Status | Meaning |
 |----------------|--------------|---------|
-| **online** | | The contact is connected to Rainbow through a desktop application and is available |
-| **online** | **mobile** | The contact is connected to Rainbow through a mobile application and is available |
-| **away** | | The contact is connected to Rainbow but hasn't have any activity for several minutes |
-| **busy** | | The contact is connected to Rainbow and doesn't want to be disturbed at this time |
-| **busy** | **presentation** | The contact is connected to Rainbow and uses an application in full screen (presentation mode) |
-| **busy** | **phone** | The contact is connected to Rainbow and currently engaged in an audio call (PBX) |
-| **busy** | **audio** | The contact is connected to Rainbow and currently engaged in an audio call (WebRTC) |
-| **busy** | **video** | The contact is connected to Rainbow and currently engaged in a video call (WebRTC) |
-| **busy** | **sharing** | The contact is connected to Rainbow and currently engaged in a screen sharing presentation (WebRTC) |
-| **offline** | | The contact is not connected to Rainbow |
-| **unknown** | | The presence of the Rainbow user is not known (not shared with the connected user) |
+| **`ContactPresenceAvailable`** | | The contact is connected to Rainbow through a desktop application and is available |
+| **`ContactPresenceAvailable`** | **mobile** | The contact is connected to Rainbow through a mobile application and is available |
+| *`ContactPresenceAway`** | | The contact is connected to Rainbow but hasn't have any activity for several minutes |
+| **`ContactPresenceDoNotDisturb`** | | The contact is connected to Rainbow and doesn't want to be disturbed at this time |
+| **`ContactPresenceBusy`** | **presentation** | The contact is connected to Rainbow and uses an application in full screen (presentation mode) |
+| **`ContactPresenceBusy`** | **phone** | The contact is connected to Rainbow and currently engaged in an audio call (PBX) |
+| **`ContactPresenceBusy`** | **audio** | The contact is connected to Rainbow and currently engaged in an audio call (WebRTC) |
+| **`ContactPresenceBusy`** | **video** | The contact is connected to Rainbow and currently engaged in a video call (WebRTC) |
+| **`ContactPresenceBusy`** | **sharing** | The contact is connected to Rainbow and currently engaged in a screen sharing presentation (WebRTC) |
+| **`ContactPresenceInvisible`** | | The contact is not connected to Rainbow |
+| **`ContactPresenceUnavailable`** | | The presence of the Rainbow user is not known (not shared with the connected user) |
 
 Notice: With this SDK version, if the contact uses several devices at the same time, only the latest presence information is taken into account.
-
 
 ## Presence
 
