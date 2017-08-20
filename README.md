@@ -1,11 +1,11 @@
 # Rainbow-Sample-Project 
-
-## Description
-###### add a description about rainbow sdk
 ---
+## Description
+---
+###### add a description about rainbow sdk
 
 ## Installation
-
+---
 ###  Add Rainbow to your iOS Project
 It's time to add Rainbow to your app. To do this you'll need an iOS project and a Rainbow configuration  for your app.
 
@@ -80,11 +80,13 @@ Learn about Rainbow :
     - launch a PSTN call to Contact using WebRTC.framework
     
 
----
+
 ## Credits
-###### highlight and link to the authors of project.
 ---
+###### highlight and link to the authors of project.
+
 
 ## License
-###### For more information on choosing a license, check out GitHub’s licensing guide!
 ---
+###### For more information on choosing a license, check out GitHub’s licensing guide!
+
