@@ -84,6 +84,27 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
 }
 ```
 
+This will login to Rainbow offical server , if you want to login to Sandbox server you need to change the server as follow,
+
+```objective-c
+
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kChangeServerURLNotification object:@{ @"serverURL": @"you sandbox url"}];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[ServicesManager sharedInstance].loginManager connect];
+        
+    });
+    
+```
+
+```objective-c
+-(void) didLogin:(NSNotification *) notification {
+  NSLog(@"DID LOGIN");
+}
+```
+
+
 That's all! Your application should be connected to Rainbow, congratulation!
 
 
@@ -92,35 +113,27 @@ That's all! Your application should be connected to Rainbow, congratulation!
 
 ### Listen to events
 
-Once you have called the `start()` method, you will begin receiving events from the SDK. If you want to catch them, you have simply to add the following lines to your code:
+Once you have called the `connect()` method, you will begin receiving events from the SDK. If you want to catch them, you have simply to add the following lines to your code:
 
-```js
+```objective-c
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
 
-...
-rainbowSDK.events.on(<name_of_the_event_to_listen>, callback);
-```
-
-Here is an example for listening when the SDK is ready to be used (once the connection is successfull to Rainbow):
-
-```js
-...
-rainbowSDK.events.on('rainbow_onready', () => {
-    // do something when the SDK is ready to be used
-    ...
-});
-
-rainbowSDK.events.on('rainbow_onstarted', () => {
-    // do something when the SDK has been started
-    ...
-});
-
-rainbowSDK.start().then(() => {
-    // Do something when the SDK is started
-    ...
-});
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFailedToLogin:) name:kLoginManagerDidFailedToAuthenticate object:nil];
 
 ```
 
+```objective-c
+-(void) didLogin:(NSNotification *) notification {
+ // do something when the SDK is ready to be used
+  NSLog(@"DID LOGIN");
+}
+```
+
+```objective-c
+-(void) didFailedToLogin:(NSNotification *) notification {
+  NSLog(@"DID FAILED TO LOGIN");
+}
+```
 
 ### List of events
 
@@ -128,23 +141,19 @@ Here is the complete list of the events that you can subscribe on:
 
 | Name | Description |
 |------|------------|
-| **rainbow_onstarted** | Fired when the SDK has successfully started (not yet signed in) |
-| **rainbow_onstopped** | Fired when the SDK has been successfully stopped (all services have been stopped) |
-| **rainbow_onconnected** | Fired when the connection is successfull with Rainbow (signin complete) |
-| **rainbow_onconnectionerror** | Fired when the connection can't be done with Rainbow (ie. issue on sign-in) |
-| **rainbow_ondisconnected** | Fired when the SDK lost the connection with Rainbow |
-| **rainbow_onreconnecting** | Fired when the SDK tries to reconnect |
-| **rainbow_onfailed** | Fired when the SDK didn't succeed to reconnect and stop trying |
-| **rainbow_onerror** | Fired when something goes wrong (ie: bad 'configurations' parameter...) |
-| **rainbow_onready** | Fired when the SDK is connected to Rainbow and ready to be used |
-| **rainbow_onmessagereceived** | Fired when a one-to-one message is received |
-| **rainbow_onmessageserverreceiptreceived** | Fired when the message has been received by the server |
-| **rainbow_onmessagereceiptreceived** | Fired when the message has been received by the recipient |
-| **rainbow_onmessagereceiptreadreceived** | Fired when the message has been read by the recipient |
-| **rainbow_oncontactpresencechanged** | Fired when the presence of a contact changes |
-| **rainbow_onbubbleaffiliationchanged** | Fired when a user changes his affiliation with a bubble |
-| **rainbow_onbubbleownaffiliationchanged** | Fired when a user changes the user connected affiliation with a bubble |
-| **rainbow_onbubbleinvitationreceived** | Fired when an invitation to join a bubble is received |
+| **`kContactsManagerServiceDidAddContact`** | Fired when the SDK has successfully started (not yet signed in) |
+| **`kContactsManagerServiceDidUpdateContact`** | Fired when the SDK has been successfully stopped (all services have been stopped) |
+| **`kContactsManagerServiceDidRemoveContact`** | Fired when the connection is successfull with Rainbow (signin complete) |
+| **`kContactsManagerServiceDidInviteContact`** | Fired when the connection can't be done with Rainbow (ie. issue on sign-in) |
+| **`kContactsManagerServiceDidFailedToInviteContact`** | Fired when the SDK lost the connection with Rainbow |
+| **`kContactsManagerServiceDidUpdateMyContact`** | Fired when the SDK tries to reconnect |
+| **`kContactsManagerServiceDidChangeContactDisplayUserSettings`** | Fired when the SDK didn't succeed to reconnect and stop trying |
+| **`kContactsManagerServiceLocalAccessGrantedNotification`** | Fired when something goes wrong (ie: bad 'configurations' parameter...) |
+| **`kContactsManagerServiceClickToCallMobile`** | Fired when the SDK is connected to Rainbow and ready to be used |
+| **`kContactsManagerServiceDidAddInvitation`** | Fired when a one-to-one message is received |
+| **`kContactsManagerServiceDidUpdateInvitation`** | Fired when the message has been received by the server |
+| **`kContactsManagerServiceDidRemoveInvitation`** | Fired when the message has been received by the recipient |
+| **`kContactsManagerServiceDidUpdateInvitationPendingNumber`** | Fired when the message has been read by the recipient |
 
 
 ## Instant Messaging
