@@ -430,3 +430,9 @@ Here is the list of features supported by the Rainbow-iOS-SDK
 - Set the user connected presence
 
 
+## Authors
+---
+
+## License
+---
+
