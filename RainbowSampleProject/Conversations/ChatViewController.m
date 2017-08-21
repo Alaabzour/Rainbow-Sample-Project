@@ -43,8 +43,10 @@
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
     conversation = [[ServicesManager sharedInstance].conversationsManagerService startConversationWithPeer:_aContact];
-//    Conversation *conversation2 = [[ServicesManager sharedInstance].conversationsManagerService getConversationWithPeerJID:_aContact.jid];
+    
+    Conversation *conversation2 = [[ServicesManager sharedInstance].conversationsManagerService getConversationWithPeerJID:_aContact.jid];
 
     [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:conversation];
     
@@ -53,16 +55,16 @@
     [self.MessageTextView becomeFirstResponder];
     
     self.navigationController.navigationBar.barTintColor = [UIColor groupTableViewBackgroundColor];
-    UILabel * titleLabel = [[UILabel alloc] init];
-    titleLabel.text = @"Chat";
+    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    titleLabel.text = _aContact.fullName;
     titleLabel.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
     self.navigationItem.titleView = titleLabel;
     
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
     
   // check if call is available
-    
-    UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
+   
+   UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
     self.navigationItem.rightBarButtonItem = callButton;
   
 }

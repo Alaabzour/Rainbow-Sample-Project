@@ -11,8 +11,12 @@
 #import <Rainbow/Rainbow.h>
 #import "ChatViewController.h"
 
-@interface ConversationsViewController (){
+@interface ConversationsViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     NSMutableArray * conversationsMuttableArray;
+    NSArray * conversationsResultArray;
+
+    UISearchBar *searchbar;
+    BOOL isSearching;
 }
 
 @end
@@ -23,9 +27,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- 
-    self.title = @"Conversations";
-    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+  
+    [self setup];
+    //self.title = @"Conversations";
+  
    
    
 }
@@ -34,7 +39,26 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+   
     [self getConversations];
+}
+
+- (void) setup {
+    
+    // setup tabelView
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
+    
+    // Add serchbar to Navigationbar
+    searchbar = [[UISearchBar alloc] init];
+    searchbar.placeholder = @"Conversations...";
+    searchbar.delegate = self;
+    searchbar.tintColor = [UIColor whiteColor];
+    self.navigationItem.titleView = searchbar;
+    self.definesPresentationContext = YES;
+    isSearching = NO;
+    
+       
 }
 
 
@@ -46,6 +70,9 @@
 #pragma mark - TableView Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (isSearching) {
+        return conversationsResultArray.count;
+    }
     return conversationsMuttableArray.count;
     
 }
@@ -60,9 +87,17 @@
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     }
     
-    Conversation * conversation  = [conversationsMuttableArray objectAtIndex:indexPath.row];
+    Conversation * conversation;
     
-    if ([conversation.peer class] == [Contact class]) {
+    if (isSearching) {
+         conversation  = [conversationsResultArray objectAtIndex:indexPath.row];
+    }
+    else{
+         conversation  = [conversationsMuttableArray objectAtIndex:indexPath.row];
+    }
+   
+    
+    if (conversation.type == 1 || conversation.type == 3) { // user or Bot
         
         Contact * contact = (Contact *)conversation.peer ;
         
@@ -114,7 +149,7 @@
 
         
     }
-    else if ([conversation.peer class] == [Room class]) {
+    else if (conversation.type == 2) { // Room
         Room * room = (Room *)conversation.peer;
         NSLog(@"%@",room);
         cell.ConversationImageView.image = [UIImage imageNamed:@"group-placeholder-icon"];
@@ -141,10 +176,15 @@
     
     if (conversation.unreadMessagesCount == 0) {
         cell.unreadMessagesCountLabel.hidden = YES;
+        cell.conversationNameLabel.font = [UIFont systemFontOfSize:16.0];
+        cell.ConversationLastMessageLabel.font = [UIFont systemFontOfSize:13.0];
+        
     }
     else{
         cell.unreadMessagesCountLabel.hidden = NO;
         cell.unreadMessagesCountLabel.text = [NSString stringWithFormat:@"%li",(long)conversation.unreadMessagesCount];
+        cell.conversationNameLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        cell.ConversationLastMessageLabel.font = [UIFont boldSystemFontOfSize:13.0];
     }
     
    
@@ -178,8 +218,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
-    Conversation * conversation = [conversationsMuttableArray objectAtIndex:indexPath.row];
+    Conversation * conversation;
+    if (isSearching) {
+        conversation = [conversationsResultArray objectAtIndex:indexPath.row];
+    }
+    else{
+        conversation = [conversationsMuttableArray objectAtIndex:indexPath.row];
+    }
+    
     viewController.aContact = (Contact *)conversation.peer;
+    
     viewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:NO];
 }
@@ -197,7 +245,15 @@
     [self.activityIndicator stopAnimating];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
-        [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations];
+        NSInteger unreadCount = [ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations;
+        if (unreadCount == 0) {
+            [[self navigationController] tabBarItem].badgeValue = nil;
+        }
+        else{
+             [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long) unreadCount];
+        }
+       
+       
     });
 
 }
@@ -222,7 +278,15 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-            [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long)[ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations];
+            NSInteger unreadCount = [ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations;
+            if (unreadCount == 0) {
+                [[self navigationController] tabBarItem].badgeValue = nil;
+            }
+            else{
+                 [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long) unreadCount];
+            }
+            
+           
         });
 
     }
@@ -278,6 +342,65 @@
         [formatter setDateFormat:@"E, d MMM"];
         return [formatter stringFromDate:date];
     }
+}
+
+#pragma mark - UISearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    isSearching = YES;
+    [searchbar setShowsCancelButton:YES animated:YES];
+    
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if([searchText length] != 0) {
+        isSearching = YES;
+        [self.activityIndicator startAnimating];
+        [self searchContactsListWithSearchedText:searchText];
+        
+    }
+    else {
+        isSearching = NO;
+        
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    isSearching = NO;
+    searchBar.text = nil;
+    [searchBar resignFirstResponder];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
+    
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    [searchBar resignFirstResponder];
+    [self.activityIndicator stopAnimating];
+    
+}
+
+- (void) searchContactsListWithSearchedText:(NSString*) searchedText{
+    
+    conversationsResultArray  =  [[ServicesManager sharedInstance].conversationsManagerService searchConversationWithPattern:searchedText];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
+    });
+    
+}
+
+-(void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    [self.activityIndicator stopAnimating];
+    [searchBar setShowsCancelButton:NO animated:YES];
+    
 }
 
 
