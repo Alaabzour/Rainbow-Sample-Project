@@ -62,18 +62,78 @@
     
     Conversation * conversation  = [conversationsMuttableArray objectAtIndex:indexPath.row];
     
+    if ([conversation.peer class] == [Contact class]) {
+        
+        Contact * contact = (Contact *)conversation.peer ;
+        
+        cell.conversationNameLabel.text = contact.fullName;
+        
+        if (contact.photoData) {
+            cell.ConversationImageView.image = [UIImage imageWithData:contact.photoData];
+        }
+        else{
+            cell.ConversationImageView.image = [UIImage imageNamed:@"placeholder"];
+        }
+        
+        cell.statusLabel.hidden = NO;
+        
+        switch (contact.presence.presence) {
+                
+            case 0://Unavailable
+                
+                cell.statusLabel.backgroundColor = [UIColor lightGrayColor];
+                break;
+            case 1://Available
+                
+                cell.statusLabel.backgroundColor = [UIColor colorWithRed:97.0/255.0 green:189.0/255.0 blue:80.0/255.0 alpha:1];
+                break;
+                
+            case 2://Dot not disturb
+                
+                cell.statusLabel.backgroundColor = [UIColor redColor];
+                break;
+                
+            case 3://Busy
+                
+                cell.statusLabel.backgroundColor = [UIColor redColor];
+                break;
+            case 4://Away
+                
+                cell.statusLabel.backgroundColor = [UIColor orangeColor];
+                break;
+            case 5://Invisible
+                
+                cell.statusLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                cell.statusLabel.backgroundColor = [UIColor whiteColor];
+                break;
+                
+                
+            default:
+                break;
+        }
+
+        
+    }
+    else if ([conversation.peer class] == [Room class]) {
+        Room * room = (Room *)conversation.peer;
+        NSLog(@"%@",room);
+        cell.ConversationImageView.image = [UIImage imageNamed:@"group-placeholder-icon"];
+        cell.conversationNameLabel.text = conversation.peer.displayName;
+        cell.statusLabel.hidden = YES;
+    }
 
     
-       cell.conversationNameLabel.text = conversation.peer.displayName;
+    
     if (conversation.lastMessage.isOutgoing) {
-         cell.ConversationLastMessageLabel.text = [NSString stringWithFormat:@"You:%@",conversation.lastMessage.body];
+         cell.ConversationLastMessageLabel.text = [NSString stringWithFormat:@"You: %@",conversation.lastMessage.body];
     }
     else{
          cell.ConversationLastMessageLabel.text = conversation.lastMessage.body;
     }
-    cell.ConversationLastMessageLabel.text = conversation.lastMessage.body;
+    
+    
     if (conversation.lastUpdateDate) {
-        cell.conversationTimeLabel.text = [self getFormattedFromDate:conversation.lastUpdateDate];
+        cell.conversationTimeLabel.text = [self getItemDateString:conversation.lastUpdateDate];
     }
     else{
         cell.conversationTimeLabel.text = @"";
@@ -86,6 +146,8 @@
         cell.unreadMessagesCountLabel.hidden = NO;
         cell.unreadMessagesCountLabel.text = [NSString stringWithFormat:@"%li",(long)conversation.unreadMessagesCount];
     }
+    
+   
    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -117,7 +179,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
     Conversation * conversation = [conversationsMuttableArray objectAtIndex:indexPath.row];
-    viewController.aContact = conversation.peer;
+    viewController.aContact = (Contact *)conversation.peer;
     viewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:NO];
 }
@@ -167,16 +229,6 @@
     
 }
 
-- (NSString *) getFormattedFromDate : (NSDate *) date {
-  
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    
-    [dateFormat setDateFormat:@"YYYY-MM-dd\'T\'HH:mm:ssZZZZZ"];
- 
-    [dateFormat setDateFormat:@"E, d MMM HH:mm"];
-   
-    return [NSString stringWithFormat:@"%@",[dateFormat stringFromDate:date]];
-}
 
 
 - (NSMutableArray *) sortArray : (NSMutableArray *) array {
@@ -188,4 +240,45 @@
                                  sortedArrayUsingDescriptors:sortDescriptors];
     return [NSMutableArray arrayWithArray:sortedEventArray];
 }
+
+#pragma mark - format date string
+-(NSString *)getItemDateString:(NSDate *)date{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    NSDateComponents *todayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:[NSDate date]];
+   
+    NSDateComponents *messageDayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:date];
+    
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setDay:-1];
+    
+    NSDate *yesterdayDate = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:[NSDate date] options:0];
+    
+    NSDateComponents *yesterdayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:yesterdayDate];
+    
+   
+    
+    if([todayComponent day] == [messageDayComponent day] &&
+       [todayComponent month] == [messageDayComponent month] &&
+       [todayComponent year] == [messageDayComponent year] &&
+       [todayComponent era] == [messageDayComponent era]) {
+        
+        [formatter setDateFormat:@"HH:mm"];
+        return [formatter stringFromDate:date];
+    }
+    else if([yesterdayComponent day] == [messageDayComponent day] &&
+            [yesterdayComponent month] == [messageDayComponent month] &&
+            [yesterdayComponent year] == [messageDayComponent year] &&
+            [yesterdayComponent era] == [messageDayComponent era]) {
+        
+        return  @"Yesterday";
+    }
+    else{
+        [formatter setDateFormat:@"E, d MMM"];
+        return [formatter stringFromDate:date];
+    }
+}
+
+
 @end

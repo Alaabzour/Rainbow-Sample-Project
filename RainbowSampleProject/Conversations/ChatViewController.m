@@ -70,7 +70,7 @@
 -(void) callButtonClicked:(id)sender {
     CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-   // viewController.aContact = _aContact;
+    viewController.aContact = _aContact;
     [self presentViewController:viewController animated:NO completion:^{
         
     }];

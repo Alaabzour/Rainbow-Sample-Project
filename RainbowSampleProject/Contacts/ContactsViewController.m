@@ -35,8 +35,8 @@
     [super viewDidLoad];
     [self setup];
     [self.activityIndicator startAnimating];
-     //[self connectToRainbowServer];
-    [self connectToSandboxServer];
+     [self connectToRainbowServer];
+    //[self connectToSandboxServer];
     isAllContactsSelected = NO;
     // Do any additional setup after loading the view from its nib.
 }
@@ -613,8 +613,10 @@
                 cell.statusLabel.backgroundColor = [UIColor lightGrayColor];
                 break;
             case 1://Available
-                if ([aContact.presence.status isEqualToString:@"mobile"]) {
+                if (aContact.isConnectedWithMobile) {
+                   // or check status
                     cell.statusTextLabel.text = @"Available on Mobile";
+                    //NSLog(@"t status: %@",aContact.presence.status);
                 }
                 else{
                     cell.statusTextLabel.text = @"Available";
@@ -824,17 +826,12 @@
     }
   
     if (aContact.isRainbowUser && aContact.canChatWith) {
-        // start conversation with contact
-//        ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
-//        viewController.aContact = aContact;
-//        viewController.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:viewController animated:NO];
-        CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
-        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+         //start conversation with contact
+        ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
         viewController.aContact = aContact;
-        [self presentViewController:viewController animated:NO completion:^{
-            
-        }];
+        viewController.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:viewController animated:NO];
+
     }
     else{
         
