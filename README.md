@@ -44,7 +44,7 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
     - `NSMicrophoneUsageDescription` (type String) 
         - `a text explaining that you want access to  microphone`
     - `NSAppTransportSecurity` (type Dictionary)
-    - `NSAllowsArbitraryLoads` (type Boolean) YES
+        - `NSAllowsArbitraryLoads` (type Boolean) YES
     - `NSContactsUsageDescription` (type String) 
         - `a text explaining that you want access to contacts`
     - `NSPhotoLibraryUsageDescription` (type String) 
