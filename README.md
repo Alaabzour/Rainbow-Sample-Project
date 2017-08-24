@@ -223,8 +223,10 @@ Listening to instant messages that come from other users is very easy. You just 
 
  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
  
- ...
+ ```
  
+
+```objective-c
  - (void) didReceiveNewMessage : (NSNotification *) notification {
    
     Conversation * receivedConversation  = notification.object;
