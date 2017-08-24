@@ -10,7 +10,7 @@
 #import <Rainbow/Rainbow.h>
 
 @interface ChatViewController : UIViewController
-@property (nonatomic,weak) Contact* aContact;
+@property (nonatomic,weak)  id aContact;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightConstraint;

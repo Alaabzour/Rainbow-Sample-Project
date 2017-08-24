@@ -15,6 +15,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Presence.h"
+#import "CalendarPresence.h"
 #import "PhoneNumber.h"
 #import "EmailAddress.h"
 #import "PostalAddress.h"
@@ -162,6 +163,11 @@
  *  The user's current presence
  */
 @property (nonatomic, readonly) Presence *presence;
+
+/**
+ *  The user's current presence
+ */
+@property (nonatomic, readonly) CalendarPresence *calendarPresence;
 
 /**
  *  Whether the user is connected with at least one mobile or not

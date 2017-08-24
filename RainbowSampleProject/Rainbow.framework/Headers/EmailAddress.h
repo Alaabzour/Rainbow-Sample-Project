@@ -52,6 +52,9 @@ typedef NS_ENUM(NSInteger, EmailAddressType) {
 /** Boolean value defining if this email adress is prefered */
 @property (nonatomic, readonly) BOOL isPrefered;
 
+// Define if this email adress can be visible in user interface
+@property (nonatomic, readonly) BOOL isVisible;
+
 /**
  *  Return the EmailAddressType matching the given label
  *

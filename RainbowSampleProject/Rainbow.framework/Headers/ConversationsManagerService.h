@@ -32,6 +32,8 @@ FOUNDATION_EXPORT NSString *const kConversationsManagerDidReceiveNewMessageForCo
 FOUNDATION_EXPORT NSString *const kConversationsManagerDidReceiveComposingMessage;
 FOUNDATION_EXPORT NSString *const kConversationsManagerDidAckMessageNotification;
 FOUNDATION_EXPORT NSString *const kConversationsManagerDidUpdateMessagesUnreadCount;
+FOUNDATION_EXPORT NSString *const kConversationsManagerDidShareConferenceInConversation;
+FOUNDATION_EXPORT NSString *const kConversationsManagerDidUnshareConferenceInConversation;
 
 /**
  *  Send message completion handler
@@ -45,6 +47,8 @@ typedef void (^ConversationsManagerServiceSendMessageCompletionHandler)(Message 
 typedef void (^ConversationsManagerAttachmentProgressionHandler) (Message* message, double totalBytesSent, double totalBytesExpectedToSend);
 
 typedef void (^ConversationsManagerAttachmentDownloadedComplionHandler) (Message *message, NSError *error);
+
+typedef void (^ConversationsManagerConversationStartedComplionHandler) (Conversation *conversation, NSError *error);
 /**
  *  Rainbow conversation service
  */
@@ -63,9 +67,8 @@ typedef void (^ConversationsManagerAttachmentDownloadedComplionHandler) (Message
  *  Start a new conversation with the given peer
  *
  *  @param peer peer with whom you want to start a conversation
- *  @return conversation object created for the given peer
  */
--(Conversation *) startConversationWithPeer:(Peer *) peer;
+-(void) startConversationWithPeer:(Peer *) peer withCompletionHandler:(ConversationsManagerConversationStartedComplionHandler) completionHandler;
 
 /**
  *  Stop an existing conversation

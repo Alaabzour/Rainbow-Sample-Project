@@ -44,6 +44,12 @@ FOUNDATION_EXPORT NSString *const kContactsManagerServiceDidUpdateInvitationPend
  *  @param foundContacts list of contacts found
  */
 typedef void (^ContactsManagerServiceSearchRemoteContactsCompletionHandler)(NSString *searchPattern, NSArray<Contact *>* foundContacts);
+/**
+ *  Completion handler invoked when loading an avatar in High Resolution
+ *  @param receivedData    Data representing the high resolution avatar
+ *  @param error    Error return in case of error while retrieving avatar
+ */
+typedef void (^ContactsManagerServiceLoadHiResAvatarCompletionHandler)(NSData *receivedData, NSError *error);
 
 @class ContactsManagerService;
 /**
@@ -192,6 +198,17 @@ typedef void (^ContactsManagerServiceSearchRemoteContactsCompletionHandler)(NSSt
 -(void) inviteContact:(Contact *) contact;
 
 /**
+ *  Send a invitation to join Raibow to the given contact
+ *
+ *  We can invite contact based on is phone number
+ *  Invitation send or failure is notified posting a notification monitor `kContactsManagerServiceDidInviteContact ` or `kContactsManagerServiceDidFailedToInviteContact`
+ *  @param contact The contact to invite
+ *  @param completionHandler method executed after the update is done, error is field in case of error during update process
+ *  @see Contact
+ */
+-(void) inviteContact:(Contact *) contact withPhoneNumber:(NSString *) phoneNumber withCompletionHandler:(void(^)(Invitation *invitation))completionHandler;
+
+/**
  *  Delete an invitation already sent to a contact
  *  This method is synchronous don't invoke it on mainThread
  *  @param contact The contact that we have invited previously
@@ -256,6 +273,14 @@ typedef void (^ContactsManagerServiceSearchRemoteContactsCompletionHandler)(NSSt
 -(void) populateAvatarForContact:(Contact*) contact;
 
 /**
+ *  Load a contact avatar at a highest predefined resolution
+ *
+ *  @param contact The contact which the photo will be loaded
+ *  @see Contact
+ */
+-(void) loadHiResAvatarForContact:(Contact*) contact withCompletionBlock:(ContactsManagerServiceLoadHiResAvatarCompletionHandler) completionHandler;
+
+/**
  *  Search for contact on remote server with given pattern, and invoke completionHandler when finished.
  *
  *  @param pattern           the searched pattern
@@ -273,6 +298,13 @@ typedef void (^ContactsManagerServiceSearchRemoteContactsCompletionHandler)(NSSt
  * @param theContact contact that we must retrieve details
  */
 -(void) fetchRemoteContactDetail:(Contact *) theContact;
+
+/**
+ *
+ * @param theContact contact that we must retrieve the automatic reply message
+ */
+-(void) fetchCalendarAutomaticReply:(Contact *) theContact;
+
 
 /**
  *  Return the user country code in valid format

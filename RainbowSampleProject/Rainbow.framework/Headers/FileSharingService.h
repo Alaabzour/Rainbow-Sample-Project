@@ -21,6 +21,7 @@ typedef void (^FileSharingDataDownloadedComplionHandler) (File *file, NSError *e
 typedef void (^FileSharingDataUploadedComplionHandler) (File *file, NSError *error);
 typedef void (^FileSharingDataRemoveViewerComplionHandler) (File *file, NSError *error);
 typedef void (^FileSharingDataLoadSharedFilesWithPeerComplionHandler) (NSArray<File *> *files, NSError *error);
+typedef void (^FileSharingRefreshSharedFileListComplionHandler) (NSArray<File *> *files, NSError *error);
 
 @interface FileSharingService : NSObject
 // File sharing current consumption size (in octet)
@@ -33,8 +34,6 @@ typedef void (^FileSharingDataLoadSharedFilesWithPeerComplionHandler) (NSArray<F
 
 -(File *) createTemporaryFileWithFileName:(NSString *) fileName andData:(NSData *) data;
 
--(void) uploadFile:(File *) file forConversation:(Conversation *) conversation completionHandler:(FileSharingDataUploadedComplionHandler) completionHandler;
-
 -(void) downloadDataForFile:(File *) file withCompletionHandler:(FileSharingDataDownloadedComplionHandler) completionHandler;
 
 -(void) deleteFile:(File *) file;
@@ -43,5 +42,6 @@ typedef void (^FileSharingDataLoadSharedFilesWithPeerComplionHandler) (NSArray<F
 
 -(void) removeViewer:(Peer *) peer fromFile:(File *) file completionHandler:(FileSharingDataRemoveViewerComplionHandler) completionHandler;
 
+-(void) refreshSharedFileListWithCompletionHandler:(FileSharingRefreshSharedFileListComplionHandler) completionHandler;
 
 @end

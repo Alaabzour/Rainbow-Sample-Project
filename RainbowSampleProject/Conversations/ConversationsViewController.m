@@ -217,8 +217,11 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     ChatViewController * viewController = [[ChatViewController alloc]initWithNibName:@"ChatViewController" bundle:nil];
+    
     Conversation * conversation;
+    
     if (isSearching) {
         conversation = [conversationsResultArray objectAtIndex:indexPath.row];
     }
@@ -226,11 +229,31 @@
         conversation = [conversationsMuttableArray objectAtIndex:indexPath.row];
     }
     
-    viewController.aContact = (Contact *)conversation.peer;
+    if (conversation.type == 1 || conversation.type == 3) { // user or Bot
+        
+         viewController.aContact = (Contact *)conversation.peer;
+    }
+    else if (conversation.type == 2){
+         viewController.aContact = (Room *)conversation.peer;
+    }
+   
+
+   // MessagesBrowser *messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:conversation withPageSize:10 preloadMessages:NO];
+        
+//    [messages resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+//        NSLog(@"Done..");
+//    }];
+//    
+//    [messages resyncBrowsingCacheUntilDate:[NSDate date] withCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+//        NSLog(@"Done..");
+//    }];
     
     viewController.hidesBottomBarWhenPushed = YES;
+    
     [self.navigationController pushViewController:viewController animated:NO];
 }
+
+
 
 #pragma - mark Retrieving conversation from a contact
 

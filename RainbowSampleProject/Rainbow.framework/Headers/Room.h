@@ -74,6 +74,11 @@ typedef NS_ENUM(NSInteger, RoomVisibility) {
 @property (nonatomic, readonly) ParticipantStatus myStatusInRoom;
 
 /**
+ * The id of the associated conference if there is any
+ */
+@property (nonatomic, readonly) NSString *associatedConferenceId;
+
+/**
  *  Return the participant corresponding to the given contact
  *
  *  @param contact contact that must match into the participant list
@@ -81,5 +86,17 @@ typedef NS_ENUM(NSInteger, RoomVisibility) {
  *  @return the participant that match, return `nil` if not found
  */
 -(Participant *) participantFromContact:(Contact *) contact;
+
+/**
+ *  Associate a conference with the room
+ *  @ param confId confId of the associated conference
+ */
+-(void) associateConferenceWithConfId:(NSString *)confId;
+
+/**
+ *  Dissociate the room from any conference
+ */
+-(void) dissociateConference;
+
 @end
 

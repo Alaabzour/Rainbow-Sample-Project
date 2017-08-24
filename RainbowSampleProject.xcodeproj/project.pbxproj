@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		460D15741F25ECE000521ABE /* ConversationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 460D15721F25ECE000521ABE /* ConversationsViewController.m */; };
 		460D15751F25ECE000521ABE /* ConversationsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 460D15731F25ECE000521ABE /* ConversationsViewController.xib */; };
+		461431731F4D5F08000F3152 /* Rainbow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4614316B1F4D5EEB000F3152 /* Rainbow.framework */; };
+		461431741F4D5F08000F3152 /* Rainbow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4614316B1F4D5EEB000F3152 /* Rainbow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		461431751F4D5F08000F3152 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4614316C1F4D5EEB000F3152 /* WebRTC.framework */; };
+		461431761F4D5F08000F3152 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4614316C1F4D5EEB000F3152 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		463873511F42F3B9003E2450 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4638734F1F42F3B9003E2450 /* CallViewController.m */; };
 		463873521F42F3B9003E2450 /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 463873501F42F3B9003E2450 /* CallViewController.xib */; };
 		464C1C801F36FFC100E0D1D1 /* ConversationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 464C1C7E1F36FFC100E0D1D1 /* ConversationTableViewCell.m */; };
@@ -39,10 +43,6 @@
 		46F09BE51F24B7EB0081F7D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46F09BE31F24B7EB0081F7D7 /* LaunchScreen.storyboard */; };
 		46F09BF01F24B7EB0081F7D7 /* RainbowSampleProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F09BEF1F24B7EB0081F7D7 /* RainbowSampleProjectTests.m */; };
 		46F09BFB1F24B7EB0081F7D7 /* RainbowSampleProjectUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F09BFA1F24B7EB0081F7D7 /* RainbowSampleProjectUITests.m */; };
-		46F09C0C1F24B8590081F7D7 /* Rainbow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46F09C081F24B8410081F7D7 /* Rainbow.framework */; };
-		46F09C0D1F24B8590081F7D7 /* Rainbow.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46F09C081F24B8410081F7D7 /* Rainbow.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		46F09C0E1F24B8590081F7D7 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46F09C091F24B8410081F7D7 /* WebRTC.framework */; };
-		46F09C0F1F24B8590081F7D7 /* WebRTC.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 46F09C091F24B8410081F7D7 /* WebRTC.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		46F09C1A1F24C7B00081F7D7 /* ContactsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F09C181F24C7B00081F7D7 /* ContactsViewController.m */; };
 		46F09C1B1F24C7B00081F7D7 /* ContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46F09C191F24C7B00081F7D7 /* ContactsViewController.xib */; };
 		46F09C211F24CECA0081F7D7 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F09C1F1F24CECA0081F7D7 /* ContactsTableViewCell.m */; };
@@ -67,14 +67,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		46F09C101F24B8590081F7D7 /* Embed Frameworks */ = {
+		461431771F4D5F08000F3152 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				46F09C0D1F24B8590081F7D7 /* Rainbow.framework in Embed Frameworks */,
-				46F09C0F1F24B8590081F7D7 /* WebRTC.framework in Embed Frameworks */,
+				461431741F4D5F08000F3152 /* Rainbow.framework in Embed Frameworks */,
+				461431761F4D5F08000F3152 /* WebRTC.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +85,8 @@
 		460D15711F25ECE000521ABE /* ConversationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConversationsViewController.h; path = Conversations/ConversationsViewController.h; sourceTree = "<group>"; };
 		460D15721F25ECE000521ABE /* ConversationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConversationsViewController.m; path = Conversations/ConversationsViewController.m; sourceTree = "<group>"; };
 		460D15731F25ECE000521ABE /* ConversationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConversationsViewController.xib; path = Conversations/ConversationsViewController.xib; sourceTree = "<group>"; };
+		4614316B1F4D5EEB000F3152 /* Rainbow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rainbow.framework; sourceTree = "<group>"; };
+		4614316C1F4D5EEB000F3152 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
 		4638734E1F42F3B9003E2450 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallViewController.h; path = Conversations/CallViewController.h; sourceTree = "<group>"; };
 		4638734F1F42F3B9003E2450 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallViewController.m; path = Conversations/CallViewController.m; sourceTree = "<group>"; };
 		463873501F42F3B9003E2450 /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CallViewController.xib; path = Conversations/CallViewController.xib; sourceTree = "<group>"; };
@@ -134,8 +136,6 @@
 		46F09BF61F24B7EB0081F7D7 /* RainbowSampleProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RainbowSampleProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		46F09BFA1F24B7EB0081F7D7 /* RainbowSampleProjectUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RainbowSampleProjectUITests.m; sourceTree = "<group>"; };
 		46F09BFC1F24B7EB0081F7D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		46F09C081F24B8410081F7D7 /* Rainbow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rainbow.framework; sourceTree = "<group>"; };
-		46F09C091F24B8410081F7D7 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
 		46F09C171F24C7B00081F7D7 /* ContactsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsViewController.h; path = Contacts/ContactsViewController.h; sourceTree = "<group>"; };
 		46F09C181F24C7B00081F7D7 /* ContactsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsViewController.m; path = Contacts/ContactsViewController.m; sourceTree = "<group>"; };
 		46F09C191F24C7B00081F7D7 /* ContactsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactsViewController.xib; path = Contacts/ContactsViewController.xib; sourceTree = "<group>"; };
@@ -149,8 +149,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46F09C0C1F24B8590081F7D7 /* Rainbow.framework in Frameworks */,
-				46F09C0E1F24B8590081F7D7 /* WebRTC.framework in Frameworks */,
+				461431731F4D5F08000F3152 /* Rainbow.framework in Frameworks */,
+				461431751F4D5F08000F3152 /* WebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,8 +316,8 @@
 		46F09C111F24BCD00081F7D7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				46F09C081F24B8410081F7D7 /* Rainbow.framework */,
-				46F09C091F24B8410081F7D7 /* WebRTC.framework */,
+				4614316B1F4D5EEB000F3152 /* Rainbow.framework */,
+				4614316C1F4D5EEB000F3152 /* WebRTC.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -375,7 +375,7 @@
 				46F09BCE1F24B7EB0081F7D7 /* Sources */,
 				46F09BCF1F24B7EB0081F7D7 /* Frameworks */,
 				46F09BD01F24B7EB0081F7D7 /* Resources */,
-				46F09C101F24B8590081F7D7 /* Embed Frameworks */,
+				461431771F4D5F08000F3152 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

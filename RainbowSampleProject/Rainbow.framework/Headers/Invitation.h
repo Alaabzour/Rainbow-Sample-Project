@@ -68,6 +68,9 @@ typedef NS_ENUM(NSInteger, InvitationDirection) {
 
 @interface Invitation : NSObject
 
+
+@property (nonatomic, readonly) NSString *invitationID;
+
 /**
  *  Direction of the invitation.
  *  Whether it's a sent or received invitation
@@ -78,6 +81,11 @@ typedef NS_ENUM(NSInteger, InvitationDirection) {
  *  The email which invited me or I have invited
  */
 @property (nonatomic, readonly) NSString *email;
+
+/**
+ *  The phone number which I have invited
+ */
+@property (nonatomic, readonly) NSString *phoneNumber;
 
 /**
  *  The peer which have invited me or I invited

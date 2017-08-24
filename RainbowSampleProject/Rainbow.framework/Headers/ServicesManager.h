@@ -24,6 +24,8 @@
 #import "NotificationsManager.h"
 #import "CompaniesService.h"
 #import "FileSharingService.h"
+#import "ConferencesManagerService.h"
+#import "CallLogsService.h"
 
 typedef void (^ServicesManagerDidConnectExtension)(void);
 /**
@@ -97,5 +99,14 @@ typedef void (^ServicesManagerDidConnectExtension)(void);
 @property (readonly) CompaniesService *companiesService;
 
 @property (readonly) FileSharingService *fileSharingService;
+
+/**
+ *  Conference service
+ *
+ *  @see ConferencesManagerService
+ */
+@property (readonly) ConferencesManagerService *conferencesManagerService;
+
+@property (readonly) CallLogsService *callLogsService;
 
 @end

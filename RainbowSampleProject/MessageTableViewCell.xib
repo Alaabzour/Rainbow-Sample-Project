@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="270"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="269.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="p4e-uG-gR5">
@@ -92,8 +92,10 @@
             <connections>
                 <outlet property="MessageImageView" destination="3Ya-Uh-d1i" id="Pew-YZ-QoA"/>
                 <outlet property="contactImageView" destination="noY-mQ-agR" id="nL0-yp-Grb"/>
+                <outlet property="dateLabel" destination="K0D-55-JXF" id="nul-vG-70Z"/>
                 <outlet property="messagebodyLabel" destination="htx-0m-nhd" id="TjD-pv-qwJ"/>
                 <outlet property="myUserImageView" destination="p4e-uG-gR5" id="hrE-7n-Bel"/>
+                <outlet property="seenImageView" destination="fbt-Uo-0Nj" id="Jcc-ar-wFv"/>
             </connections>
             <point key="canvasLocation" x="-11" y="123"/>
         </tableViewCell>

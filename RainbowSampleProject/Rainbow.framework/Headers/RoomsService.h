@@ -27,6 +27,11 @@ FOUNDATION_EXPORT NSString *const kRoomsServiceDidRemoveAllRooms;
 FOUNDATION_EXPORT NSString *const kRoomsServiceDidReceiveRoomInvitation;
 FOUNDATION_EXPORT NSString *const kRoomsServiceDidRoomInvitationStatusChanged;
 
+typedef void (^RoomsServiceShareConferenceCompletionHandler) (NSDictionary *data, NSError *error);
+typedef void (^RoomsServiceDetailCompletionHandler) (NSDictionary *data, NSError *error);
+typedef void (^RoomsServiceConferenceInvitationsCompletionHandler) (NSDictionary *response, NSError *error);
+typedef void (^RoomsServiceSharedConferenceCompletionHandler) (NSDictionary *data, NSError *error);
+
 /**
  *  Manage multi user chat rooms
  */
@@ -172,13 +177,54 @@ FOUNDATION_EXPORT NSString *const kRoomsServiceDidRoomInvitationStatusChanged;
 /**
  *  Search in room name created by me that begin with the given sub string.
  *  This method perform the search action synchronously, so be sure to not invoke it in main thread
- *  @param pattern  pattern to search
+ *  @param str  pattern to search
  *  @return list of room that match the given pattern
  */
 -(NSArray<Room *> *) searchMyRoomBeginWith:(NSString *) str;
 
 /**
- *  Search in room name created by me that match exctally the given string.
+ *  Share a conference endpoint in this room
+ *  @param confId               confId of the conference to share
+ *  @param room                 room where to share the conference
+ *  @param completionHandler    block executed at the completion
+ */
+-(void) shareConference:(NSString *)confId inRoom:(Room *)room completionBlock:(RoomsServiceShareConferenceCompletionHandler) completionHandler;
+
+/**
+ *  Stop sharing a conference endpoint in this room
+ *  @param confId   confId of the conference to stop sharing
+ *  @param room     room where to share the conference
+*/
+-(void) unshareConference:(NSString *)confId inRoom:(Room *)room;
+
+/**
+ *  Get detail of a room
+ *  @param room                 room we want get detail from
+ *  @param completionHandler    block executed at the completion
+ */
+-(void) detailRoom:(Room *)room completionBlock:(RoomsServiceDetailCompletionHandler) completionHandler;
+
+/**
+ *  Get shared conference data of a room
+ *  @param confId               confId of the conference
+ *  @param room                 room we want get detail from
+ *  @param completionHandler    block executed at the completion
+ */
+-(void) getSharedConference:(NSString *)confId inRoom: (Room *)room completionBlock:(RoomsServiceSharedConferenceCompletionHandler) completionHandler;
+
+/**
+ *  Send email and instant messages invitations to a conference
+ *  @param confId               confId of the conference 
+ *  @param room                 the room where the conference occur
+ *  @param users                the Rainbow users ids
+ *  @param emails               the emails of external invited participants
+ *  @param message              the invitation message to send
+ *  @param lang                 optional lang code (default to 'en' if nil)
+ *  @param completionHandler    block executed at the completion
+ */
+-(void) sendInvitationsToConference:(NSString *)confId inRoom:(Room *)room toUsers: (NSArray<NSString *> *)users andEmails: (NSArray<NSString *> *)emails message:(NSString *)message lang:(NSString *)lang completionBlock:(RoomsServiceConferenceInvitationsCompletionHandler) completionHandler;
+
+/**  Search in room name created by me that match exctally the given string.
  *  This method perform the search action synchronously, so be sure to not invoke it in main thread
  *  @param pattern  pattern to search
  *  @return list of room that match the given pattern

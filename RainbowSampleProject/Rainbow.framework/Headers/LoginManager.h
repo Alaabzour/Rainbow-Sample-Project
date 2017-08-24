@@ -16,19 +16,22 @@
 #import <Foundation/Foundation.h>
 
 /** @name Login manager Notifications */
-/** Login manager did login succeeded notification */
+
+// Login manager will start login process
+FOUNDATION_EXPORT NSString *const kLoginManagerWillLogin;
+// Login manager did login succeeded notification
 FOUNDATION_EXPORT NSString *const kLoginManagerDidLoginSucceeded;
-/** Login manager did logout succeeded notification */
+// Login manager did logout succeeded notification
 FOUNDATION_EXPORT NSString *const kLoginManagerDidLogoutSucceeded;
-/** Login manager did lost connection notification */
+// Login manager did lost connection notification
 FOUNDATION_EXPORT NSString *const kLoginManagerDidLostConnection;
-/** Login manager did lost connection notification */
+// Login manager did lost connection notification
 FOUNDATION_EXPORT NSString *const kLoginManagerDidReconnect;
-/** Login manager did failed to authenticate notification */
+// Login manager did failed to authenticate notification
 FOUNDATION_EXPORT NSString *const kLoginManagerDidFailedToAuthenticate;
-/** Login manager server url change notification */
+// Login manager server url change notification
 FOUNDATION_EXPORT NSString *const kLoginManagerDidChangeServer;
-/** Login manager notification sent when user is changed */
+// Login manager notification sent when user is changed
 FOUNDATION_EXPORT NSString *const kLoginManagerDidChangeUser;
 // Login manager notification sent when a connection seams too long
 FOUNDATION_EXPORT NSString *const kLoginManagerTryToReconnect;

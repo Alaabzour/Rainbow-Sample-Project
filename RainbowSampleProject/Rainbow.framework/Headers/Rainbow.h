@@ -39,6 +39,9 @@ FOUNDATION_EXPORT const unsigned char RainbowVersionString[];
 #import <Rainbow/CompaniesService.h>
 #import <Rainbow/FileSharingService.h>
 #import <Rainbow/RainbowUserDefaults.h>
+#import <Rainbow/ConferencesManagerService.h>
+#import <Rainbow/CallLogsService.h>
+#import <Rainbow/MessagesAlwaysInSyncBrowserAddOn.h>
 
 #import <Rainbow/LogsRecorder.h>
 #import <Rainbow/defines.h>
@@ -62,6 +65,7 @@ FOUNDATION_EXPORT const unsigned char RainbowVersionString[];
 #import <Rainbow/PhoneNumber.h>
 #import <Rainbow/PostalAddress.h>
 #import <Rainbow/Presence.h>
+#import <Rainbow/CalendarPresence.h>
 #import <Rainbow/Message.h>
 #import <Rainbow/Server.h>
 #import <Rainbow/Conversation.h>
@@ -73,3 +77,9 @@ FOUNDATION_EXPORT const unsigned char RainbowVersionString[];
 #import <Rainbow/CompanyInvitation.h>
 #import <Rainbow/RTCCall.h>
 #import <Rainbow/File.h>
+#import <Rainbow/CallLog.h>
+#import <Rainbow/ConferenceInfo.h>
+#import <Rainbow/ConferenceState.h>
+#import <Rainbow/ConferenceParticipantsTable.h>
+#import <Rainbow/ConferenceParticipant.h>
+#import <Rainbow/ConfEndpoint.h>

@@ -22,6 +22,7 @@ FOUNDATION_EXPORT NSString *const kCompaniesServiceDidAddCompanyInvitation;
 FOUNDATION_EXPORT NSString *const kCompaniesServiceDidUpdateCompanyInvitation;
 FOUNDATION_EXPORT NSString *const kCompaniesServiceDidRemoveCompanyInvitation;
 FOUNDATION_EXPORT NSString *const kCompaniesServiceDidUpdateCompanyInvitationPendingNumber;
+FOUNDATION_EXPORT NSString *const kCompaniesServiceDidUpdateCompany;
 
 /**
  *  Search completion handler invoked when a searching a company

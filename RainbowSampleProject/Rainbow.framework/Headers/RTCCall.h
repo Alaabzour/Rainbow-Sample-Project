@@ -94,4 +94,5 @@ typedef NS_ENUM(NSInteger, RTCCallStatus) {
 
 -(BOOL) isRemoteVideoEnabled;
 
+@property (nonatomic, readonly) BOOL isSharingEnabled;
 @end

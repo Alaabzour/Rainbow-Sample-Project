@@ -14,4 +14,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *messagebodyLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *myUserImageView;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *seenImageView;
 @end

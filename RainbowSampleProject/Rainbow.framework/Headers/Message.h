@@ -18,16 +18,12 @@
 #import "Peer.h"
 #import "Contact.h"
 #import "File.h"
+#import "ConferenceInfo.h"
+#import "CallLog.h"
 
 #define kMessageCallLogEventTypeKey @"eventType"
 #define kMessageCallLogEventDateKey @"eventDate"
 #define kMessageCallLogEventDurationKey @"eventDuration"
-
-typedef NS_ENUM(NSInteger, CallLogType) {
-    CallLogTypeMissed,
-    CallLogTypeAnswered,
-    CallLogTypeUnknown
-};
 
 /**
  *  The different message types
@@ -64,7 +60,11 @@ typedef NS_ENUM(NSInteger, MessageType) {
     /**
      *  Type Group chat event
      */
-    MessageTypeGroupChatEvent
+    MessageTypeGroupChatEvent,
+    /**
+     *  Type Conference event
+     */
+    MessageTypeConferenceEvent
 };
 
 /**
@@ -120,7 +120,15 @@ typedef NS_ENUM(NSInteger, MessageGroupChatEventType) {
     /**
      *  Type close
      */
-    MessageGroupChatEventClose
+    MessageGroupChatEventClose,
+    /**
+     *  Type conference add
+     */
+    MessageGroupChatEventConferenceAdd,
+    /**
+     *  Type conference remove
+     */
+    MessageGroupChatEventConferenceRemove
 };
 
 /**
@@ -190,20 +198,21 @@ typedef NS_ENUM(NSInteger, MessageGroupChatEventType) {
 @property (nonatomic, readonly) BOOL hasBeenPresentedInPush;
 
 /**
- * if the message type is MessageTypeWebRTC this dictionary contains the content of the event
- * Available keys are:
- * kMessageCallLogEventTypeKey  will contain a NSNumber representing the enum CallLogType
- * kMessageCallLogEventDateKey  will contain a NSDate
- * kMessageCallLogEventDurationKey  will contain a string representing the duration in seconds
+ * if the message type is MessageTypeWebRTC this object describe the event
  */
- 
-@property (nonatomic, readonly) NSDictionary *eventContent;
+@property (nonatomic, readonly) CallLog *callLog;
 
 /**
  * Attachment found in the message
  * `nil` if this message have no attachment
  */
 @property (nonatomic, readonly) File *attachment;
+
+/**
+ * Conference event informations
+ * `nil` if this is not a conference event message
+ */
+@property (nonatomic, readonly) ConferenceInfo *conferenceInfo;
 
 /**
  *  Returns the delivery date for a given state, or nil.

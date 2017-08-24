@@ -49,10 +49,16 @@
 // Check if the user is allowed to use webRTC on mobile
 @property (nonatomic, readonly) BOOL isAllowedToUseWebRTCMobile;
 
+// Check if the user is allowed to use telephony conference
+@property (nonatomic, readonly) BOOL isAllowedToUseTelephonyConference;
+
 // Check if the user is allowed to use webRTC Video on mobile;
 @property (nonatomic, readonly) BOOL isAllowedToUseWebRTCMobileVideo;
 
 // Maximum number of participant in room
 @property (nonatomic, readonly) NSInteger maxNumberOfParticipantPerRoom;
+
+// Name of profile associated to user
+@property (nonatomic, readonly) NSArray *profilesName;
 
 @end
