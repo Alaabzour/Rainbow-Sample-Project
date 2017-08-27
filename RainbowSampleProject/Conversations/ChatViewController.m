@@ -8,7 +8,6 @@
 
 #import "ChatViewController.h"
 #import "MessageTableViewCell.h"
-#import <Rainbow/Rainbow.h>
 #import "CallViewController.h"
 
 @interface ChatViewController () <UITextViewDelegate, CKItemsBrowserDelegate>
@@ -87,6 +86,17 @@
              [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
              
              [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
+             
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
+             
+             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAckMessageNotification:) name:kConversationsManagerDidAckMessageNotification object:nil];
+             
+             
+             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateMessagesUnreadCount:) name:kConversationsManagerDidUpdateMessagesUnreadCount object:nil];
+             
+             
+             
+             
          }
     }];
 
@@ -128,11 +138,33 @@
     }];
     
 }
+
+
+
+- (void) didUpdateMessagesUnreadCount : (NSNotification *) notification {
+    
+    Conversation * receivedConversation  = notification.object;
+    if (receivedConversation != nil) {
+       
+        
+    }
+    
+}
+- (void) didAckMessageNotification : (NSNotification *) notification {
+    
+    //NSString * messageID  = [notification.object objectForKey:@"messageID"];
+    //int state = [[notification.object objectForKey:@"state"] intValue];
+   // NSDate * datetime = [notification.object objectForKey:@"datetime"];
+    
+    
+}
 - (void) didReceiveNewMessage : (NSNotification *) notification {
    
     Conversation * receivedConversation  = notification.object;
     if (receivedConversation != nil) {
         [messagesArray addObject:receivedConversation.lastMessage];
+        
+        [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -140,6 +172,16 @@
             [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         });
 
+    }
+    
+}
+
+- (void) didUpdateConversation : (NSNotification *) notification {
+    
+    Conversation * receivedConversation  = notification.object;
+    if (receivedConversation != nil) {
+
+        
     }
     
 }
@@ -167,13 +209,17 @@
         [cell.myUserImageView setHidden:NO];
         [cell.contactImageView setHidden:YES];
         cell.messagebodyLabel.textColor = [UIColor darkGrayColor];
-         cell.dateLabel.textColor = [UIColor grayColor];
+        cell.dateLabel.textColor = [UIColor grayColor];
         switch (message.state) {
+                
             case 2:
                 cell.seenImageView.image = [UIImage imageNamed:@"recieved-icon"];
                 break;
             case 3:
                 cell.seenImageView.image = [UIImage imageNamed:@"seen-icon"];
+                break;
+            case 4:
+                cell.seenImageView.image = [UIImage imageNamed:@"error-gray-icon"];
                 break;
                 
             default:
@@ -439,6 +485,12 @@
 }
 -(void) itemsBrowser:(CKItemsBrowser*)browser didUpdateCacheItems:(NSArray*)changedItems atIndexes:(NSIndexSet*)indexes {
     NSLog(@"Done!");
+    for (Message * message in messagesArray) {
+        
+        if ([messagesArray containsObject:message]) {
+            
+        }
+    }
     // recive messsage to add!
 }
 

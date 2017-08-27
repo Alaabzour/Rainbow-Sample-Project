@@ -11,6 +11,7 @@
 #import "ContactsViewController.h"
 #import "ConversationsViewController.h"
 #import "SettingsViewController.h"
+#import "RecentViewController.h"
 
 @interface LoginViewController () <UITextFieldDelegate>
 
@@ -24,6 +25,15 @@
     [super viewDidLoad];
     [self setup];
     
+    // Hide Navigation bar
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+   
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    
+    
+    // addObserver for Keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 
@@ -40,12 +50,10 @@
     _emailTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     
     UIImageView * passwordImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,6,8,22)];
-   // passwordImageView.image = [UIImage imageNamed:@"password-icon"];
     _passwordTextField.leftView = passwordImageView;
     _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
     
     UIImageView * emailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,6,8,22)];
-   // emailImageView.image = [UIImage imageNamed:@"contacts-selected-icon"];
     _emailTextField.leftView = emailImageView;
     _emailTextField.leftViewMode = UITextFieldViewModeAlways;
   
@@ -192,31 +200,40 @@
     UIViewController *contactsViewCntroller = [[ContactsViewController alloc] init];
     UINavigationController *contactsNavigationViewCntroller = [[UINavigationController alloc]initWithRootViewController:contactsViewCntroller];
     
-    contactsNavigationViewCntroller.tabBarItem.title = @"Contacts" ;
+    contactsNavigationViewCntroller.tabBarItem.title = CONTACTS ;
     contactsNavigationViewCntroller.tabBarItem.image = [UIImage imageNamed:@"contacts-icon"];
     contactsNavigationViewCntroller.tabBarItem.selectedImage=[UIImage imageNamed:@"contacts-selected-icon"];
     
     UIViewController *conversationsViewController = [[ConversationsViewController alloc] init];
     UINavigationController *conversationsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:conversationsViewController];
     
-    conversationsNavigationViewController.tabBarItem.title= @"Conversations" ;
+    conversationsNavigationViewController.tabBarItem.title= CONVERSATIONS ;
     conversationsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"conversations-icon"];
     conversationsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"conversations-selected-icon"];
     
     
+    UIViewController *recentsViewController = [[RecentViewController alloc] init];
+    UINavigationController *recentsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:recentsViewController];
+    
+    recentsNavigationViewController.tabBarItem.title= RECENTS ;
+    recentsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"past-not-selected-icon"];
+    recentsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"past-selected-icon"];
+    
     UIViewController *settingsViewController = [[SettingsViewController alloc] init];
     UINavigationController *settingsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];
     
-    settingsNavigationViewController.tabBarItem.title= @"Settings" ;
+    settingsNavigationViewController.tabBarItem.title= SETTINGS ;
     settingsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"settings-icon"];
     settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
     
     
-    [tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,settingsNavigationViewController,nil]];
+    [tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,recentsNavigationViewController,settingsNavigationViewController,nil]];
     
-    [[UITabBar appearance] setTintColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
     
-    [self.navigationController pushViewController:tabBarController animated:NO];
+    [[UITabBar appearance] setTintColor:APPLICATION_BLUE_COLOR];
+    
+   
+    [self.navigationController pushViewController:tabBarController animated:YES];
 }
 
 -(void) failedToConnect:(NSNotification *) notification {

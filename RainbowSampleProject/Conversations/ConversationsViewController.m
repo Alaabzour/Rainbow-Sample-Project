@@ -8,7 +8,6 @@
 
 #import "ConversationsViewController.h"
 #import "ConversationTableViewCell.h"
-#import <Rainbow/Rainbow.h>
 #import "ChatViewController.h"
 
 @interface ConversationsViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
@@ -29,10 +28,40 @@
     [super viewDidLoad];
   
     [self setup];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
     //self.title = @"Conversations";
   
    
    
+}
+
+- (void) didCallSuccess : (NSNotification * ) notification {
+    NSLog(@"%@",notification.object);
+}
+- (void) didUpdateCall : (NSNotification * ) notification {
+    NSLog(@"%@",notification.object);
+}
+
+- (void) statusChanged : (NSNotification * ) notification {
+    NSLog(@"%@",notification.object);
+}
+
+- (void) didRemoveCall : (NSNotification * ) notification {
+    NSLog(@"%@",notification.object);
+}
+- (void) didAllowMicrophone : (NSNotification * ) notification {
+    NSLog(@"%@",notification.object);
+}
+- (void) didRefuseMicrophone : (NSNotification * ) notification {
+    NSLog(@"%@",notification.object);
 }
 
 - (void) viewWillAppear:(BOOL)animated {

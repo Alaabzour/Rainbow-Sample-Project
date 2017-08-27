@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ContactStatusTableViewCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *onlineStatusLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *onlineLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *awayStatusLabel;
@@ -25,13 +27,19 @@
 @property (weak, nonatomic) IBOutlet UILabel *notDistrubLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *onlineButton;
+
 @property (weak, nonatomic) IBOutlet UIButton *awayButton;
+
 @property (weak, nonatomic) IBOutlet UIButton *invisibleButton;
+
 @property (weak, nonatomic) IBOutlet UIButton *notDistrubButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *onlineStatusButton;
+
 @property (weak, nonatomic) IBOutlet UIButton *awayStatusButton;
+
 @property (weak, nonatomic) IBOutlet UIButton *invisibleStatusButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *notDistrubStatusButton;
+
 @end

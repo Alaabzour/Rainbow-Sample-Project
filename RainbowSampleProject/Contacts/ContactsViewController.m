@@ -11,7 +11,7 @@
 #import "ContactInfoViewController.h"
 #import "ChatViewController.h"
 #import "CallViewController.h"
-#import <Rainbow/Rainbow.h>
+
 
 @interface ContactsViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     NSTimer* timer;

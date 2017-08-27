@@ -10,7 +10,7 @@
 #import "UserInfoTableViewCell.h"
 #import "ContactStatusTableViewCell.h"
 #import "SettingsTableViewCell.h"
-#import <Rainbow/Rainbow.h>
+#import "LoginViewController.h"
 
 @interface SettingsViewController () {
     MyUser * currentUser;
@@ -26,8 +26,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // navigationController setup
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
-    self.title = @"Settings";
+    self.navigationController.navigationBar.barTintColor = APPLICATION_BLUE_COLOR;
+    
+    self.title = SETTINGS;
+    
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     // get myuser
     currentUser = [[ServicesManager sharedInstance] myUser];
@@ -68,7 +70,7 @@
         
         cell.contactNameLabel.text = [NSString stringWithFormat:@"%@ %@",currentUser.contact.title? currentUser.contact.title:@"",currentUser.contact.fullName];
         cell.contactJobTitle.text = currentUser.contact.jobTitle;
-        cell.contactTitle.text = currentUser.contact.isRainbowUser? @"Rainbow":@" ";
+        cell.contactTitle.text = currentUser.contact.companyName;
         cell.statusLabel.text = currentUser.contact.presence.status;
         if (currentUser.contact.photoData != nil) {
             cell.contactImageView.image = [UIImage imageWithData:currentUser.contact.photoData];
@@ -84,7 +86,7 @@
             
             switch ((int)currentUser.contact.presence.presence) {
                     
-                case 1://Available
+                case ONLINE_STATUS_TAG://Available
                     if (currentUser.contact.isConnectedWithMobile) {
                         cell.contactStatusLabel.text = @"Available on Mobile";
                     }
@@ -92,23 +94,23 @@
                         cell.contactStatusLabel.text = @"Available";
                     }
                     
-                    cell.statusLabel.backgroundColor = [UIColor colorWithRed:97.0/255.0 green:189.0/255.0 blue:80.0/255.0 alpha:1];
+                    cell.statusLabel.backgroundColor = ONLINE_STATUS_COLOR;
                     break;
                     
-                case 2://Dot not disturb
+                case BUSY_STATUS_TAG://Dot not disturb
                     cell.contactStatusLabel.text = @"Dot not disturb";
-                    cell.statusLabel.backgroundColor = [UIColor redColor];
+                    cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                     break;
                     
                     
-                case 4://Away
+                case AWAY_STATUS_TAG://Away
                     cell.contactStatusLabel.text = @"Away";
-                    cell.statusLabel.backgroundColor = [UIColor orangeColor];
+                    cell.statusLabel.backgroundColor = AWAY_STATUS_COLOR;
                     break;
-                case 5://Invisible
+                case INVISIBLE_STATUS_TAG://Invisible
                     cell.contactStatusLabel.text = @"Invisible";
                     cell.statusLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                    cell.statusLabel.backgroundColor = [UIColor whiteColor];
+                    cell.statusLabel.backgroundColor = INVISIBLE_STATUS_COLOR;
                     break;
                     
                     
@@ -160,14 +162,14 @@
         
         switch (selectedStatus) {
            
-            case 1://Available
+            case ONLINE_STATUS_TAG:
                 cell.onlineButton.hidden = NO;
                 cell.awayButton.hidden = YES;
                 cell.invisibleButton.hidden = YES;
                 cell.notDistrubButton.hidden = YES;
                 break;
                 
-            case 2://Dot not disturb
+            case BUSY_STATUS_TAG:
                 cell.onlineButton.hidden = YES;
                 cell.awayButton.hidden = YES;
                 cell.invisibleButton.hidden = YES;
@@ -175,13 +177,13 @@
                 break;
                 
            
-            case 4://Away
+            case AWAY_STATUS_TAG:
                 cell.onlineButton.hidden = YES;
                 cell.awayButton.hidden = NO;
                 cell.invisibleButton.hidden = YES;
                 cell.notDistrubButton.hidden = YES;
                 break;
-            case 5://Invisible
+            case INVISIBLE_STATUS_TAG:
                 cell.onlineButton.hidden = YES;
                 cell.awayButton.hidden = YES;
                 cell.invisibleButton.hidden = NO;
@@ -223,8 +225,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    
-    
     return 3;
 }
 
@@ -253,16 +253,27 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-     if (indexPath.row == 2) { // do logout from the app
-         [self.activityIndicator startAnimating];
-        [[ServicesManager sharedInstance].loginManager disconnect];
+    
+     if (indexPath.section == 2) { // do logout from the app
+        [self.activityIndicator startAnimating];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:kLoginManagerDidLogoutSucceeded object:nil];
+        [[ServicesManager sharedInstance].loginManager disconnect];
+        [[ServicesManager sharedInstance].loginManager resetAllCredentials];
          
     }
 }
 
 -(void) didLogout:(NSNotification *) notification {
     [self.activityIndicator stopAnimating];
+    
+    LoginViewController * center = [[LoginViewController alloc] init];
+    UINavigationController * nav = [[UINavigationController alloc] initWithRootViewController:center];
+    UIWindow *window= [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [window makeKeyAndVisible];
+    window.rootViewController = self.navigationController;
+    
+    [window.rootViewController presentViewController:nav animated:YES completion:NULL];
+    
     // go to main pages
 }
 
@@ -273,16 +284,16 @@
     
     selectedStatus = (int)sender.tag;
     switch (sender.tag) {
-        case 1:
+        case ONLINE_STATUS_TAG:
             [[ServicesManager sharedInstance].contactsManagerService changeMyPresence:[Presence presenceAvailable]];
             break;
-        case 4:
+        case AWAY_STATUS_TAG:
             [[ServicesManager sharedInstance].contactsManagerService changeMyPresence:[Presence presenceAway]];
             break;
-        case 5:
+        case INVISIBLE_STATUS_TAG:
             [[ServicesManager sharedInstance].contactsManagerService changeMyPresence:[Presence presenceExtendedAway]];
             break;
-        case 2:
+        case BUSY_STATUS_TAG:
             [[ServicesManager sharedInstance].contactsManagerService changeMyPresence:[Presence presenceDoNotDistrub]];
             break;
             

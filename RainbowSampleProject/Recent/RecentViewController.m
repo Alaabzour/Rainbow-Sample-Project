@@ -8,7 +8,10 @@
 
 #import "RecentViewController.h"
 
-@interface RecentViewController () <UITableViewDelegate,UITableViewDataSource>
+
+@interface RecentViewController () <UITableViewDelegate,UITableViewDataSource> {
+    NSArray * callsArray;
+}
 
 @end
 
@@ -16,8 +19,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];    // Do any additional setup after loading the view from its nib.
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+
+    // Do any additional setup after loading the view from its nib.
+    
+
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -7,7 +7,7 @@
 //
 
 #import "CallViewController.h"
-#import <Rainbow/Rainbow.h>
+
 
 @interface CallViewController (){
     RTCCall * currentCall;
@@ -25,7 +25,7 @@
     
     [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
     
-    currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
+   
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
@@ -37,7 +37,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
 
-
+   currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
     
 
     

@@ -87,6 +87,8 @@
 		460D15731F25ECE000521ABE /* ConversationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConversationsViewController.xib; path = Conversations/ConversationsViewController.xib; sourceTree = "<group>"; };
 		4614316B1F4D5EEB000F3152 /* Rainbow.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rainbow.framework; sourceTree = "<group>"; };
 		4614316C1F4D5EEB000F3152 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
+		462FF99F1F52E25700FD3065 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		462FF9A81F52E68400FD3065 /* RainbowSampleProject-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RainbowSampleProject-Prefix.pch"; sourceTree = "<group>"; };
 		4638734E1F42F3B9003E2450 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallViewController.h; path = Conversations/CallViewController.h; sourceTree = "<group>"; };
 		4638734F1F42F3B9003E2450 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallViewController.m; path = Conversations/CallViewController.m; sourceTree = "<group>"; };
 		463873501F42F3B9003E2450 /* CallViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CallViewController.xib; path = Conversations/CallViewController.xib; sourceTree = "<group>"; };
@@ -355,6 +357,8 @@
 		46F09C241F25CDF00081F7D7 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				462FF9A81F52E68400FD3065 /* RainbowSampleProject-Prefix.pch */,
+				462FF99F1F52E25700FD3065 /* Constants.h */,
 				46CF30981F39ABBC001D827F /* AppDelegate */,
 				46762C141F458855005069DD /* Recent */,
 				46CF30921F39A032001D827F /* Login */,
@@ -610,6 +614,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "RainbowSampleProject/RainbowSampleProject-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -656,6 +662,8 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "RainbowSampleProject/RainbowSampleProject-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
