@@ -77,6 +77,7 @@
     // setup tabelView
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     // Add serchbar to Navigationbar
     searchbar = [[UISearchBar alloc] init];
@@ -115,6 +116,7 @@
         [tableView registerNib:[UINib nibWithNibName:@"ConversationTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     }
+    
     
     Conversation * conversation;
     
@@ -237,7 +239,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    return 64;
+    return 68;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
