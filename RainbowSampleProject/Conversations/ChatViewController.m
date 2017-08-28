@@ -117,10 +117,10 @@
         titleLabel.text = contact.displayName;
     }
     
-    titleLabel.tintColor = APPLICATION_BLUE_COLOR;
+    titleLabel.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
     self.navigationItem.titleView = titleLabel;
     
-    self.navigationController.navigationBar.tintColor = APPLICATION_BLUE_COLOR;
+    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
     
   // check if call is available
    
@@ -314,7 +314,7 @@
 {
     UIImage *bubble = [UIImage imageNamed:@"bubble-receive-icon"];
 
-    UIColor *color = APPLICATION_BLUE_COLOR;
+    UIColor *color = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
     bubble = [self tintImage:bubble withColor:color];
     return [bubble resizableImageWithCapInsets:UIEdgeInsetsMake(17, 27, 21, 17)];
 }

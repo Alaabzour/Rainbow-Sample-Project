@@ -28,7 +28,8 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
     MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
-    if (NO) {//!currentUser.username
+    
+    if (!currentUser.username) {//
         
         LoginViewController *masterViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
         self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
@@ -68,7 +69,7 @@
         settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
         
         
-        [_tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,recentsNavigationViewController,settingsNavigationViewController,nil]];
+        [_tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,settingsNavigationViewController,nil]];
         
         [[UITabBar appearance] setTintColor:APPLICATION_BLUE_COLOR];
         

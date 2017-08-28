@@ -29,40 +29,9 @@
   
     [self setup];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
-    //self.title = @"Conversations";
-  
-   
-   
 }
 
-- (void) didCallSuccess : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-}
-- (void) didUpdateCall : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-}
-
-- (void) statusChanged : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-}
-
-- (void) didRemoveCall : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-}
-- (void) didAllowMicrophone : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-}
-- (void) didRefuseMicrophone : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-}
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -289,14 +258,14 @@
 #pragma - mark Retrieving conversation from a contact
 
 - (void) getConversations {
-    [self.activityIndicator stopAnimating];
+    [self.activityIndicator startAnimating];
     conversationsMuttableArray = [NSMutableArray array];
     NSArray<Conversation *> *conversationsArray = [ServicesManager sharedInstance].conversationsManagerService.conversations;
     conversationsMuttableArray = [self sortArray:[NSMutableArray arrayWithArray:conversationsArray]];
-    // when success it invoke which method?
+   
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
     
-    [self.activityIndicator stopAnimating];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
         NSInteger unreadCount = [ServicesManager sharedInstance].conversationsManagerService.totalNbOfUnreadMessagesInAllConversations;
@@ -340,7 +309,7 @@
                  [[self navigationController] tabBarItem].badgeValue = [NSString stringWithFormat:@"%lu",(unsigned long) unreadCount];
             }
             
-           
+            [self.activityIndicator stopAnimating];
         });
 
     }
@@ -356,6 +325,8 @@
     NSArray *sortDescriptors = [NSArray arrayWithObject:dateDescriptor];
     NSArray *sortedEventArray = [array
                                  sortedArrayUsingDescriptors:sortDescriptors];
+    [self.activityIndicator stopAnimating];
+    
     return [NSMutableArray arrayWithArray:sortedEventArray];
 }
 

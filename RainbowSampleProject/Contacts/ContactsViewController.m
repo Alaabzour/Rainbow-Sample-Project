@@ -33,11 +33,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self setup];
+    
     [self.activityIndicator startAnimating];
-     [self connectToRainbowServer];
-    //[self connectToSandboxServer];
+   
     isAllContactsSelected = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReciveInvitaion:) name:kContactsManagerServiceDidAddInvitation object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name:kContactsManagerServiceDidUpdateContact object:nil];
+    
+    
+    
     // Do any additional setup after loading the view from its nib.
 }
 - (void) viewWillAppear:(BOOL)animated {
@@ -121,34 +131,38 @@
 #pragma mark - Manage Contacts Methods
 
 - (void) connectToRainbowServer {
-     [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
-    
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
-    
-    [[ServicesManager sharedInstance].loginManager setUsername:@"abzour@asaltech.com" andPassword:@"Asal@123"];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
-
-    [[ServicesManager sharedInstance].loginManager connect];
+//     [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
+//    
+//     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
+//    
+//    [[ServicesManager sharedInstance].loginManager setUsername:@"abzour@asaltech.com" andPassword:@"Asal@123"];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
+//
+//    [[ServicesManager sharedInstance].loginManager connect];
     
  
+ 
+    
 }
 
 - (void) connectToSandboxServer {
-    [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
+//    [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
+//    
+//    [[ServicesManager sharedInstance].loginManager setUsername:@"MAbedAlKareem@asaltech.com" andPassword:@"Password_123"];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
+//    
+//    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kChangeServerURLNotification object:@{ @"serverURL": @"sandbox.openrainbow.com"}];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        [[ServicesManager sharedInstance].loginManager connect];
+//        
+//    });
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
-    
-    [[ServicesManager sharedInstance].loginManager setUsername:@"MAbedAlKareem@asaltech.com" andPassword:@"Password_123"];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:kChangeServerURLNotification object:@{ @"serverURL": @"sandbox.openrainbow.com"}];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [[ServicesManager sharedInstance].loginManager connect];
-        
-    });
+   
 }
 
 -(void) didAddContact:(NSNotification *) notification {
@@ -175,15 +189,15 @@
     
 }
 
--(void) didLogin:(NSNotification *) notification {
-   
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
-    
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReciveInvitaion:) name:kContactsManagerServiceDidAddInvitation object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name:kContactsManagerServiceDidUpdateContact object:nil];
-
-}
+//-(void) didLogin:(NSNotification *) notification {
+//   
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
+//    
+//     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReciveInvitaion:) name:kContactsManagerServiceDidAddInvitation object:nil];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name:kContactsManagerServiceDidUpdateContact object:nil];
+//
+//}
 
 
 -(void) didUpdadeContact:(NSNotification *) notification {

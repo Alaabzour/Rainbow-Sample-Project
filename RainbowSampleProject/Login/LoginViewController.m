@@ -131,10 +131,11 @@
 
 - (void) connectToRainbowServer {
     
+    [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
+    
     
     [[ServicesManager sharedInstance].loginManager setUsername:_emailTextField.text andPassword:_passwordTextField.text];
    
-    
     [[ServicesManager sharedInstance].loginManager connect];
     
     
@@ -177,7 +178,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
     
     
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failedToConnect:) name:kLoginManagerDidFailedToAuthenticate object:nil];
     
     
@@ -190,12 +190,14 @@
     }
 }
 
+
+
 -(void) didLogin:(NSNotification *) notification {
    
     // go to main pages
-    
     [self setupTabbarFunction];
-
+        
+    
   
 }
 
@@ -247,7 +249,7 @@
     settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
     
     
-    [tabBarController setViewControllers:[NSArray arrayWithObjects:conversationsNavigationViewController,contactsNavigationViewCntroller,recentsNavigationViewController,settingsNavigationViewController,nil]];
+    [tabBarController setViewControllers:[NSArray arrayWithObjects:conversationsNavigationViewController,contactsNavigationViewCntroller,settingsNavigationViewController,nil]];
     
     
     [[UITabBar appearance] setTintColor:APPLICATION_BLUE_COLOR];
