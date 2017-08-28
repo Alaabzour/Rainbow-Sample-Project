@@ -21,12 +21,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self setup];
     
     [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
-    
-   
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
@@ -76,11 +74,11 @@
 }
 
 - (void) setup {
-    _muteButton.layer.borderColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0].CGColor;
+    _muteButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
     _muteButton.layer.borderWidth = 1.0;
-    _speakerButton.layer.borderColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0].CGColor;
+    _speakerButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
     _speakerButton.layer.borderWidth = 1.0;
-    _videoButton.layer.borderColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0].CGColor;
+    _videoButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
     _videoButton.layer.borderWidth = 1.0;
 }
 
@@ -92,7 +90,7 @@
     }
     else{
         [sender setSelected:YES];
-         [sender setBackgroundColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
+         [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
     
 }
@@ -103,7 +101,7 @@
     }
     else{
         [sender setSelected:YES];
-        [sender setBackgroundColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
+        [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
 }
 - (IBAction)videoAction:(UIButton *)sender {
@@ -113,7 +111,7 @@
     }
     else{
         [sender setSelected:YES];
-        [sender setBackgroundColor:[UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0]];
+        [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
 }
 

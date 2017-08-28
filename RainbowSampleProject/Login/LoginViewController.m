@@ -19,6 +19,8 @@
 
 @implementation LoginViewController{
     int selectedIndex;
+    NSMutableArray *contactsArray;
+    NSMutableArray *allContactsArray;
 }
 #pragma mark - Application LifeCycle
 - (void)viewDidLoad {
@@ -36,6 +38,8 @@
     // addObserver for Keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+    
 
 }
 
@@ -56,7 +60,9 @@
     UIImageView * emailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,6,8,22)];
     _emailTextField.leftView = emailImageView;
     _emailTextField.leftViewMode = UITextFieldViewModeAlways;
-  
+    
+    contactsArray = [NSMutableArray array];
+    allContactsArray = [NSMutableArray array];
     
 }
 #pragma mark - Keyboaed Notification
@@ -124,12 +130,10 @@
 #pragma mark - Manage Contacts Methods
 
 - (void) connectToRainbowServer {
-   
+    
+    
     [[ServicesManager sharedInstance].loginManager setUsername:_emailTextField.text andPassword:_passwordTextField.text];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failedToConnect:) name:kLoginManagerDidFailedToAuthenticate object:nil];
+   
     
     [[ServicesManager sharedInstance].loginManager connect];
     
@@ -141,13 +145,10 @@
     
     [[ServicesManager sharedInstance].loginManager setUsername:_emailTextField.text andPassword:_passwordTextField.text];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failedToConnect:) name:kLoginManagerDidFailedToAuthenticate object:nil];
-    
-    
+
     [[NSNotificationCenter defaultCenter] postNotificationName:kChangeServerURLNotification object:@{@"serverURL": @"sandbox.openrainbow.com"}];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
         [[ServicesManager sharedInstance].loginManager connect];
         
     });
@@ -168,7 +169,19 @@
 
 #pragma mark - Login Methods
 - (IBAction)doLogin:(id)sender {
+    
     [self.activityIndicator startAnimating];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willLogin:) name:kLoginManagerWillLogin object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(failedToConnect:) name:kLoginManagerDidFailedToAuthenticate object:nil];
+    
+    
+    
     if (selectedIndex == 1) {
         [self connectToSandboxServer];
     }
@@ -178,11 +191,17 @@
 }
 
 -(void) didLogin:(NSNotification *) notification {
-    [self.activityIndicator stopAnimating];
+   
     // go to main pages
-    [self setupTabbarFunction];
     
+    [self setupTabbarFunction];
+
   
+}
+
+-(void) willLogin:(NSNotification *) notification {
+      
+    
 }
 
 - (void) getContactFunction{
@@ -192,6 +211,7 @@
 - (void) getConversationFunction {
     
 }
+
 
 - (void) setupTabbarFunction {
     
@@ -227,12 +247,19 @@
     settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
     
     
-    [tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,recentsNavigationViewController,settingsNavigationViewController,nil]];
+    [tabBarController setViewControllers:[NSArray arrayWithObjects:conversationsNavigationViewController,contactsNavigationViewCntroller,recentsNavigationViewController,settingsNavigationViewController,nil]];
     
     
     [[UITabBar appearance] setTintColor:APPLICATION_BLUE_COLOR];
     
+    [self.activityIndicator stopAnimating];
    
+    self.navigationController.navigationBarHidden = YES;
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName,nil]];
+    
     [self.navigationController pushViewController:tabBarController animated:YES];
 }
 

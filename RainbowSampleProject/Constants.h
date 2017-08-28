@@ -19,7 +19,7 @@
 
 // define tags
 #define BUSY_STATUS_TAG       2
-#define AWAY_STATUS_TAG      4
+#define AWAY_STATUS_TAG       4
 #define INVISIBLE_STATUS_TAG  5
 #define ONLINE_STATUS_TAG     1
 

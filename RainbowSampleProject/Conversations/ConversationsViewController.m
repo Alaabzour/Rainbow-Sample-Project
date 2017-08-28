@@ -66,7 +66,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = APPLICATION_BLUE_COLOR;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
    
     [self getConversations];
@@ -149,21 +149,21 @@
                 break;
             case 1://Available
                 
-                cell.statusLabel.backgroundColor = [UIColor colorWithRed:97.0/255.0 green:189.0/255.0 blue:80.0/255.0 alpha:1];
+                cell.statusLabel.backgroundColor = ONLINE_STATUS_COLOR;
                 break;
                 
             case 2://Dot not disturb
                 
-                cell.statusLabel.backgroundColor = [UIColor redColor];
+                cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                 break;
                 
             case 3://Busy
                 
-                cell.statusLabel.backgroundColor = [UIColor redColor];
+                cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                 break;
             case 4://Away
                 
-                cell.statusLabel.backgroundColor = [UIColor orangeColor];
+                cell.statusLabel.backgroundColor = AWAY_STATUS_COLOR;
                 break;
             case 5://Invisible
                 

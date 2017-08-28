@@ -42,7 +42,7 @@
 }
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = APPLICATION_BLUE_COLOR;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
 }
@@ -64,7 +64,7 @@
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     // setup navigationbar
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = APPLICATION_BLUE_COLOR;
     
     // Add serchbar to Navigationbar
     searchbar = [[UISearchBar alloc] init];
@@ -88,7 +88,7 @@
     NSArray * itemArray = @[@"my Network",@"All"];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
     segmentedControl.frame = CGRectMake(44, 8, [[UIScreen mainScreen]bounds].size.width - 88 , 28);
-    segmentedControl.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    segmentedControl.tintColor = APPLICATION_BLUE_COLOR;
     [segmentedControl addTarget:self action:@selector(changeMyContactList:) forControlEvents: UIControlEventValueChanged];
     if (isAllContactsSelected) {
          segmentedControl.selectedSegmentIndex = 1;
@@ -622,26 +622,26 @@
                     cell.statusTextLabel.text = @"Available";
                 }
                 
-                cell.statusLabel.backgroundColor = [UIColor colorWithRed:97.0/255.0 green:189.0/255.0 blue:80.0/255.0 alpha:1];
+                cell.statusLabel.backgroundColor = ONLINE_STATUS_COLOR;
                 break;
 
             case 2://Dot not disturb
                 cell.statusTextLabel.text = @"Dot not disturb";
-                cell.statusLabel.backgroundColor = [UIColor redColor];
+                cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                 break;
 
             case 3://Busy
                 cell.statusTextLabel.text = @"Busy";
-                cell.statusLabel.backgroundColor = [UIColor redColor];
+                cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                 break;
             case 4://Away
                 cell.statusTextLabel.text = @"Away";
-                cell.statusLabel.backgroundColor = [UIColor orangeColor];
+                cell.statusLabel.backgroundColor = AWAY_STATUS_COLOR;
                 break;
             case 5://Invisible
                 cell.statusTextLabel.text = @"Invisible";
                 cell.statusLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                cell.statusLabel.backgroundColor = [UIColor whiteColor];
+                cell.statusLabel.backgroundColor = INVISIBLE_STATUS_COLOR;
                 break;
 
                 

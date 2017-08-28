@@ -28,7 +28,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
     MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
-    if (!currentUser.username) {
+    if (NO) {//!currentUser.username
         
         LoginViewController *masterViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
         self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];

@@ -33,7 +33,7 @@
     [super viewWillAppear:animated];
     [self getContactInforamtion];
 
-    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.barTintColor = APPLICATION_BLUE_COLOR;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
 }
@@ -130,26 +130,26 @@
                         cell.contactStatusLabel.text = @"Available";
                     }
                     
-                    cell.statusLabel.backgroundColor = [UIColor colorWithRed:97.0/255.0 green:189.0/255.0 blue:80.0/255.0 alpha:1];
+                    cell.statusLabel.backgroundColor = ONLINE_STATUS_COLOR;
                     break;
                     
                 case 2://Dot not disturb
                     cell.contactStatusLabel.text = @"Dot not disturb";
-                    cell.statusLabel.backgroundColor = [UIColor redColor];
+                    cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                     break;
                     
                 case 3://Busy
                     cell.contactStatusLabel.text = @"Busy";
-                    cell.statusLabel.backgroundColor = [UIColor redColor];
+                    cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                     break;
                 case 4://Away
                     cell.contactStatusLabel.text = @"Away";
-                    cell.statusLabel.backgroundColor = [UIColor orangeColor];
+                    cell.statusLabel.backgroundColor = AWAY_STATUS_COLOR;
                     break;
                 case 5://Invisible
                     cell.contactStatusLabel.text = @"Invisible";
                     cell.statusLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
-                    cell.statusLabel.backgroundColor = [UIColor whiteColor];
+                    cell.statusLabel.backgroundColor = INVISIBLE_STATUS_COLOR;
                     break;
                     
                     
@@ -182,7 +182,7 @@
         [cell.iconButton removeTarget:nil
                                    action:NULL
                          forControlEvents:UIControlEventTouchUpInside];
-        cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+        cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
         
         if (indexPath.row <= emailAdresses.count ) {
             EmailAddress * currentEmail = [emailAdresses objectAtIndex:indexPath.row -1];
@@ -234,12 +234,12 @@
                         Invitation * invitationStatus = _aContact.sentInvitation;
                         if (invitationStatus.status == 1){
                            cell.titleLabel.text = @"Invitaion sent";
-                            cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+                            cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
                               [cell.iconButton setImage:nil forState:UIControlStateNormal];
                         }
                         else{
                             cell.titleLabel.text = @"Add Contact to my Network";
-                            cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+                            cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
                             [cell.iconButton setImage:[UIImage imageNamed:@"add-contact-icon"] forState:UIControlStateNormal];
                             
                         }
@@ -249,12 +249,12 @@
                         Invitation * invitationStatus = _aContact.sentInvitation;
                         if (invitationStatus.status == 1){
                             cell.titleLabel.text = @"Invitaion sent";
-                            cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+                            cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
                             [cell.iconButton setImage:nil forState:UIControlStateNormal];
                         }
                         else{
                             cell.titleLabel.text = @"Invite Contact to Rainbow";
-                            cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+                            cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
                              [cell.iconButton setImage:[UIImage imageNamed:@"add-contact-icon"] forState:UIControlStateNormal];
                             
                         }
@@ -267,7 +267,7 @@
                     Invitation * invitationStatus = _aContact.sentInvitation;
                     if (invitationStatus.status == 1){
                         cell.titleLabel.text = @"Invitaion sent";
-                        cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+                        cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
                         [cell.iconButton setImage:nil forState:UIControlStateNormal];
                     }
                     else{
@@ -283,7 +283,7 @@
             }
             else{
                 cell.titleLabel.text = @"Start Conversation";
-                cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+                cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
                 
                 [cell.iconButton setImage:[UIImage imageNamed:@"start-conversation-icon"] forState:UIControlStateNormal];
                 
@@ -296,7 +296,7 @@
             cell.titleLabel.text = @"Start Conversation";
             cell.subTitleLabel.text = @"";
             cell.titleTopConstraint.constant = 16;
-            cell.titleLabel.textColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+            cell.titleLabel.textColor = APPLICATION_BLUE_COLOR;
            
             [cell.iconButton setImage:[UIImage imageNamed:@"start-conversation-icon"] forState:UIControlStateNormal];
             
