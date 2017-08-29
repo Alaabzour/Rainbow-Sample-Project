@@ -29,7 +29,7 @@
    
     MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
     
-    if (!currentUser.username) {//
+    if (!currentUser.username) {
         
         LoginViewController *masterViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
         self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];

@@ -207,6 +207,7 @@
     
     Message *  message = [messagesArray objectAtIndex:indexPath.row];
     
+    cell.dateLabel.text = [self getItemDateString:message.date];
     if (message.isOutgoing) {
         cell.MessageImageView.image = [self balloonImageForSending];
         [cell.myUserImageView setHidden:NO];
@@ -511,6 +512,45 @@
 }
 -(void) itemsBrowserDidReceivedAllItemsDeletedEvent:(CKItemsBrowser*)browser{
      NSLog(@"Done!");
+}
+
+#pragma mark - format date string
+-(NSString *)getItemDateString:(NSDate *)date{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    NSDateComponents *todayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:[NSDate date]];
+    
+    NSDateComponents *messageDayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:date];
+    
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setDay:-1];
+    
+    NSDate *yesterdayDate = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:[NSDate date] options:0];
+    
+    NSDateComponents *yesterdayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:yesterdayDate];
+    
+    
+    
+    if([todayComponent day] == [messageDayComponent day] &&
+       [todayComponent month] == [messageDayComponent month] &&
+       [todayComponent year] == [messageDayComponent year] &&
+       [todayComponent era] == [messageDayComponent era]) {
+        
+        [formatter setDateFormat:@"hh:mm aa"];
+        return [formatter stringFromDate:date];
+    }
+    else if([yesterdayComponent day] == [messageDayComponent day] &&
+            [yesterdayComponent month] == [messageDayComponent month] &&
+            [yesterdayComponent year] == [messageDayComponent year] &&
+            [yesterdayComponent era] == [messageDayComponent era]) {
+        
+        return  @"Yesterday";
+    }
+    else{
+        [formatter setDateFormat:@"E, d MMM"];
+        return [formatter stringFromDate:date];
+    }
 }
 
 @end

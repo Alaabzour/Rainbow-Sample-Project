@@ -80,6 +80,10 @@
     _speakerButton.layer.borderWidth = 1.0;
     _videoButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
     _videoButton.layer.borderWidth = 1.0;
+    
+    _nicknameLabel.text = _aContact.fullName;
+    _userImageView.image = [UIImage imageWithData:_aContact.photoData];
+    
 }
 
 #pragma mark - Call Actions
@@ -130,5 +134,6 @@
         
     }];
 }
+
 
 @end

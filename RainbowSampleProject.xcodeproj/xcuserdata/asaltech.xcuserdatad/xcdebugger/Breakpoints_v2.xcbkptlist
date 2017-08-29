@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "521"
-            endingLineNumber = "521">
+            startingLineNumber = "561"
+            endingLineNumber = "561">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -120,11 +120,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "530"
-            endingLineNumber = "530">
+            startingLineNumber = "570"
+            endingLineNumber = "570">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -134,11 +134,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "534"
-            endingLineNumber = "534">
+            startingLineNumber = "574"
+            endingLineNumber = "574">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "525"
-            endingLineNumber = "525">
+            startingLineNumber = "565"
+            endingLineNumber = "565">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -178,11 +178,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
             landmarkName = "-itemsBrowser:didRemoveCacheItems:atIndexes:"
             landmarkType = "7">
          </BreakpointContent>
@@ -194,11 +194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
+            startingLineNumber = "514"
+            endingLineNumber = "514"
             landmarkName = "-itemsBrowserDidReceivedAllItemsDeletedEvent:"
             landmarkType = "7">
          </BreakpointContent>
@@ -210,11 +210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "510"
-            endingLineNumber = "510"
+            startingLineNumber = "511"
+            endingLineNumber = "511"
             landmarkName = "-itemsBrowser:didReceiveItemsDeletedEvent:"
             landmarkType = "7">
          </BreakpointContent>
@@ -226,11 +226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "505"
-            endingLineNumber = "505"
+            startingLineNumber = "506"
+            endingLineNumber = "506"
             landmarkName = "-itemsBrowser:didReceiveItemsAddedEvent:"
             landmarkType = "7">
          </BreakpointContent>
@@ -242,11 +242,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "501"
-            endingLineNumber = "501"
+            startingLineNumber = "502"
+            endingLineNumber = "502"
             landmarkName = "-itemsBrowser:didReorderCacheItemsAtIndexes:toIndexes:"
             landmarkType = "7">
          </BreakpointContent>
@@ -258,11 +258,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "525619171.671485"
+            timestampString = "525695173.410893"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
             landmarkName = "-itemsBrowser:didUpdateCacheItems:atIndexes:"
             landmarkType = "7">
             <Locations>
@@ -274,11 +274,11 @@
                   moduleName = "RainbowSampleProject"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/asaltech/Documents/Rainbow%20-%20ios/RainbowSampleProject/Conversations/ChatViewController.m"
-                  timestampString = "525679764.522957"
+                  timestampString = "525696265.850001"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "491"
-                  endingLineNumber = "491"
+                  startingLineNumber = "492"
+                  endingLineNumber = "492"
                   offsetFromSymbolStart = "189">
                </Location>
                <Location
@@ -289,11 +289,11 @@
                   moduleName = "RainbowSampleProject"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/asaltech/Documents/Rainbow%20-%20ios/RainbowSampleProject/Conversations/ChatViewController.m"
-                  timestampString = "525679764.525156"
+                  timestampString = "525696265.853663"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "491"
-                  endingLineNumber = "491"
+                  startingLineNumber = "492"
+                  endingLineNumber = "492"
                   offsetFromSymbolStart = "204">
                </Location>
             </Locations>

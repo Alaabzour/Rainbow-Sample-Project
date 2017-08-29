@@ -85,7 +85,7 @@
             
             switch ((int)currentUser.contact.presence.presence) {
                     
-                case ONLINE_STATUS_TAG://Available
+                case ONLINE_STATUS_TAG:
                     if (currentUser.contact.isConnectedWithMobile) {
                         cell.contactStatusLabel.text = @"Available on Mobile";
                     }
@@ -96,17 +96,17 @@
                     cell.statusLabel.backgroundColor = ONLINE_STATUS_COLOR;
                     break;
                     
-                case BUSY_STATUS_TAG://Dot not disturb
+                case BUSY_STATUS_TAG:
                     cell.contactStatusLabel.text = @"Dot not disturb";
                     cell.statusLabel.backgroundColor = BUSY_STATUS_COLOR;
                     break;
                     
                     
-                case AWAY_STATUS_TAG://Away
+                case AWAY_STATUS_TAG:
                     cell.contactStatusLabel.text = @"Away";
                     cell.statusLabel.backgroundColor = AWAY_STATUS_COLOR;
                     break;
-                case INVISIBLE_STATUS_TAG://Invisible
+                case INVISIBLE_STATUS_TAG:
                     cell.contactStatusLabel.text = @"Invisible";
                     cell.statusLabel.layer.borderColor = [UIColor lightGrayColor].CGColor;
                     cell.statusLabel.backgroundColor = INVISIBLE_STATUS_COLOR;
@@ -270,10 +270,8 @@
     UIWindow *window= [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [window makeKeyAndVisible];
     window.rootViewController = self.navigationController;
-    
     [window.rootViewController presentViewController:nav animated:YES completion:NULL];
     
-    // go to main pages
 }
 
 #pragma mark - change User Status 

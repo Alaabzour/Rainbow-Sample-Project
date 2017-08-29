@@ -13,7 +13,6 @@
 @interface ConversationsViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     NSMutableArray * conversationsMuttableArray;
     NSArray * conversationsResultArray;
-
     UISearchBar *searchbar;
     BOOL isSearching;
 }
@@ -28,7 +27,6 @@
     [super viewDidLoad];
   
     [self setup];
-    
     
 }
 
@@ -183,7 +181,7 @@
     else{
         cell.unreadMessagesCountLabel.hidden = NO;
         cell.unreadMessagesCountLabel.text = [NSString stringWithFormat:@"%li",(long)conversation.unreadMessagesCount];
-        cell.conversationNameLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        cell.conversationNameLabel.font = [UIFont boldSystemFontOfSize:14.0];
         cell.ConversationLastMessageLabel.font = [UIFont boldSystemFontOfSize:13.0];
     }
     
@@ -353,7 +351,7 @@
        [todayComponent year] == [messageDayComponent year] &&
        [todayComponent era] == [messageDayComponent era]) {
         
-        [formatter setDateFormat:@"HH:mm"];
+        [formatter setDateFormat:@"hh:mm aa"];
         return [formatter stringFromDate:date];
     }
     else if([yesterdayComponent day] == [messageDayComponent day] &&
@@ -364,7 +362,7 @@
         return  @"Yesterday";
     }
     else{
-        [formatter setDateFormat:@"E, d MMM"];
+        [formatter setDateFormat:@"E,d MMM"];
         return [formatter stringFromDate:date];
     }
 }

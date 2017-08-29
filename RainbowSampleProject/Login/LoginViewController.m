@@ -19,27 +19,15 @@
 
 @implementation LoginViewController{
     int selectedIndex;
+    
     NSMutableArray *contactsArray;
     NSMutableArray *allContactsArray;
 }
 #pragma mark - Application LifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self setup];
-    
-    // Hide Navigation bar
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
-                                                  forBarMetrics:UIBarMetricsDefault];
-   
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    self.navigationController.navigationBar.translucent = YES;
-    
-    
-    // addObserver for Keyboard
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    
-    
 
 }
 
@@ -48,23 +36,6 @@
     
 }
 
-- (void) setup {
-    selectedIndex = 0;
-    _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _emailTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    
-    UIImageView * passwordImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,6,8,22)];
-    _passwordTextField.leftView = passwordImageView;
-    _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
-    
-    UIImageView * emailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,6,8,22)];
-    _emailTextField.leftView = emailImageView;
-    _emailTextField.leftViewMode = UITextFieldViewModeAlways;
-    
-    contactsArray = [NSMutableArray array];
-    allContactsArray = [NSMutableArray array];
-    
-}
 #pragma mark - Keyboaed Notification
 
 - (void)keyboardDidShow:(NSNotification *)notification
@@ -196,10 +167,37 @@
    
     // go to main pages
     [self setupTabbarFunction];
-        
-    
-  
 }
+
+-(void) failedToConnect:(NSNotification *) notification {
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        //Background Thread
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:nil
+                                         message:@"Email or Password are wrong,Try again!"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"ok"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+                                            [self.activityIndicator stopAnimating];
+                                        }];
+            
+            
+            
+            [alert addAction:yesButton];
+            
+            
+            [self presentViewController:alert animated:YES completion:nil];
+        });
+    });
+}
+
 
 -(void) willLogin:(NSNotification *) notification {
       
@@ -214,6 +212,39 @@
     
 }
 
+#pragma mark - setup Functions
+
+- (void) setup {
+    
+    selectedIndex = 0;
+    
+    _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _emailTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    
+    UIImageView * passwordImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,6,8,22)];
+    _passwordTextField.leftView = passwordImageView;
+    _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+    
+    UIImageView * emailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0,6,8,22)];
+    _emailTextField.leftView = emailImageView;
+    _emailTextField.leftViewMode = UITextFieldViewModeAlways;
+    
+    contactsArray = [NSMutableArray array];
+    allContactsArray = [NSMutableArray array];
+    
+    // Hide Navigation bar
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    
+    
+    // addObserver for Keyboard
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+}
 
 - (void) setupTabbarFunction {
     
@@ -269,36 +300,9 @@
    
 }
 
--(void) failedToConnect:(NSNotification *) notification {
-   
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        //Background Thread
-        dispatch_async(dispatch_get_main_queue(), ^(void){
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:nil
-                                         message:@"Email or Password are wrong,Try again!"
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            
-            
-            UIAlertAction* yesButton = [UIAlertAction
-                                        actionWithTitle:@"ok"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action) {
-                                             [self.activityIndicator stopAnimating];
-                                        }];
-            
-            
-            
-            [alert addAction:yesButton];
-            
-            
-            [self presentViewController:alert animated:YES completion:nil];
-        });
-    });
-}
 
 #pragma mark - Reset Passeord Method
+
 - (IBAction)resetPassword:(id)sender {
 }
 @end
