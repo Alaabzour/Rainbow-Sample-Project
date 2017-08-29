@@ -36,7 +36,6 @@
     // get myuser status
     selectedStatus = (int)currentUser.contact.presence.presence;
    
-   
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
  
 }

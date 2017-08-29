@@ -47,7 +47,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name:kContactsManagerServiceDidUpdateContact object:nil];
     
     
-    
     // Do any additional setup after loading the view from its nib.
 }
 - (void) viewWillAppear:(BOOL)animated {
@@ -141,9 +140,6 @@
 //
 //    [[ServicesManager sharedInstance].loginManager connect];
     
- 
- 
-    
 }
 
 - (void) connectToSandboxServer {
@@ -162,7 +158,6 @@
 //        
 //    });
     
-   
 }
 
 -(void) didAddContact:(NSNotification *) notification {

@@ -51,8 +51,11 @@
         dispatch_async(dispatch_get_main_queue(), ^{
            
             [self.tableView reloadData];
-            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            if (addedCacheItems.count) {
+                NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            }
+           
             
         });
         
@@ -69,34 +72,34 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+    
     [super viewWillAppear:animated];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAckMessageNotification:) name:kConversationsManagerDidAckMessageNotification object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateMessagesUnreadCount:) name:kConversationsManagerDidUpdateMessagesUnreadCount object:nil];
+    
     
     // stat conversation
      [[ServicesManager sharedInstance].conversationsManagerService startConversationWithPeer:_aContact withCompletionHandler:^(Conversation *conversation, NSError *error) {
          if (error == nil) {
              currentConversation = conversation;
              
-             messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
+             messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:NO];
              
              messages.delegate = self;
             
              
              [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
-             
-             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
-             
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
-             
-             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAckMessageNotification:) name:kConversationsManagerDidAckMessageNotification object:nil];
-             
-             
-             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateMessagesUnreadCount:) name:kConversationsManagerDidUpdateMessagesUnreadCount object:nil];
-             
-             
-             
-             
+
          }
     }];
 
@@ -117,10 +120,10 @@
         titleLabel.text = contact.displayName;
     }
     
-    titleLabel.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    titleLabel.tintColor = APPLICATION_BLUE_COLOR;
     self.navigationItem.titleView = titleLabel;
     
-    self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    self.navigationController.navigationBar.tintColor = APPLICATION_BLUE_COLOR;
     
   // check if call is available
    
@@ -314,7 +317,7 @@
 {
     UIImage *bubble = [UIImage imageNamed:@"bubble-receive-icon"];
 
-    UIColor *color = [UIColor colorWithRed:39.0/255.0 green:129.0/255.0 blue:187.0/255.0 alpha:1.0];
+    UIColor *color = APPLICATION_BLUE_COLOR;
     bubble = [self tintImage:bubble withColor:color];
     return [bubble resizableImageWithCapInsets:UIEdgeInsetsMake(17, 27, 21, 17)];
 }
