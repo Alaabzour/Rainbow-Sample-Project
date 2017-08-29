@@ -15,7 +15,7 @@ Its powerfull APIs enable you to create the best iOS applications that connect t
 This documentation will help you to use it.
 
 
-## Rainbow developper account
+## Rainbow developer account
 ---
 
 Your need a Rainbow **developer** account in order to use the Rainbow SDK for iOS.
@@ -73,6 +73,7 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
 
 ```objective-c
 [[ServicesManager sharedInstance].loginManager setUsername:@"myRainbowUser@domain.com" andPassword:@"MyPassword"];
+[[ServicesManager sharedInstance].loginManager connect];
 ```
 
 3. Monitor login manager notifications
