@@ -73,6 +73,7 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
 
 ```objective-c
 [[ServicesManager sharedInstance].loginManager setUsername:@"myRainbowUser@domain.com" andPassword:@"MyPassword"];
+[[ServicesManager sharedInstance].loginManager connect];
 ```
 
 3. Monitor login manager notifications
