@@ -95,9 +95,14 @@
              
              messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:NO];
              
+             
+             
              messages.delegate = self;
             
-             
+             [messages resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+                 NSLog(@"done");
+             }];
+            
              [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
 
          }
