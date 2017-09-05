@@ -282,10 +282,14 @@
         settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
         
         
-        [tabBarController setViewControllers:[NSArray arrayWithObjects:conversationsNavigationViewController,contactsNavigationViewCntroller,settingsNavigationViewController,nil]];
+        [tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,settingsNavigationViewController,nil]];
         
         
         [[UITabBar appearance] setTintColor:APPLICATION_BLUE_COLOR];
+        
+        
+        [SharedDataObject registerAllRainbowNotifications];
+        
         
         self.navigationController.navigationBarHidden = YES;
         self.navigationController.navigationBar.translucent = NO;
@@ -304,5 +308,6 @@
 #pragma mark - Reset Passeord Method
 
 - (IBAction)resetPassword:(id)sender {
+    
 }
 @end

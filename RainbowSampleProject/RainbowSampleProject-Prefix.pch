@@ -16,4 +16,6 @@
 
 #import "Constants.h"
 
+#import "SharedDataObject.h"
+
 #endif /* RainbowSampleProject_Prefix_pch */

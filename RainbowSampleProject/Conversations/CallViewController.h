@@ -27,4 +27,12 @@
 
 @property (nonatomic,weak) Contact* aContact;
 
+
+- (void) didCallSuccess : (NSNotification * ) notification;
+- (void) didUpdateCall : (NSNotification * ) notification;
+- (void) statusChanged : (NSNotification * ) notification;
+- (void) didRemoveCall : (NSNotification * ) notification;
+- (void) didAllowMicrophone : (NSNotification * ) notification;
+- (void) didRefuseMicrophone : (NSNotification * ) notification;
+
 @end

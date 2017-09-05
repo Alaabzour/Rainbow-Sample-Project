@@ -13,4 +13,5 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *contactsSegmentController;
 
+-(void) didAddContact:(NSNotification *) notification;
 @end

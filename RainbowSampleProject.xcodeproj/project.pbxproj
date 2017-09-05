@@ -37,6 +37,7 @@
 		46CF30971F39A0AB001D827F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46CF30951F39A0AB001D827F /* LoginViewController.xib */; };
 		46CF309C1F39D93E001D827F /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF309A1F39D93E001D827F /* SettingsTableViewCell.m */; };
 		46CF309D1F39D93E001D827F /* SettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46CF309B1F39D93E001D827F /* SettingsTableViewCell.xib */; };
+		46E368411F56977D0000975C /* SharedDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E368401F56977D0000975C /* SharedDataObject.m */; };
 		46F09BD71F24B7EB0081F7D7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F09BD61F24B7EB0081F7D7 /* main.m */; };
 		46F09BDA1F24B7EB0081F7D7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F09BD91F24B7EB0081F7D7 /* AppDelegate.m */; };
 		46F09BE21F24B7EB0081F7D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46F09BE11F24B7EB0081F7D7 /* Assets.xcassets */; };
@@ -125,6 +126,8 @@
 		46CF30991F39D93E001D827F /* SettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsTableViewCell.h; path = Settings/SettingsTableViewCell.h; sourceTree = "<group>"; };
 		46CF309A1F39D93E001D827F /* SettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsTableViewCell.m; path = Settings/SettingsTableViewCell.m; sourceTree = "<group>"; };
 		46CF309B1F39D93E001D827F /* SettingsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingsTableViewCell.xib; path = Settings/SettingsTableViewCell.xib; sourceTree = "<group>"; };
+		46E3683F1F56977D0000975C /* SharedDataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedDataObject.h; sourceTree = "<group>"; };
+		46E368401F56977D0000975C /* SharedDataObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedDataObject.m; sourceTree = "<group>"; };
 		46F09BD21F24B7EB0081F7D7 /* RainbowSampleProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RainbowSampleProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46F09BD61F24B7EB0081F7D7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		46F09BD81F24B7EB0081F7D7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -359,6 +362,8 @@
 			children = (
 				462FF9A81F52E68400FD3065 /* RainbowSampleProject-Prefix.pch */,
 				462FF99F1F52E25700FD3065 /* Constants.h */,
+				46E3683F1F56977D0000975C /* SharedDataObject.h */,
+				46E368401F56977D0000975C /* SharedDataObject.m */,
 				46CF30981F39ABBC001D827F /* AppDelegate */,
 				46762C141F458855005069DD /* Recent */,
 				46CF30921F39A032001D827F /* Login */,
@@ -535,6 +540,7 @@
 				4655A35D1F28BA0B00C94608 /* UserSubInfoTableViewCell.m in Sources */,
 				464C1C9A1F373E8500E0D1D1 /* MessageTableViewCell.m in Sources */,
 				4655A3571F2879A800C94608 /* UserInfoTableViewCell.m in Sources */,
+				46E368411F56977D0000975C /* SharedDataObject.m in Sources */,
 				4655A3521F276B9E00C94608 /* ContactInfoViewController.m in Sources */,
 				46CF309C1F39D93E001D827F /* SettingsTableViewCell.m in Sources */,
 			);

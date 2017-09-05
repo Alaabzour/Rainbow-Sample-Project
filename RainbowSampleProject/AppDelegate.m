@@ -14,7 +14,7 @@
 #import "RecentViewController.h"
 #import <Rainbow/Rainbow.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ();
 
 @end
 
@@ -28,6 +28,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    
     MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
+    
+    
+    
     
     if (!currentUser.username) {
         

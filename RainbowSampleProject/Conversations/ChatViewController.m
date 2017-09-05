@@ -76,13 +76,12 @@
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAckMessageNotification:) name:kConversationsManagerDidAckMessageNotification object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateMessagesUnreadCount:) name:kConversationsManagerDidUpdateMessagesUnreadCount object:nil];
@@ -93,14 +92,13 @@
          if (error == nil) {
              currentConversation = conversation;
              
-             messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:NO];
-             
+             messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
              
              
              messages.delegate = self;
             
              [messages resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
-                 NSLog(@"done");
+
              }];
             
              [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
@@ -140,10 +138,33 @@
 -(void) callButtonClicked:(id)sender {
     CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    viewController.aContact = _aContact;
-    [self presentViewController:viewController animated:NO completion:^{
+    if ([_aContact class] == [Contact class]) {
+        Contact * contact = (Contact *) _aContact;
+        viewController.aContact = contact;
         
-    }];
+        [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
+        
+        
+        [self presentViewController:viewController animated:NO completion:^{
+            
+        }];
+    }
+    else if ([_aContact class] == [Room class]){
+        
+        
+    }
+    
+    
+   
     
 }
 
@@ -158,14 +179,7 @@
     }
     
 }
-- (void) didAckMessageNotification : (NSNotification *) notification {
-    
-    //NSString * messageID  = [notification.object objectForKey:@"messageID"];
-    //int state = [[notification.object objectForKey:@"state"] intValue];
-   // NSDate * datetime = [notification.object objectForKey:@"datetime"];
-    
-    
-}
+
 - (void) didReceiveNewMessage : (NSNotification *) notification {
    
     Conversation * receivedConversation  = notification.object;
@@ -447,7 +461,7 @@
    
     [[ServicesManager sharedInstance].conversationsManagerService sendMessage:_MessageTextView.text fileAttachment:nil to:currentConversation completionHandler:^(Message *message, NSError *error) {
         [messagesArray addObject:message];
-      
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
             NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
@@ -479,6 +493,7 @@
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, reversedArray.count)];
     [messagesArray insertObjects:reversedArray atIndexes:indexSet];
+   
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
@@ -493,14 +508,13 @@
     NSLog(@"Done!");
 }
 -(void) itemsBrowser:(CKItemsBrowser*)browser didUpdateCacheItems:(NSArray*)changedItems atIndexes:(NSIndexSet*)indexes {
-    NSLog(@"Done!");
-    for (Message * message in messagesArray) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [messagesArray replaceObjectsAtIndexes:indexes withObjects:changedItems];
+        [self.tableView reloadData];
         
-        if ([messagesArray containsObject:message]) {
-            
-        }
-    }
-    // recive messsage to add!
+    });
+
+ 
 }
 
 -(void) itemsBrowser:(CKItemsBrowser*)browser didReorderCacheItemsAtIndexes:(NSArray*)oldIndexes toIndexes:(NSArray*)newIndexes {
@@ -508,18 +522,22 @@
 }
 
 -(void) itemsBrowser:(CKItemsBrowser*)browser didReceiveItemsAddedEvent:(NSArray*)addedItems{
-     NSLog(@"Done!");
     
+     NSLog(@"Receive!");
 }
 
 -(void) itemsBrowser:(CKItemsBrowser*)browser didReceiveItemsDeletedEvent:(NSArray*)deletedItems{
+    
      NSLog(@"Done!");
 }
+
 -(void) itemsBrowserDidReceivedAllItemsDeletedEvent:(CKItemsBrowser*)browser{
+    
      NSLog(@"Done!");
 }
 
 #pragma mark - format date string
+
 -(NSString *)getItemDateString:(NSDate *)date{
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

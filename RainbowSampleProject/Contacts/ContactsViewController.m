@@ -162,7 +162,7 @@
 
 -(void) didAddContact:(NSNotification *) notification {
     
-    [self.activityIndicator stopAnimating];
+    
     Contact *contact = (Contact *)notification.object;
     if(![contactsArray containsObject:contact]){
         if (contact.isInRoster) {
@@ -180,6 +180,7 @@
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
+        [self.activityIndicator stopAnimating];
     });
     
 }

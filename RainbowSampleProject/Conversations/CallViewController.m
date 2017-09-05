@@ -23,22 +23,9 @@
     [super viewDidLoad];
     
     [self setup];
-    
-    [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
-
-   currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
-    
-
-    
+    currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
+    NSArray * testArray = [[ServicesManager sharedInstance].rtcService calls];
+    NSLog(@"%@",testArray);
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -89,10 +76,12 @@
 #pragma mark - Call Actions
 - (IBAction)muteAction:(UIButton *)sender {
     if (sender.isSelected) {
+        [[ServicesManager sharedInstance].rtcService muteLocalAudioForCall:currentCall];
         [sender setSelected:NO];
         [sender setBackgroundColor:[UIColor whiteColor]];
     }
     else{
+         [[ServicesManager sharedInstance].rtcService unMuteLocalAudioForCall:currentCall];
         [sender setSelected:YES];
          [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
@@ -100,20 +89,27 @@
 }
 - (IBAction)speakerAction:(UIButton *)sender {
     if (sender.isSelected) {
+        [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
+        [[ServicesManager sharedInstance].rtcService forceAudioOnSpeaker];
+        
         [sender setSelected:NO];
          [sender setBackgroundColor:[UIColor whiteColor]];
     }
     else{
+        [[ServicesManager sharedInstance].rtcService unForceAudioOnSpeaker];
         [sender setSelected:YES];
         [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
 }
 - (IBAction)videoAction:(UIButton *)sender {
     if (sender.isSelected) {
+        
+        [[ServicesManager sharedInstance].rtcService addVideoMediaToCall:currentCall];
         [sender setSelected:NO];
          [sender setBackgroundColor:[UIColor whiteColor]];
     }
     else{
+        [[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall];
         [sender setSelected:YES];
         [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }

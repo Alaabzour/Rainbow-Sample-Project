@@ -15,4 +15,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
+
+-(void) failedToConnect:(NSNotification *) notification;
+-(void) didLogin:(NSNotification *) notification;
+-(void) willLogin:(NSNotification *) notification;
+
 @end
