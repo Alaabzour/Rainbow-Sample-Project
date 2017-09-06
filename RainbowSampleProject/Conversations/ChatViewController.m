@@ -228,6 +228,8 @@
     Message *  message = [messagesArray objectAtIndex:indexPath.row];
     
     cell.dateLabel.text = [self getItemDateString:message.date];
+    
+    
     if (message.isOutgoing) {
         cell.MessageImageView.image = [self balloonImageForSending];
         [cell.myUserImageView setHidden:NO];
@@ -285,8 +287,39 @@
         
     }
     
-   
-    cell.messagebodyLabel.text = message.body;
+    
+    if (message.type == 2 || message.type == 1) {
+        cell.messagebodyLabel.text = message.body;
+    }
+    else{
+        
+        NSString * text;
+        if (message.callLog.state == 0) {
+            if (message.callLog.isOutgoing) {
+                text = @"%@ missed a call from you";
+                
+            }
+            else{
+                text = @"You missed a call from %@";
+            }
+        }
+        else if (message.callLog.state == 1) {
+            
+            if (message.callLog.isOutgoing) {
+                text = @"You called %@";
+            }
+            else{
+                text = @"%@ called you";
+            }
+        }
+        
+        if ([_aContact class] == [Contact class]) {
+            Contact * contact = (Contact *) _aContact;
+            cell.messagebodyLabel.text = [NSString stringWithFormat:text,contact.firstName];
+        }
+
+    }
+    
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     

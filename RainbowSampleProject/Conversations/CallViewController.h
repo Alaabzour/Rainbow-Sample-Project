@@ -27,6 +27,9 @@
 
 @property (nonatomic,weak) Contact* aContact;
 
+@property (weak, nonatomic) IBOutlet RTCEAGLVideoView *localVideoStream;
+@property (weak, nonatomic) IBOutlet RTCEAGLVideoView *remoteVideoStream;
+
 
 - (void) didCallSuccess : (NSNotification * ) notification;
 - (void) didUpdateCall : (NSNotification * ) notification;

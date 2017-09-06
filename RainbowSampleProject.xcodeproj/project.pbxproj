@@ -37,6 +37,8 @@
 		46BCFAAB1F5FCBA000CA365F /* hangup.wav in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAA81F5FCBA000CA365F /* hangup.wav */; };
 		46BCFAAC1F5FCBA000CA365F /* incoming-call.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAA91F5FCBA000CA365F /* incoming-call.mp3 */; };
 		46BCFAAD1F5FCBA000CA365F /* outgoing-rings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAAA1F5FCBA000CA365F /* outgoing-rings.mp3 */; };
+		46BCFAB11F60162600CA365F /* CallTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46BCFAAF1F60162600CA365F /* CallTableViewCell.m */; };
+		46BCFAB21F60162600CA365F /* CallTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAB01F60162600CA365F /* CallTableViewCell.xib */; };
 		46CF30961F39A0AB001D827F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF30941F39A0AB001D827F /* LoginViewController.m */; };
 		46CF30971F39A0AB001D827F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46CF30951F39A0AB001D827F /* LoginViewController.xib */; };
 		46CF309C1F39D93E001D827F /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF309A1F39D93E001D827F /* SettingsTableViewCell.m */; };
@@ -129,6 +131,9 @@
 		46BCFAA81F5FCBA000CA365F /* hangup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hangup.wav; sourceTree = "<group>"; };
 		46BCFAA91F5FCBA000CA365F /* incoming-call.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "incoming-call.mp3"; sourceTree = "<group>"; };
 		46BCFAAA1F5FCBA000CA365F /* outgoing-rings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "outgoing-rings.mp3"; sourceTree = "<group>"; };
+		46BCFAAE1F60162600CA365F /* CallTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallTableViewCell.h; path = Conversations/CallTableViewCell.h; sourceTree = "<group>"; };
+		46BCFAAF1F60162600CA365F /* CallTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallTableViewCell.m; path = Conversations/CallTableViewCell.m; sourceTree = "<group>"; };
+		46BCFAB01F60162600CA365F /* CallTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CallTableViewCell.xib; path = Conversations/CallTableViewCell.xib; sourceTree = "<group>"; };
 		46CF30931F39A0AB001D827F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Login/LoginViewController.h; sourceTree = "<group>"; };
 		46CF30941F39A0AB001D827F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Login/LoginViewController.m; sourceTree = "<group>"; };
 		46CF30951F39A0AB001D827F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = Login/LoginViewController.xib; sourceTree = "<group>"; };
@@ -211,6 +216,9 @@
 				464C1C971F373E8500E0D1D1 /* MessageTableViewCell.h */,
 				464C1C981F373E8500E0D1D1 /* MessageTableViewCell.m */,
 				464C1C991F373E8500E0D1D1 /* MessageTableViewCell.xib */,
+				46BCFAAE1F60162600CA365F /* CallTableViewCell.h */,
+				46BCFAAF1F60162600CA365F /* CallTableViewCell.m */,
+				46BCFAB01F60162600CA365F /* CallTableViewCell.xib */,
 			);
 			name = "Conversation Cell";
 			sourceTree = "<group>";
@@ -512,6 +520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46BCFAAC1F5FCBA000CA365F /* incoming-call.mp3 in Resources */,
+				46BCFAB21F60162600CA365F /* CallTableViewCell.xib in Resources */,
 				460D15751F25ECE000521ABE /* ConversationsViewController.xib in Resources */,
 				46697D2C1F306AD8008696CB /* SettingsViewController.xib in Resources */,
 				46BCFAA11F5ED48900CA365F /* RainbowSampleProject.entitlement in Resources */,
@@ -556,6 +565,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46BCFAB11F60162600CA365F /* CallTableViewCell.m in Sources */,
 				460D15741F25ECE000521ABE /* ConversationsViewController.m in Sources */,
 				46F09C211F24CECA0081F7D7 /* ContactsTableViewCell.m in Sources */,
 				46762C181F45887C005069DD /* RecentViewController.m in Sources */,
