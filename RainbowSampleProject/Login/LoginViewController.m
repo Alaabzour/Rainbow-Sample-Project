@@ -250,39 +250,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        UITabBarController *tabBarController = [[UITabBarController alloc] init];
         
-        UIViewController *contactsViewCntroller = [[ContactsViewController alloc] init];
-        UINavigationController *contactsNavigationViewCntroller = [[UINavigationController alloc]initWithRootViewController:contactsViewCntroller];
-        
-        contactsNavigationViewCntroller.tabBarItem.title = CONTACTS ;
-        contactsNavigationViewCntroller.tabBarItem.image = [UIImage imageNamed:@"contacts-icon"];
-        contactsNavigationViewCntroller.tabBarItem.selectedImage=[UIImage imageNamed:@"contacts-selected-icon"];
-        
-        UIViewController *conversationsViewController = [[ConversationsViewController alloc] init];
-        UINavigationController *conversationsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:conversationsViewController];
-        
-        conversationsNavigationViewController.tabBarItem.title= CONVERSATIONS ;
-        conversationsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"conversations-icon"];
-        conversationsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"conversations-selected-icon"];
-        
-        
-        UIViewController *recentsViewController = [[RecentViewController alloc] init];
-        UINavigationController *recentsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:recentsViewController];
-        
-        recentsNavigationViewController.tabBarItem.title= RECENTS ;
-        recentsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"past-not-selected-icon"];
-        recentsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"past-selected-icon"];
-        
-        UIViewController *settingsViewController = [[SettingsViewController alloc] init];
-        UINavigationController *settingsNavigationViewController = [[UINavigationController alloc]initWithRootViewController:settingsViewController];
-        
-        settingsNavigationViewController.tabBarItem.title= SETTINGS ;
-        settingsNavigationViewController.tabBarItem.image = [UIImage imageNamed:@"settings-icon"];
-        settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
-        
-        
-        [tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,settingsNavigationViewController,nil]];
         
         
         [[UITabBar appearance] setTintColor:APPLICATION_BLUE_COLOR];
@@ -297,7 +265,7 @@
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName,nil]];
         [self.activityIndicator stopAnimating];
-        [self.navigationController pushViewController:tabBarController animated:YES];
+        [self.navigationController pushViewController:[SharedDataObject setupTabbarController] animated:YES];
 
     });
     

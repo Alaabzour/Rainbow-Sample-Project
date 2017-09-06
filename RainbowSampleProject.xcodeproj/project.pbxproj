@@ -33,6 +33,10 @@
 		46697D311F307B85008696CB /* ContactStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46697D2F1F307B85008696CB /* ContactStatusTableViewCell.xib */; };
 		46762C181F45887C005069DD /* RecentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46762C161F45887C005069DD /* RecentViewController.m */; };
 		46762C191F45887C005069DD /* RecentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46762C171F45887C005069DD /* RecentViewController.xib */; };
+		46BCFAA11F5ED48900CA365F /* RainbowSampleProject.entitlement in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAA01F5ED48900CA365F /* RainbowSampleProject.entitlement */; };
+		46BCFAAB1F5FCBA000CA365F /* hangup.wav in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAA81F5FCBA000CA365F /* hangup.wav */; };
+		46BCFAAC1F5FCBA000CA365F /* incoming-call.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAA91F5FCBA000CA365F /* incoming-call.mp3 */; };
+		46BCFAAD1F5FCBA000CA365F /* outgoing-rings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAAA1F5FCBA000CA365F /* outgoing-rings.mp3 */; };
 		46CF30961F39A0AB001D827F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF30941F39A0AB001D827F /* LoginViewController.m */; };
 		46CF30971F39A0AB001D827F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46CF30951F39A0AB001D827F /* LoginViewController.xib */; };
 		46CF309C1F39D93E001D827F /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF309A1F39D93E001D827F /* SettingsTableViewCell.m */; };
@@ -120,6 +124,11 @@
 		46762C151F45887C005069DD /* RecentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentViewController.h; path = Recent/RecentViewController.h; sourceTree = "<group>"; };
 		46762C161F45887C005069DD /* RecentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecentViewController.m; path = Recent/RecentViewController.m; sourceTree = "<group>"; };
 		46762C171F45887C005069DD /* RecentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RecentViewController.xib; path = Recent/RecentViewController.xib; sourceTree = "<group>"; };
+		46BCFAA01F5ED48900CA365F /* RainbowSampleProject.entitlement */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = RainbowSampleProject.entitlement; sourceTree = "<group>"; };
+		46BCFAA21F5ED53F00CA365F /* RainbowSampleProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RainbowSampleProject.entitlements; sourceTree = "<group>"; };
+		46BCFAA81F5FCBA000CA365F /* hangup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hangup.wav; sourceTree = "<group>"; };
+		46BCFAA91F5FCBA000CA365F /* incoming-call.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "incoming-call.mp3"; sourceTree = "<group>"; };
+		46BCFAAA1F5FCBA000CA365F /* outgoing-rings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "outgoing-rings.mp3"; sourceTree = "<group>"; };
 		46CF30931F39A0AB001D827F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Login/LoginViewController.h; sourceTree = "<group>"; };
 		46CF30941F39A0AB001D827F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Login/LoginViewController.m; sourceTree = "<group>"; };
 		46CF30951F39A0AB001D827F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = Login/LoginViewController.xib; sourceTree = "<group>"; };
@@ -240,6 +249,16 @@
 			name = Recent;
 			sourceTree = "<group>";
 		};
+		46BCFAA71F5FCBA000CA365F /* Ringtones */ = {
+			isa = PBXGroup;
+			children = (
+				46BCFAA81F5FCBA000CA365F /* hangup.wav */,
+				46BCFAA91F5FCBA000CA365F /* incoming-call.mp3 */,
+				46BCFAAA1F5FCBA000CA365F /* outgoing-rings.mp3 */,
+			);
+			path = Ringtones;
+			sourceTree = "<group>";
+		};
 		46CF30921F39A032001D827F /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,11 +301,14 @@
 		46F09BD41F24B7EB0081F7D7 /* RainbowSampleProject */ = {
 			isa = PBXGroup;
 			children = (
+				46BCFAA71F5FCBA000CA365F /* Ringtones */,
+				46BCFAA21F5ED53F00CA365F /* RainbowSampleProject.entitlements */,
 				46F09C241F25CDF00081F7D7 /* Modules */,
 				46F09C111F24BCD00081F7D7 /* Frameworks */,
 				46F09BE11F24B7EB0081F7D7 /* Assets.xcassets */,
 				46F09BE31F24B7EB0081F7D7 /* LaunchScreen.storyboard */,
 				46F09BE61F24B7EB0081F7D7 /* Info.plist */,
+				46BCFAA01F5ED48900CA365F /* RainbowSampleProject.entitlement */,
 				46F09BD51F24B7EB0081F7D7 /* Supporting Files */,
 			);
 			path = RainbowSampleProject;
@@ -444,6 +466,11 @@
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = DUTZ9XXH37;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					46F09BEA1F24B7EB0081F7D7 = {
 						CreatedOnToolsVersion = 8.3.2;
@@ -484,9 +511,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46BCFAAC1F5FCBA000CA365F /* incoming-call.mp3 in Resources */,
 				460D15751F25ECE000521ABE /* ConversationsViewController.xib in Resources */,
 				46697D2C1F306AD8008696CB /* SettingsViewController.xib in Resources */,
+				46BCFAA11F5ED48900CA365F /* RainbowSampleProject.entitlement in Resources */,
 				463873521F42F3B9003E2450 /* CallViewController.xib in Resources */,
+				46BCFAAB1F5FCBA000CA365F /* hangup.wav in Resources */,
 				464C1C9B1F373E8500E0D1D1 /* MessageTableViewCell.xib in Resources */,
 				46CF309D1F39D93E001D827F /* SettingsTableViewCell.xib in Resources */,
 				464C1C871F37318000E0D1D1 /* ChatViewController.xib in Resources */,
@@ -498,6 +528,7 @@
 				46697D311F307B85008696CB /* ContactStatusTableViewCell.xib in Resources */,
 				46762C191F45887C005069DD /* RecentViewController.xib in Resources */,
 				4655A35E1F28BA0B00C94608 /* UserSubInfoTableViewCell.xib in Resources */,
+				46BCFAAD1F5FCBA000CA365F /* outgoing-rings.mp3 in Resources */,
 				46F09C1B1F24C7B00081F7D7 /* ContactsViewController.xib in Resources */,
 				46CF30971F39A0AB001D827F /* LoginViewController.xib in Resources */,
 				46F09BE21F24B7EB0081F7D7 /* Assets.xcassets in Resources */,
@@ -687,6 +718,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RainbowSampleProject/RainbowSampleProject.entitlements;
 				DEVELOPMENT_TEAM = DUTZ9XXH37;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -705,6 +737,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RainbowSampleProject/RainbowSampleProject.entitlements;
 				DEVELOPMENT_TEAM = DUTZ9XXH37;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

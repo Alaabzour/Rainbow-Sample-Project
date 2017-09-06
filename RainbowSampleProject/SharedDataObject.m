@@ -98,7 +98,7 @@
     settingsNavigationViewController.tabBarItem.selectedImage=[UIImage imageNamed:@"settings-selected-icon"];
     
     
-    [tabBarController setViewControllers:[NSArray arrayWithObjects:conversationsNavigationViewController,contactsNavigationViewCntroller,settingsNavigationViewController,nil]];
+    [tabBarController setViewControllers:[NSArray arrayWithObjects:contactsNavigationViewCntroller,conversationsNavigationViewController,recentsNavigationViewController,settingsNavigationViewController,nil]];
     
     return tabBarController;
     

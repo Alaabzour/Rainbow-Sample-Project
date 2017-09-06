@@ -28,13 +28,13 @@
   
     [self setup];
     
-      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRecieveCall:) name:kRTCServiceDidAddCallNotification object:nil];
+//      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRecieveCall:) name:kRTCServiceDidAddCallNotification object:nil];
     
 }
 
-- (void) didRecieveCall : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-}
+//- (void) didRecieveCall : (NSNotification * ) notification {
+//    NSLog(@"%@",notification.object);
+//}
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

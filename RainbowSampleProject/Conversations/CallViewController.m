@@ -11,6 +11,10 @@
 
 @interface CallViewController (){
     RTCCall * currentCall;
+    NSTimer *timer;
+    int seconds;
+    int miniSeconds;
+    int minutes;
 }
 
 @end
@@ -31,17 +35,24 @@
 
 - (void) didCallSuccess : (NSNotification * ) notification {
     NSLog(@"%@",notification.object);
+    currentCall = notification.object;
 }
 - (void) didUpdateCall : (NSNotification * ) notification {
     NSLog(@"%@",notification.object);
+    currentCall = notification.object;
+    [self updateStatus];
 }
 
 - (void) statusChanged : (NSNotification * ) notification {
     NSLog(@"%@",notification.object);
+    currentCall = notification.object;
+    [self updateStatus];
 }
 
 - (void) didRemoveCall : (NSNotification * ) notification {
     NSLog(@"%@",notification.object);
+    [timer invalidate];
+    timer = nil;
 }
 - (void) didAllowMicrophone : (NSNotification * ) notification {
     NSLog(@"%@",notification.object);
@@ -71,45 +82,121 @@
     _nicknameLabel.text = _aContact.fullName;
     _userImageView.image = [UIImage imageWithData:_aContact.photoData];
     
+    seconds = 0;
+    miniSeconds = 0;
+    minutes = 0;
+    
+}
+
+- (void) updateStatus {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        switch (currentCall.status) {
+            case 0:
+                _statusLabel.text = @"Ringing ...";
+                break;
+            case 1:
+                _statusLabel.text = @"Connecting ...";
+                break;
+            case 2:
+                _statusLabel.text = @"Declined ...";
+                break;
+            case 3:
+                _statusLabel.text = @"Timeout ...";
+                break;
+            case 4:
+                _statusLabel.text = @"Canceled ...";
+                break;
+            case 5:
+                timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTick:) userInfo:nil repeats:YES];
+                
+                break;
+            case 6:
+                _statusLabel.text = @"Hangup ...";
+                break;
+                
+                
+            default:
+                break;
+        }
+
+    });
+   }
+
+- (void) startCounter {
+    
+}
+
+
+-(void)timerTick:(NSTimer *)sender
+{
+    miniSeconds++;
+    if (miniSeconds == 60)
+    {
+        miniSeconds = 0;
+        seconds++;
+        if (seconds == 60)
+        {
+            seconds = 0;
+            minutes++;
+        }
+    }
+     _statusLabel.text = [NSString stringWithFormat:@"%02i:%02i:%02i",minutes,seconds,miniSeconds];
+}
+-(void)nextLevelTime
+{
+    [timer invalidate];
+    miniSeconds = 0;
+    seconds = 0;
+    minutes = 0;
 }
 
 #pragma mark - Call Actions
 - (IBAction)muteAction:(UIButton *)sender {
     if (sender.isSelected) {
-        [[ServicesManager sharedInstance].rtcService muteLocalAudioForCall:currentCall];
+        [[ServicesManager sharedInstance].rtcService unMuteLocalAudioForCall:currentCall];
         [sender setSelected:NO];
         [sender setBackgroundColor:[UIColor whiteColor]];
     }
     else{
-         [[ServicesManager sharedInstance].rtcService unMuteLocalAudioForCall:currentCall];
+        [[ServicesManager sharedInstance].rtcService muteLocalAudioForCall:currentCall];
+       
         [sender setSelected:YES];
-         [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
+        [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
     
 }
 - (IBAction)speakerAction:(UIButton *)sender {
+    
     if (sender.isSelected) {
-        [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
-        [[ServicesManager sharedInstance].rtcService forceAudioOnSpeaker];
+        [[ServicesManager sharedInstance].rtcService unForceAudioOnSpeaker];
         
         [sender setSelected:NO];
-         [sender setBackgroundColor:[UIColor whiteColor]];
+        [sender setBackgroundColor:[UIColor whiteColor]];
     }
     else{
-        [[ServicesManager sharedInstance].rtcService unForceAudioOnSpeaker];
+        [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
+        [[ServicesManager sharedInstance].rtcService forceAudioOnSpeaker];
+    
         [sender setSelected:YES];
         [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
 }
 - (IBAction)videoAction:(UIButton *)sender {
     if (sender.isSelected) {
-        
-        [[ServicesManager sharedInstance].rtcService addVideoMediaToCall:currentCall];
+        [[ServicesManager sharedInstance].rtcService removeVideoMediaFromCall:currentCall];
+      
         [sender setSelected:NO];
-         [sender setBackgroundColor:[UIColor whiteColor]];
+        [sender setBackgroundColor:[UIColor whiteColor]];
     }
     else{
-        [[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall];
+        
+        [[ServicesManager sharedInstance].rtcService addVideoMediaToCall:currentCall];
+        
+        [_speakerButton setSelected:YES];
+        [_speakerButton setBackgroundColor:APPLICATION_BLUE_COLOR];
+       
+        
         [sender setSelected:YES];
         [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
@@ -118,10 +205,11 @@
 - (IBAction)endCallAction:(UIButton *)sender {
     [[ServicesManager sharedInstance].rtcService cancelOutgoingCall:currentCall];
     //or
-    //[[ServicesManager sharedInstance].rtcService hangupCall:currentCall];
+    [[ServicesManager sharedInstance].rtcService hangupCall:currentCall];
     // what the difference btw hangup and cancel?
     [self dismissViewControllerAnimated:NO completion:^{
-        
+        [timer invalidate];
+        timer = nil;
     }];
 }
 

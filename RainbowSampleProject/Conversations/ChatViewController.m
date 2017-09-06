@@ -9,6 +9,7 @@
 #import "ChatViewController.h"
 #import "MessageTableViewCell.h"
 #import "CallViewController.h"
+#import <Rainbow/CKItemsBrowser+protected.h>
 
 @interface ChatViewController () <UITextViewDelegate, CKItemsBrowserDelegate>
 
@@ -18,7 +19,7 @@
     NSMutableArray * messagesArray;
     Conversation *currentConversation;
     UIRefreshControl * refreshControl;
-    MessagesBrowser *messages;
+    MessagesBrowser *messagesBrowser;
     
 }
 
@@ -46,7 +47,7 @@
 
 -(void)handleRefresh : (id)sender
 {
-    [messages nextPageWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+    [messagesBrowser nextPageWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
            
@@ -92,12 +93,12 @@
          if (error == nil) {
              currentConversation = conversation;
              
-             messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
+             messagesBrowser = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
              
              
-             messages.delegate = self;
+             messagesBrowser.delegate = self;
             
-             [messages resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+             [messagesBrowser resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
 
              }];
             
@@ -461,6 +462,9 @@
    
     [[ServicesManager sharedInstance].conversationsManagerService sendMessage:_MessageTextView.text fileAttachment:nil to:currentConversation completionHandler:^(Message *message, NSError *error) {
         [messagesArray addObject:message];
+        
+        NSInteger idx = [messagesBrowser insertItemAtProperIndex:message];
+        [self itemsBrowser:messagesBrowser didAddCacheItems:@[message] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
