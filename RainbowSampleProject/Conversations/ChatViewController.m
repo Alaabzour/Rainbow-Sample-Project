@@ -25,6 +25,7 @@
 }
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
    
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
@@ -41,6 +42,7 @@
     [refreshControl addTarget:self
                        action:@selector(handleRefresh:)
                   forControlEvents:UIControlEventValueChanged];
+    
     self.tableView.refreshControl = refreshControl;
    
     // Do any additional setup after loading the view from its nib.
@@ -133,16 +135,29 @@
   // check if call is available
    
    UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
-    self.navigationItem.rightBarButtonItem = callButton;
+   
+    
+    UIBarButtonItem *videoCallButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(videoCallButtonClicked:)];
+    self.navigationItem.rightBarButtonItems = @[videoCallButton,callButton];
+    
   
 }
 
 -(void) callButtonClicked:(id)sender {
+    [self openCallViewControllerWithVideoFalg:NO];
+}
+
+-(void) videoCallButtonClicked:(id)sender {
+    [self openCallViewControllerWithVideoFalg:YES];
+}
+
+-(void) openCallViewControllerWithVideoFalg:(BOOL)isVideo {
     CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
     if ([_aContact class] == [Contact class]) {
         Contact * contact = (Contact *) _aContact;
         viewController.aContact = contact;
+        viewController.isVideoCall = isVideo;
         
         [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
         
@@ -164,10 +179,7 @@
         
         
     }
-    
-    
-   
-    
+ 
 }
 
 
@@ -336,7 +348,7 @@
             cell.detailLabel.textColor = [UIColor grayColor];
             cell.detailLabel.text = [self formatTimeFromSeconds:message.callLog.duration];
             
-            if (message.callLog.isOutgoing) {
+            if (!message.callLog.isOutgoing) {
                 text = @"You called %@";
             }
             else{
@@ -359,17 +371,6 @@
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
-
-- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return @"Delete";
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     

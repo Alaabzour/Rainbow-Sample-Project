@@ -187,7 +187,7 @@
             
             
             
-            if (conversation.lastMessage.callLog.isOutgoing) {
+            if (!conversation.lastMessage.callLog.isOutgoing) {
                 text = @"You called %@";
             }
             else{

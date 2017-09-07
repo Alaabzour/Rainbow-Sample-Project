@@ -28,7 +28,15 @@
     [super viewDidLoad];
     
     [self setup];
-    currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
+    
+    if (_isVideoCall) {
+        currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureLocalVideo)];
+        
+    }
+    else{
+        currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
+    }
+    
     NSArray * testArray = [[ServicesManager sharedInstance].rtcService calls];
     NSLog(@"%@",testArray);
     // Do any additional setup after loading the view from its nib.
@@ -39,6 +47,7 @@
     if ([notification.object class] == [RTCCall class]) {
         currentCall = notification.object;
     }
+ 
     [self updateStatus];
 }
 - (void) didUpdateCall : (NSNotification * ) notification {
@@ -98,8 +107,24 @@
     _muteButton.layer.borderWidth = 1.0;
     _speakerButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
     _speakerButton.layer.borderWidth = 1.0;
-    _videoButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
-    _videoButton.layer.borderWidth = 1.0;
+    
+    if (! _isVideoCall) {
+        [_videoButton setEnabled:NO];
+        [_videoButton setUserInteractionEnabled:NO];
+        [_videoButton setImage:[UIImage imageNamed:@"vedio-disable-icon"] forState:UIControlStateDisabled];
+        _videoButton.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _videoButton.layer.borderWidth = 1.0;
+
+    }
+    else{
+        [_videoButton setSelected:YES];
+        [_videoButton setBackgroundColor:APPLICATION_BLUE_COLOR];
+        [_speakerButton setSelected:YES];
+        [_speakerButton setBackgroundColor:APPLICATION_BLUE_COLOR];
+        _videoButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
+        _videoButton.layer.borderWidth = 1.0;
+        
+    }
     
     _nicknameLabel.text = _aContact.fullName;
     
@@ -121,7 +146,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        // check feature also
+       
         if (currentCall.features == 7 ||currentCall.features == 6 || currentCall.features == 2 || currentCall.features == 3) {
             RTCMediaStream * remoteVideoStream = [[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall];
             
@@ -164,6 +189,19 @@
             case 5:
                 if (timer == nil) {
                      timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(timerTick:) userInfo:nil repeats:YES];
+                    
+                    _videoButton.layer.borderColor = APPLICATION_BLUE_COLOR.CGColor;
+                    
+                    [_videoButton setEnabled:YES];
+                    [_videoButton setUserInteractionEnabled:YES];
+                    
+                    if (_isVideoCall) {
+                       
+                        [[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject addRenderer:_localVideoStream];
+                        
+                        [_localVideoStream setHidden:NO];
+                    }
+                  
                 }
                 break;
             case 6:{
