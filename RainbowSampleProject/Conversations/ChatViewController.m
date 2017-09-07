@@ -21,7 +21,7 @@
     Conversation *currentConversation;
     UIRefreshControl * refreshControl;
     MessagesBrowser *messagesBrowser;
-    
+    BOOL isFetchMoreMessages;
 }
 
 - (void)viewDidLoad {
@@ -50,12 +50,14 @@
 
 -(void)handleRefresh : (id)sender
 {
+    isFetchMoreMessages = YES;
     [messagesBrowser nextPageWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
            
             [self.tableView reloadData];
             if (addedCacheItems.count) {
+                isFetchMoreMessages = NO;
                 NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                 [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
             }
@@ -539,9 +541,9 @@
         [self itemsBrowser:messagesBrowser didAddCacheItems:@[message] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
-            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+//            [self.tableView reloadData];
+//            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+//            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
             _MessageTextView.text = @" ";
             _MessageTextView.textColor = [UIColor colorWithRed:190.0/255.0 green:190.0/255.0 blue:190.0/255.0 alpha:1];
             [self.sendButton setEnabled:NO];
@@ -572,8 +574,14 @@
    
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-        [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
+        if (!isFetchMoreMessages) {
+            //[self.tableView reloadData];
+            //[self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
+            [self.tableView reloadData];
+            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
+       
 
     });
   
