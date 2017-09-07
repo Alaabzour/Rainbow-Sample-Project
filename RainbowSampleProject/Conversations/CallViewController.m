@@ -51,19 +51,21 @@
 }
 
 - (void) statusChanged : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
-    
-    if ([notification.object class] == [RTCCall class]) {
-        currentCall = notification.object;
-    }
-    RTCMediaStream * remoteVideoStream = [[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall];
-    
-    if (remoteVideoStream != nil && videoFlag) {
-        [_remoteVideoStream setHidden:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        RTCMediaStream * remoteVideoStream = [[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall];
         
-        [[[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall].videoTracks.lastObject removeRenderer:_remoteVideoStream];
-        videoFlag = NO;
-    }
+        if (remoteVideoStream != nil && videoFlag) {
+            [_remoteVideoStream setHidden:YES];
+            
+            [[[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall].videoTracks.lastObject removeRenderer:_remoteVideoStream];
+            videoFlag = NO;
+        }
+        
+        [self dismissViewControllerAnimated:NO completion:^{
+            
+        }];
+    });
+    
 }
 
 - (void) didRemoveCall : (NSNotification * ) notification {

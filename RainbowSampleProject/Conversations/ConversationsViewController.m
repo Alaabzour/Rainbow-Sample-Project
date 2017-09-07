@@ -159,15 +159,54 @@
         cell.conversationNameLabel.text = conversation.peer.displayName;
         cell.statusLabel.hidden = YES;
     }
+    
 
-    
-    
-    if (conversation.lastMessage.isOutgoing) {
-         cell.ConversationLastMessageLabel.text = [NSString stringWithFormat:@"You: %@",conversation.lastMessage.body];
+    if (conversation.lastMessage.type == 1 || conversation.lastMessage.type == 2) {
+        if (conversation.lastMessage.isOutgoing) {
+            cell.ConversationLastMessageLabel.text = [NSString stringWithFormat:@"You: %@",conversation.lastMessage.body];
+        }
+        else{
+            cell.ConversationLastMessageLabel.text = conversation.lastMessage.body;
+        }
     }
-    else{
-         cell.ConversationLastMessageLabel.text = conversation.lastMessage.body;
+    else if (conversation.lastMessage.type == 3){
+        NSString * text;
+        if (conversation.lastMessage.callLog.state == 0) {
+            
+            
+            if (!conversation.lastMessage.callLog.isOutgoing) {
+                
+                text = @"%@ missed a call from you";
+                
+            }
+            else{
+                text = @"You missed a call from %@";
+            }
+        }
+        else if (conversation.lastMessage.callLog.state == 1) {
+            
+            
+            
+            if (conversation.lastMessage.callLog.isOutgoing) {
+                text = @"You called %@";
+            }
+            else{
+                text = @"%@ called you";
+            }
+        }
+        
+        if ([conversation.peer class] == [Contact class]) {
+            Contact * contact = (Contact *) conversation.peer;
+            cell.ConversationLastMessageLabel.text = [NSString stringWithFormat:text,contact.firstName];
+        }
+        else if ([conversation.peer class] == [Room class]){
+           
+            
+        }
+        
     }
+    
+   
     
     
     if (conversation.lastUpdateDate) {

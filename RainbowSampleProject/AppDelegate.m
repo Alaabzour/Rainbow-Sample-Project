@@ -29,9 +29,6 @@
    
     MyUser * currentUser = [[ServicesManager sharedInstance] myUser];
     
-    
-    
-    
     if (!currentUser.username) {
         
         LoginViewController *masterViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];

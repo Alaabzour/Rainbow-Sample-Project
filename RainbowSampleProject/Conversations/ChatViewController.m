@@ -9,6 +9,7 @@
 #import "ChatViewController.h"
 #import "MessageTableViewCell.h"
 #import "CallViewController.h"
+#import "CallTableViewCell.h"
 #import <Rainbow/CKItemsBrowser+protected.h>
 
 @interface ChatViewController () <UITextViewDelegate, CKItemsBrowserDelegate>
@@ -216,86 +217,112 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"MessageCell";
+   
     
-    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    }
+    UITableViewCell *cell ;
     
     Message *  message = [messagesArray objectAtIndex:indexPath.row];
     
-    cell.dateLabel.text = [self getItemDateString:message.date];
-    
-    
-    if (message.isOutgoing) {
-        cell.MessageImageView.image = [self balloonImageForSending];
-        [cell.myUserImageView setHidden:NO];
-        [cell.contactImageView setHidden:YES];
-        cell.messagebodyLabel.textColor = [UIColor darkGrayColor];
-        cell.dateLabel.textColor = [UIColor grayColor];
-        switch (message.state) {
-                
-            case 2:
-                cell.seenImageView.image = [UIImage imageNamed:@"recieved-icon"];
-                break;
-            case 3:
-                cell.seenImageView.image = [UIImage imageNamed:@"seen-icon"];
-                break;
-            case 4:
-                cell.seenImageView.image = [UIImage imageNamed:@"error-gray-icon"];
-                break;
-                
-            default:
-                cell.seenImageView.image = [UIImage imageNamed:@"deliverd-icon"];
-                break;
+    if (message.type == 2 || message.type == 1) {
+        
+        static NSString *CellIdentifier = @"MessageCell";
+        
+        MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         }
         
-        if ([[ServicesManager sharedInstance] myUser].contact.photoData) {
-            cell.myUserImageView.image = [UIImage imageWithData:[[ServicesManager sharedInstance] myUser].contact.photoData];
-        }
-        else{
-            cell.myUserImageView.image = [UIImage imageNamed:@"placeholder"];
-        }
-    }
-    else{
-        cell.MessageImageView.image = [self balloonImageForReceiving];
-        [cell.myUserImageView setHidden:YES];
-        [cell.contactImageView setHidden:NO];
-        cell.messagebodyLabel.textColor = [UIColor whiteColor];
-        cell.dateLabel.textColor = [UIColor groupTableViewBackgroundColor];
-        cell.seenImageView.image = nil;
+        cell.dateLabel.text = [self getItemDateString:message.date];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        if ([_aContact class] == [Contact class]) {
-            Contact * contact = (Contact *) _aContact;
-            if (contact.photoData) {
-                cell.contactImageView.image = [UIImage imageWithData:contact.photoData];
+        if (message.isOutgoing) {
+            cell.MessageImageView.image = [self balloonImageForSending];
+            [cell.myUserImageView setHidden:NO];
+            [cell.contactImageView setHidden:YES];
+            cell.messagebodyLabel.textColor = [UIColor darkGrayColor];
+            cell.dateLabel.textColor = [UIColor grayColor];
+            switch (message.state) {
+                    
+                case 2:
+                    cell.seenImageView.image = [UIImage imageNamed:@"recieved-icon"];
+                    break;
+                case 3:
+                    cell.seenImageView.image = [UIImage imageNamed:@"seen-icon"];
+                    break;
+                case 4:
+                    cell.seenImageView.image = [UIImage imageNamed:@"error-gray-icon"];
+                    break;
+                    
+                default:
+                    cell.seenImageView.image = [UIImage imageNamed:@"deliverd-icon"];
+                    break;
+            }
+            
+            if ([[ServicesManager sharedInstance] myUser].contact.photoData) {
+                cell.myUserImageView.image = [UIImage imageWithData:[[ServicesManager sharedInstance] myUser].contact.photoData];
             }
             else{
-               
+                cell.myUserImageView.image = [UIImage imageNamed:@"placeholder"];
             }
         }
-        else if ([_aContact class] == [Room class]){
-        //Room * contact = (Contact *) message.peer;
-         
-            cell.contactImageView.image = [UIImage imageNamed:@"group-placeholder-icon"];
-
+        else{
+            cell.MessageImageView.image = [self balloonImageForReceiving];
+            [cell.myUserImageView setHidden:YES];
+            [cell.contactImageView setHidden:NO];
+            cell.messagebodyLabel.textColor = [UIColor whiteColor];
+            cell.dateLabel.textColor = [UIColor groupTableViewBackgroundColor];
+            cell.seenImageView.image = nil;
+            
+            if ([_aContact class] == [Contact class]) {
+                Contact * contact = (Contact *) _aContact;
+                if (contact.photoData) {
+                    cell.contactImageView.image = [UIImage imageWithData:contact.photoData];
+                }
+                else{
+                    
+                }
+            }
+            else if ([_aContact class] == [Room class]){
+                //Room * contact = (Contact *) message.peer;
+                
+                cell.contactImageView.image = [UIImage imageNamed:@"group-placeholder-icon"];
+                
+            }
+            
+           
+            
+            
         }
         
-        
+         cell.messagebodyLabel.text = message.body;
+         return cell;
+
     }
     
-    
-    if (message.type == 2 || message.type == 1) {
-        cell.messagebodyLabel.text = message.body;
-    }
+ 
     else{
+        static NSString *CellIdentifier = @"CallCell";
+        
+        CallTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            [tableView registerNib:[UINib nibWithNibName:@"CallTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        }
+
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSString * text;
+        
         if (message.callLog.state == 0) {
-            if (message.callLog.isOutgoing) {
+            
+            cell.titleLabel.textColor = [UIColor redColor];
+            cell.detailLabel.textColor = [UIColor redColor];
+            cell.detailLabel.text = [self getItemDateString:message.callLog.date];
+            if (!message.callLog.isOutgoing) {
+            
                 text = @"%@ missed a call from you";
                 
             }
@@ -304,6 +331,10 @@
             }
         }
         else if (message.callLog.state == 1) {
+            
+            cell.titleLabel.textColor = [UIColor darkGrayColor];
+            cell.detailLabel.textColor = [UIColor grayColor];
+            cell.detailLabel.text = [self formatTimeFromSeconds:message.callLog.duration];
             
             if (message.callLog.isOutgoing) {
                 text = @"You called %@";
@@ -315,14 +346,16 @@
         
         if ([_aContact class] == [Contact class]) {
             Contact * contact = (Contact *) _aContact;
-            cell.messagebodyLabel.text = [NSString stringWithFormat:text,contact.firstName];
+            cell.titleLabel.text = [NSString stringWithFormat:text,contact.firstName];
         }
+        
+        [cell.callButton addTarget:self action:@selector(callButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+       
+        return cell;
 
     }
     
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     return cell;
 }
 
@@ -339,24 +372,29 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  
-   
-
-    static NSString *CellIdentifier = @"MessageCell";
     
-    MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier ];
-    
-    if (cell == nil) {
-        [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier ];
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    }
-
     Message *  message = [messagesArray objectAtIndex:indexPath.row];
 
-    CGSize labelSize = (CGSize){cell.messagebodyLabel.frame.size.width, MAXFLOAT};
-    CGRect requiredSize = [message.body boundingRectWithSize:labelSize  options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: cell.messagebodyLabel.font} context:nil];
+   
+    if (message.type == 2 || message.type == 1) {
+        
+        static NSString *CellIdentifier = @"MessageCell";
+        
+        MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier ];
+        
+        if (cell == nil) {
+            [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier ];
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        }
+        
+        
+        CGSize labelSize = (CGSize){cell.messagebodyLabel.frame.size.width, MAXFLOAT};
+        CGRect requiredSize = [message.body boundingRectWithSize:labelSize  options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: cell.messagebodyLabel.font} context:nil];
+        
+        return (requiredSize.size.height + 50);
+    }
     
-    return (requiredSize.size.height + 50);
+    return 100;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -573,7 +611,37 @@
      NSLog(@"Done!");
 }
 
-#pragma mark - format date string
+#pragma mark - format  string
+
+-(NSString *)formatTimeFromSeconds:(NSString *)numberOfSeconds
+{
+    
+    int seconds = [numberOfSeconds intValue] % 60;
+    int minutes = ([numberOfSeconds intValue] / 60) % 60;
+    int hours = [numberOfSeconds intValue] / 3600;
+    
+    
+    if (hours) {
+        if (hours == 1) {
+            return [NSString stringWithFormat:@"%d hr %02d mins", hours, minutes];
+        }
+        return [NSString stringWithFormat:@"%d hrs %02d mins", hours, minutes];
+    }
+   
+    if (minutes) {
+        if (minutes == 1) {
+            
+            return [NSString stringWithFormat:@"%d min %02d sec", minutes, seconds];
+
+        }
+        return [NSString stringWithFormat:@"%d mins %02d sec", minutes, seconds];
+    }
+    
+    if (seconds == 1) {
+        return [NSString stringWithFormat:@"%d sec", seconds];
+    }
+    return [NSString stringWithFormat:@"%d secs", seconds];
+}
 
 -(NSString *)getItemDateString:(NSDate *)date{
     
