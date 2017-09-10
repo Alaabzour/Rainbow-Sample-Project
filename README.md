@@ -186,6 +186,22 @@ Here is the complete list of the events that you can subscribe on:
 | **`kConversationsManagerDidAckMessageNotification`** |  |
 | **`kConversationsManagerDidUpdateMessagesUnreadCount`** | Fired when the SDK did update Messages unread count |
 
+#### Audio/Video Call Events
+
+| Name | Description |
+|------|------------|
+| **`kRTCServiceDidAddCallNotification`** | Fired when the SDK has successfully retrieve or start a call |
+| **`kRTCServiceDidUpdateCallNotification`** | Fired when current call status is updated   |
+| **`kRTCServiceDidRemoveCallNotification`** | Fired when the you remove current call |
+| **`kRTCServiceCallStatsNotification`** | Fired when new stats available for current call |
+| **`kRTCServiceDidAllowMicrophoneNotification`** | Fired when you allow Microphone access |
+| **`kRTCServiceDidRefuseMicrophoneNotification`** |Fired when you refuse Microphone access |
+| **`kConversationsManagerDidReceiveNewMessageForConversation`** | Fired when the conversation receive a new message |
+| **`kRTCServiceDidAddLocalVideoTrackNotification`** | Fired when you add local video to call |
+| **`kRTCServiceDidRemoveLocalVideoTrackNotification`** | Fired when you remove local video from the call |
+| **`kRTCServiceDidAddRemoteVideoTrackNotification`** | Fired when you add remote video to call]
+| **`kRTCServiceDidRemoveRemoteVideoTrackNotification`** | Fired when you remove remote video from the call |
+
 
 ## Instant Messaging
 ---
@@ -273,7 +289,71 @@ If you want to mark all messages as read for a conversation you can use `markAsR
 Receipts allow to know if the message has been successfully delivered to your recipient. Use the ID of your originated message to be able to link with the receipt received.
 
 
+### Get Conversation History
 
+You can get history for selected conversation, as follow,
+
+```objective-c
+
+// pageSize The maximum number of retrieved .
+// preload retreive imediately from the local cache.
+
+ MessagesBrowser *messagesBrowser = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
+                        
+ messagesBrowser.delegate = self;
+            
+```
+
+```objective-c
+#pragma mark - CKItemsBrowserDelegate
+-(void) itemsBrowser:(CKItemsBrowser*)browser didAddCacheItems:(NSArray*)newItems atIndexes:(NSIndexSet*)indexes {
+
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [messagesArray insertObjects:newItems atIndexes:indexes];
+        [self.tableView reloadData];
+         NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+         [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+
+    });
+  
+    
+
+}
+-(void) itemsBrowser:(CKItemsBrowser*)browser didRemoveCacheItems:(NSArray*)removedItems atIndexes:(NSIndexSet*)indexes{
+    NSLog(@"Removed!");
+}
+-(void) itemsBrowser:(CKItemsBrowser*)browser didUpdateCacheItems:(NSArray*)changedItems atIndexes:(NSIndexSet*)indexes {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [messagesArray replaceObjectsAtIndexes:indexes withObjects:changedItems];
+        [self.tableView reloadData];
+        
+    });
+
+ 
+}
+
+-(void) itemsBrowser:(CKItemsBrowser*)browser didReorderCacheItemsAtIndexes:(NSArray*)oldIndexes toIndexes:(NSArray*)newIndexes {
+    NSLog(@"Reorderd!");
+}
+
+-(void) itemsBrowser:(CKItemsBrowser*)browser didReceiveItemsAddedEvent:(NSArray*)addedItems{
+    
+     NSLog(@"ReceivedItemsAdded!");
+}
+
+-(void) itemsBrowser:(CKItemsBrowser*)browser didReceiveItemsDeletedEvent:(NSArray*)deletedItems{
+    
+     NSLog(@"ReceivedItemsDeleted!");
+}
+
+-(void) itemsBrowserDidReceivedAllItemsDeletedEvent:(CKItemsBrowser*)browser{
+    
+     NSLog(@"ReceivedAllItemsDeleted!");
+}
+
+
+```
 
 ## Contacts
 ---
@@ -415,20 +495,110 @@ The following Methods are supported:
 | **`presenceExtendedAway`** | "invisible" | The connected user is connected but **seen as offline** |
 
 
+## Audio/ Video Call
+You can start Audio call or video call with contact as follow,
 
+```objective-c
+
+// Register for Notifications ..
+
+ [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
+ 
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
+        
+```
+Start Audio Call
+```objective-c
+RTCCall * currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureLocalVideo)];
+
+````
+OR
+Start Video Call
+
+```objective-c
+RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
+
+```
+```objective-c
+- (void) didCallSuccess : (NSNotification * ) notification {
+    
+    if ([notification.object class] == [RTCCall class]) {
+        currentCall = notification.object;
+    }
+   
+}
+- (void) didUpdateCall : (NSNotification * ) notification {
+    
+    if ([notification.object class] == [RTCCall class]) {
+        currentCall = notification.object;
+    }
+    // change status 
+    
+}
+
+- (void) statusChanged : (NSNotification * ) notification {
+  // Other contact Cancel the call ...
+    dispatch_async(dispatch_get_main_queue(), ^{
+    // if you start a video call , remove it .
+        RTCMediaStream * remoteVideoStream = [[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall];
+        [self dismissViewControllerAnimated:NO completion:^{
+            
+        }];
+    });
+    
+}
+
+- (void) didRemoveCall : (NSNotification * ) notification {
+    // cancel Video
+}
+- (void) didAllowMicrophone : (NSNotification * ) notification {
+    // Allow Microphone Access
+}
+- (void) didRefuseMicrophone : (NSNotification * ) notification {
+    // Refuse Microphone Access
+}
+
+```
+
+Add Video to Audio Call
+```objective-c
+[[ServicesManager sharedInstance].rtcService addVideoMediaToCall:currentCall];       
+[[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject addRenderer:_localVideoStream]; // _localVideoStream is RTCEAGLVideoView 
+```
+
+Remove Video From Call
+```objective-c
+
+[[ServicesManager sharedInstance].rtcService removeVideoMediaFromCall:currentCall];
+[[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject removeRenderer:_localVideoStream];
+
+```
+Cancel Current Call
+```objective-c
+ [[ServicesManager sharedInstance].rtcService cancelOutgoingCall:currentCall];
+ [[ServicesManager sharedInstance].rtcService hangupCall:currentCall];
+```
 ## Serviceability
 ---
 
 ### Stopping the SDK
 
-At any time, you can stop the connection to Rainbow by calling the API `stop()`. This will stop all services. The only way to reconnect is to call the API `disconnect` again.
+At any time, you can stop the connection to Rainbow by calling the API `disconnect`. This will stop all services. The only way to reconnect is to call the API `connect` again.
 
 ```objective-c
-
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:kLoginManagerDidLogoutSucceeded object:nil];
+ [[ServicesManager sharedInstance].loginManager disconnect];
+ [[ServicesManager sharedInstance].loginManager resetAllCredentials];
 
 ```
-
-
 
 ## Features provided
 ---
@@ -469,6 +639,12 @@ Here is the list of features supported by the Rainbow-iOS-SDK
 
 - Set the user connected presence
 
+
+### Calls
+
+- start audio call 
+
+- start video call
 
 ## Authors
 ---
