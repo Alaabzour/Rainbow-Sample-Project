@@ -329,8 +329,6 @@ You can get history for selected conversation, as follow,
         [self.tableView reloadData];
         
     });
-
- 
 }
 
 -(void) itemsBrowser:(CKItemsBrowser*)browser didReorderCacheItemsAtIndexes:(NSArray*)oldIndexes toIndexes:(NSArray*)newIndexes {
@@ -525,8 +523,8 @@ Start Video Call
 
 ```objective-c
 RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
-
 ```
+
 ```objective-c
 - (void) didCallSuccess : (NSNotification * ) notification {
     
@@ -535,6 +533,7 @@ RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNe
     }
    
 }
+
 - (void) didUpdateCall : (NSNotification * ) notification {
     
     if ([notification.object class] == [RTCCall class]) {
@@ -559,9 +558,11 @@ RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNe
 - (void) didRemoveCall : (NSNotification * ) notification {
     // cancel Video
 }
+
 - (void) didAllowMicrophone : (NSNotification * ) notification {
     // Allow Microphone Access
 }
+
 - (void) didRefuseMicrophone : (NSNotification * ) notification {
     // Refuse Microphone Access
 }
@@ -586,6 +587,20 @@ Cancel Current Call
  [[ServicesManager sharedInstance].rtcService cancelOutgoingCall:currentCall];
  [[ServicesManager sharedInstance].rtcService hangupCall:currentCall];
 ```
+
+The following Status are supported:
+
+| Presence constant | value | Meaning |
+|------------------ | ----- | ------- |
+| **`RTCCallStatusRinging`** | 0 | Call is ringing |
+| **`RTCCallStatusConnecting`** | 1 | Call is accepted, we can proceed and establish |
+| **`RTCCallStatusDeclined`** | 2 | Call is declined |
+| **`RTCCallStatusTimeout`** | 3 | Call has not been accepted/decline in time. |
+| **`RTCCallStatusCanceled`** | 4 | Call has been canceled |
+| **`RTCCallStatusEstablished`** | 5 |  Call has been established |
+| **`RTCCallStatusHangup`** | 6 |  Call has been hangup |
+
+
 ## Serviceability
 ---
 
