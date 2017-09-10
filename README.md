@@ -37,8 +37,7 @@ Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you
 
 - Add in your *info.plist* the following entries : 
     - `UIBackgroundModes` (type Array)
-        - `Item 0` (type String)
-            - `audio`
+        - `audio` (type String)
     - `NSCameraUsageDescription` (type String) 
         - `a text explaining that you want access to camera`
     - `NSMicrophoneUsageDescription` (type String) 
