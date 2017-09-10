@@ -186,6 +186,22 @@ Here is the complete list of the events that you can subscribe on:
 | **`kConversationsManagerDidAckMessageNotification`** |  |
 | **`kConversationsManagerDidUpdateMessagesUnreadCount`** | Fired when the SDK did update Messages unread count |
 
+#### Audio/Video Call Events
+
+| Name | Description |
+|------|------------|
+| **`kRTCServiceDidAddCallNotification`** | Fired when the SDK has successfully retrieve or start a call |
+| **`kRTCServiceDidUpdateCallNotification`** | Fired when current call status is updated   |
+| **`kRTCServiceDidRemoveCallNotification`** | Fired when the you remove current call |
+| **`kRTCServiceCallStatsNotification`** | Fired when new stats available for current call |
+| **`kRTCServiceDidAllowMicrophoneNotification`** | Fired when you allow Microphone access |
+| **`kRTCServiceDidRefuseMicrophoneNotification`** |Fired when you refuse Microphone access |
+| **`kConversationsManagerDidReceiveNewMessageForConversation`** | Fired when the conversation receive a new message |
+| **`kRTCServiceDidAddLocalVideoTrackNotification`** | Fired when you add local video to call |
+| **`kRTCServiceDidRemoveLocalVideoTrackNotification`** | Fired when you remove local video from the call |
+| **`kRTCServiceDidAddRemoteVideoTrackNotification`** | Fired when you add remote video to call]
+| **`kRTCServiceDidRemoveRemoteVideoTrackNotification`** | Fired when you remove remote video from the call |
+
 
 ## Instant Messaging
 ---
@@ -273,7 +289,71 @@ If you want to mark all messages as read for a conversation you can use `markAsR
 Receipts allow to know if the message has been successfully delivered to your recipient. Use the ID of your originated message to be able to link with the receipt received.
 
 
+### Get Conversation History
 
+You can get history for selected conversation, as follow,
+
+```objective-c
+
+// pageSize The maximum number of retrieved .
+// preload retreive imediately from the local cache.
+
+ MessagesBrowser *messagesBrowser = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
+                        
+ messagesBrowser.delegate = self;
+            
+```
+
+```objective-c
+#pragma mark - CKItemsBrowserDelegate
+-(void) itemsBrowser:(CKItemsBrowser*)browser didAddCacheItems:(NSArray*)newItems atIndexes:(NSIndexSet*)indexes {
+
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [messagesArray insertObjects:newItems atIndexes:indexes];
+        [self.tableView reloadData];
+         NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+         [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+
+    });
+  
+    
+
+}
+-(void) itemsBrowser:(CKItemsBrowser*)browser didRemoveCacheItems:(NSArray*)removedItems atIndexes:(NSIndexSet*)indexes{
+    NSLog(@"Removed!");
+}
+-(void) itemsBrowser:(CKItemsBrowser*)browser didUpdateCacheItems:(NSArray*)changedItems atIndexes:(NSIndexSet*)indexes {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [messagesArray replaceObjectsAtIndexes:indexes withObjects:changedItems];
+        [self.tableView reloadData];
+        
+    });
+
+ 
+}
+
+-(void) itemsBrowser:(CKItemsBrowser*)browser didReorderCacheItemsAtIndexes:(NSArray*)oldIndexes toIndexes:(NSArray*)newIndexes {
+    NSLog(@"Reorderd!");
+}
+
+-(void) itemsBrowser:(CKItemsBrowser*)browser didReceiveItemsAddedEvent:(NSArray*)addedItems{
+    
+     NSLog(@"ReceivedItemsAdded!");
+}
+
+-(void) itemsBrowser:(CKItemsBrowser*)browser didReceiveItemsDeletedEvent:(NSArray*)deletedItems{
+    
+     NSLog(@"ReceivedItemsDeleted!");
+}
+
+-(void) itemsBrowserDidReceivedAllItemsDeletedEvent:(CKItemsBrowser*)browser{
+    
+     NSLog(@"ReceivedAllItemsDeleted!");
+}
+
+
+```
 
 ## Contacts
 ---
