@@ -495,20 +495,110 @@ The following Methods are supported:
 | **`presenceExtendedAway`** | "invisible" | The connected user is connected but **seen as offline** |
 
 
+## Audio/ Video Call
+You can start Audio call or video call with contact as follow,
 
+```objective-c
+
+// Register for Notifications ..
+
+ [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
+ 
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
+        
+```
+Start Audio Call
+```objective-c
+RTCCall * currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureLocalVideo)];
+
+````
+OR
+Start Video Call
+
+```objective-c
+RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
+
+```
+```objective-c
+- (void) didCallSuccess : (NSNotification * ) notification {
+    
+    if ([notification.object class] == [RTCCall class]) {
+        currentCall = notification.object;
+    }
+   
+}
+- (void) didUpdateCall : (NSNotification * ) notification {
+    
+    if ([notification.object class] == [RTCCall class]) {
+        currentCall = notification.object;
+    }
+    // change status 
+    
+}
+
+- (void) statusChanged : (NSNotification * ) notification {
+  // Other contact Cancel the call ...
+    dispatch_async(dispatch_get_main_queue(), ^{
+    // if you start a video call , remove it .
+        RTCMediaStream * remoteVideoStream = [[ServicesManager sharedInstance].rtcService remoteVideoStreamForCall:currentCall];
+        [self dismissViewControllerAnimated:NO completion:^{
+            
+        }];
+    });
+    
+}
+
+- (void) didRemoveCall : (NSNotification * ) notification {
+    // cancel Video
+}
+- (void) didAllowMicrophone : (NSNotification * ) notification {
+    // Allow Microphone Access
+}
+- (void) didRefuseMicrophone : (NSNotification * ) notification {
+    // Refuse Microphone Access
+}
+
+```
+
+Add Video to Audio Call
+```objective-c
+[[ServicesManager sharedInstance].rtcService addVideoMediaToCall:currentCall];       
+[[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject addRenderer:_localVideoStream]; // _localVideoStream is RTCEAGLVideoView 
+```
+
+Remove Video From Call
+```objective-c
+
+[[ServicesManager sharedInstance].rtcService removeVideoMediaFromCall:currentCall];
+[[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject removeRenderer:_localVideoStream];
+
+```
+Cancel Current Call
+```objective-c
+ [[ServicesManager sharedInstance].rtcService cancelOutgoingCall:currentCall];
+ [[ServicesManager sharedInstance].rtcService hangupCall:currentCall];
+```
 ## Serviceability
 ---
 
 ### Stopping the SDK
 
-At any time, you can stop the connection to Rainbow by calling the API `stop()`. This will stop all services. The only way to reconnect is to call the API `disconnect` again.
+At any time, you can stop the connection to Rainbow by calling the API `disconnect`. This will stop all services. The only way to reconnect is to call the API `connect` again.
 
 ```objective-c
-
+ [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didLogout:) name:kLoginManagerDidLogoutSucceeded object:nil];
+ [[ServicesManager sharedInstance].loginManager disconnect];
+ [[ServicesManager sharedInstance].loginManager resetAllCredentials];
 
 ```
-
-
 
 ## Features provided
 ---
@@ -549,6 +639,12 @@ Here is the list of features supported by the Rainbow-iOS-SDK
 
 - Set the user connected presence
 
+
+### Calls
+
+- start audio call 
+
+- start video call
 
 ## Authors
 ---
