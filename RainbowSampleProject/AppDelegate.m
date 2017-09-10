@@ -11,7 +11,6 @@
 #import "ConversationsViewController.h"
 #import "SettingsViewController.h"
 #import "LoginViewController.h"
-#import "RecentViewController.h"
 #import <Rainbow/Rainbow.h>
 
 @interface AppDelegate ();

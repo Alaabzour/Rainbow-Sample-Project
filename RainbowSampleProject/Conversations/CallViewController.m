@@ -37,24 +37,24 @@
         currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
     }
     
-    NSArray * testArray = [[ServicesManager sharedInstance].rtcService calls];
-    NSLog(@"%@",testArray);
+    
     // Do any additional setup after loading the view from its nib.
 }
 
 - (void) didCallSuccess : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
+    
     if ([notification.object class] == [RTCCall class]) {
         currentCall = notification.object;
     }
  
-    [self updateStatus];
+    //[self updateStatus];
 }
 - (void) didUpdateCall : (NSNotification * ) notification {
-    NSLog(@"%@",notification.object);
+    
     if ([notification.object class] == [RTCCall class]) {
         currentCall = notification.object;
     }
+    
     [self updateStatus];
     
 }
@@ -321,7 +321,6 @@
         [sender setBackgroundColor:APPLICATION_BLUE_COLOR];
     }
 }
-
 
 
 - (IBAction)endCallAction:(UIButton *)sender {

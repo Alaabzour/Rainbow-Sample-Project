@@ -21,6 +21,7 @@
     [super viewDidLoad];
     self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
 
+    callsArray = [[ServicesManager sharedInstance].rtcService calls];
     // Do any additional setup after loading the view from its nib.
     
 
@@ -34,7 +35,7 @@
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 0;
+    return callsArray.count;
 }
 
 

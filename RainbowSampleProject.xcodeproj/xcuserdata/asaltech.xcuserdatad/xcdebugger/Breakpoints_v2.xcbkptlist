@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "526479588.682455"
+            timestampString = "526480487.851331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "719"
-            endingLineNumber = "719">
+            startingLineNumber = "723"
+            endingLineNumber = "723">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -40,43 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "526479588.682455"
+            timestampString = "526480487.851331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "615"
-            endingLineNumber = "615"
-            landmarkName = "-itemsBrowser:didReceiveItemsDeletedEvent:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "526479588.682455"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "620"
-            endingLineNumber = "620"
-            landmarkName = "-itemsBrowserDidReceivedAllItemsDeletedEvent:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "526478798.574708"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "565"
-            endingLineNumber = "565"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
             landmarkName = "-itemsBrowser:didAddCacheItems:atIndexes:"
             landmarkType = "7">
          </BreakpointContent>
@@ -88,28 +56,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "526479420.495028"
+            timestampString = "526480487.851331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "578"
-            endingLineNumber = "578"
-            landmarkName = "-itemsBrowser:didAddCacheItems:atIndexes:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
-            timestampString = "526479456.524093"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "544"
-            endingLineNumber = "544"
+            startingLineNumber = "548"
+            endingLineNumber = "548"
             landmarkName = "-sendMessage:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
+            timestampString = "526480487.851331"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "-didReceiveNewMessage:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RainbowSampleProject/Conversations/ChatViewController.m"
+            timestampString = "526718339.815888"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "569"
+            endingLineNumber = "569"
+            landmarkName = "-itemsBrowser:didAddCacheItems:atIndexes:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

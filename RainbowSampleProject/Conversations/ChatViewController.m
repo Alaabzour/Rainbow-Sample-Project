@@ -117,12 +117,12 @@
     [self.MessageTextView becomeFirstResponder];
     
     self.navigationController.navigationBar.barTintColor = [UIColor groupTableViewBackgroundColor];
-    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
+    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 44)];
     
-    
+    titleLabel.textAlignment = NSTextAlignmentCenter;
     if ([_aContact class] == [Contact class]) {
         Contact * contact = (Contact *) _aContact;
-        titleLabel.text = contact.fullName;
+        titleLabel.text = contact.firstName;
     }
     else if ([_aContact class] == [Room class]){
         Room * contact = (Room *) _aContact;
@@ -199,16 +199,20 @@
 - (void) didReceiveNewMessage : (NSNotification *) notification {
    
     Conversation * receivedConversation  = notification.object;
+   
     if (receivedConversation != nil) {
-        [messagesArray addObject:receivedConversation.lastMessage];
+        if (receivedConversation.peer == _aContact) {
+            [messagesArray addObject:receivedConversation.lastMessage];
+            
+            [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            });
+        }
         
-        [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
-            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-        });
 
     }
     

@@ -99,7 +99,7 @@
          conversation  = [conversationsMuttableArray objectAtIndex:indexPath.row];
     }
    
-    
+    cell.ConversationLastMessageLabel.text = @"";
     if (conversation.type == 1 || conversation.type == 3) { // user or Bot
         
         Contact * contact = (Contact *)conversation.peer ;
@@ -279,16 +279,6 @@
          viewController.aContact = (Room *)conversation.peer;
     }
    
-
-   // MessagesBrowser *messages = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:conversation withPageSize:10 preloadMessages:NO];
-        
-//    [messages resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
-//        NSLog(@"Done..");
-//    }];
-//    
-//    [messages resyncBrowsingCacheUntilDate:[NSDate date] withCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
-//        NSLog(@"Done..");
-//    }];
     
     viewController.hidesBottomBarWhenPushed = YES;
     
