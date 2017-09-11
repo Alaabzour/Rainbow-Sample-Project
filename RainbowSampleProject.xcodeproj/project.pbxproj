@@ -39,6 +39,8 @@
 		46BCFAAD1F5FCBA000CA365F /* outgoing-rings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAAA1F5FCBA000CA365F /* outgoing-rings.mp3 */; };
 		46BCFAB11F60162600CA365F /* CallTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46BCFAAF1F60162600CA365F /* CallTableViewCell.m */; };
 		46BCFAB21F60162600CA365F /* CallTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46BCFAB01F60162600CA365F /* CallTableViewCell.xib */; };
+		46C473461F66B65200539AB3 /* MediaTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46C473441F66B65200539AB3 /* MediaTableViewCell.m */; };
+		46C473471F66B65200539AB3 /* MediaTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46C473451F66B65200539AB3 /* MediaTableViewCell.xib */; };
 		46CF30961F39A0AB001D827F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF30941F39A0AB001D827F /* LoginViewController.m */; };
 		46CF30971F39A0AB001D827F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46CF30951F39A0AB001D827F /* LoginViewController.xib */; };
 		46CF309C1F39D93E001D827F /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46CF309A1F39D93E001D827F /* SettingsTableViewCell.m */; };
@@ -134,6 +136,9 @@
 		46BCFAAE1F60162600CA365F /* CallTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallTableViewCell.h; path = Conversations/CallTableViewCell.h; sourceTree = "<group>"; };
 		46BCFAAF1F60162600CA365F /* CallTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallTableViewCell.m; path = Conversations/CallTableViewCell.m; sourceTree = "<group>"; };
 		46BCFAB01F60162600CA365F /* CallTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CallTableViewCell.xib; path = Conversations/CallTableViewCell.xib; sourceTree = "<group>"; };
+		46C473431F66B65200539AB3 /* MediaTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MediaTableViewCell.h; path = Conversations/MediaTableViewCell.h; sourceTree = "<group>"; };
+		46C473441F66B65200539AB3 /* MediaTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MediaTableViewCell.m; path = Conversations/MediaTableViewCell.m; sourceTree = "<group>"; };
+		46C473451F66B65200539AB3 /* MediaTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MediaTableViewCell.xib; path = Conversations/MediaTableViewCell.xib; sourceTree = "<group>"; };
 		46CF30931F39A0AB001D827F /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Login/LoginViewController.h; sourceTree = "<group>"; };
 		46CF30941F39A0AB001D827F /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Login/LoginViewController.m; sourceTree = "<group>"; };
 		46CF30951F39A0AB001D827F /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LoginViewController.xib; path = Login/LoginViewController.xib; sourceTree = "<group>"; };
@@ -219,6 +224,9 @@
 				46BCFAAE1F60162600CA365F /* CallTableViewCell.h */,
 				46BCFAAF1F60162600CA365F /* CallTableViewCell.m */,
 				46BCFAB01F60162600CA365F /* CallTableViewCell.xib */,
+				46C473431F66B65200539AB3 /* MediaTableViewCell.h */,
+				46C473441F66B65200539AB3 /* MediaTableViewCell.m */,
+				46C473451F66B65200539AB3 /* MediaTableViewCell.xib */,
 			);
 			name = "Conversation Cell";
 			sourceTree = "<group>";
@@ -530,6 +538,7 @@
 				46CF309D1F39D93E001D827F /* SettingsTableViewCell.xib in Resources */,
 				464C1C871F37318000E0D1D1 /* ChatViewController.xib in Resources */,
 				46F09C221F24CECA0081F7D7 /* ContactsTableViewCell.xib in Resources */,
+				46C473471F66B65200539AB3 /* MediaTableViewCell.xib in Resources */,
 				4655A3581F2879A800C94608 /* UserInfoTableViewCell.xib in Resources */,
 				464C1C811F36FFC100E0D1D1 /* ConversationTableViewCell.xib in Resources */,
 				46F09BE51F24B7EB0081F7D7 /* LaunchScreen.storyboard in Resources */,
@@ -571,6 +580,7 @@
 				46762C181F45887C005069DD /* RecentViewController.m in Sources */,
 				464C1C861F37318000E0D1D1 /* ChatViewController.m in Sources */,
 				46F09BDA1F24B7EB0081F7D7 /* AppDelegate.m in Sources */,
+				46C473461F66B65200539AB3 /* MediaTableViewCell.m in Sources */,
 				46CF30961F39A0AB001D827F /* LoginViewController.m in Sources */,
 				46697D2B1F306AD8008696CB /* SettingsViewController.m in Sources */,
 				46697D301F307B85008696CB /* ContactStatusTableViewCell.m in Sources */,

@@ -14,4 +14,7 @@
 
 + (UITabBarController *) setupTabbarController;
 
++ (NSString *)getItemDateString:(NSDate *)date;
+
++(NSString *)formatTimeFromSeconds:(NSString *)numberOfSeconds;
 @end

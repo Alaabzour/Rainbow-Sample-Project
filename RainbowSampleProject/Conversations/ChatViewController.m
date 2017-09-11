@@ -10,6 +10,7 @@
 #import "MessageTableViewCell.h"
 #import "CallViewController.h"
 #import "CallTableViewCell.h"
+#import "MediaTableViewCell.h"
 #import <Rainbow/CKItemsBrowser+protected.h>
 
 @interface ChatViewController () <UITextViewDelegate, CKItemsBrowserDelegate>
@@ -17,58 +18,21 @@
 @end
 
 @implementation ChatViewController {
-    NSMutableArray * messagesArray;
-    Conversation *currentConversation;
+    NSMutableArray   * messagesArray;
     UIRefreshControl * refreshControl;
-    MessagesBrowser *messagesBrowser;
+    Conversation     *currentConversation;
+    MessagesBrowser  *messagesBrowser;
+    
     BOOL isFetchMoreMessages;
 }
+
+#pragma mark - Application LifeCycle
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-   
-    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
-
-    messagesArray = [NSMutableArray array];
-    
-    
-    
-    refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.backgroundColor = [UIColor whiteColor];
-    refreshControl.tintColor = [UIColor darkGrayColor];
-    [refreshControl addTarget:self
-                       action:@selector(handleRefresh:)
-                  forControlEvents:UIControlEventValueChanged];
-    
-    self.tableView.refreshControl = refreshControl;
-   
+    [self setup];
     // Do any additional setup after loading the view from its nib.
-}
-
--(void)handleRefresh : (id)sender
-{
-    isFetchMoreMessages = YES;
-    [messagesBrowser nextPageWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-           
-            [self.tableView reloadData];
-            if (addedCacheItems.count) {
-                isFetchMoreMessages = NO;
-                NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-            }
-           
-            
-        });
-        
-        [refreshControl endRefreshing];
-    }];
-
-    
 }
 
 
@@ -81,6 +45,48 @@
     
     [super viewWillAppear:animated];
     
+    // stat conversation
+     [[ServicesManager sharedInstance].conversationsManagerService startConversationWithPeer:_aContact withCompletionHandler:^(Conversation *conversation, NSError *error) {
+         if (error == nil) {
+             currentConversation = conversation;
+             // get history for conversation
+             messagesBrowser = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
+             
+             // add delegate for messageBrowser
+             messagesBrowser.delegate = self;
+             //resync Browsing Cache
+             [messagesBrowser resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+
+             }];
+            // mark recived messages as read by me
+             [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
+
+         }
+    }];
+
+    //[self.MessageTextView becomeFirstResponder];
+    [self setupNavigationController];
+    
+}
+
+- (void) setup {
+    
+    self.tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //[self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
+    
+    messagesArray = [NSMutableArray array];
+    
+    refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.backgroundColor = [UIColor whiteColor];
+    refreshControl.tintColor = [UIColor darkGrayColor];
+    [refreshControl addTarget:self
+                       action:@selector(handleRefresh:)
+             forControlEvents:UIControlEventValueChanged];
+    
+    self.tableView.refreshControl = refreshControl;
+    
+    // addObserver for Notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -92,29 +98,9 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateMessagesUnreadCount:) name:kConversationsManagerDidUpdateMessagesUnreadCount object:nil];
     
-    
-    // stat conversation
-     [[ServicesManager sharedInstance].conversationsManagerService startConversationWithPeer:_aContact withCompletionHandler:^(Conversation *conversation, NSError *error) {
-         if (error == nil) {
-             currentConversation = conversation;
-             
-             messagesBrowser = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
-             
-             
-             messagesBrowser.delegate = self;
-            
-             [messagesBrowser resyncBrowsingCacheWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+}
 
-             }];
-            
-             [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
-
-         }
-    }];
-
-  
-    
-    [self.MessageTextView becomeFirstResponder];
+- (void) setupNavigationController {
     
     self.navigationController.navigationBar.barTintColor = [UIColor groupTableViewBackgroundColor];
     UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, 44)];
@@ -122,7 +108,13 @@
     titleLabel.textAlignment = NSTextAlignmentCenter;
     if ([_aContact class] == [Contact class]) {
         Contact * contact = (Contact *) _aContact;
-        titleLabel.text = contact.firstName;
+        if (contact.firstName) {
+             titleLabel.text = contact.firstName;
+        }
+        else{
+             titleLabel.text = contact.fullName;
+        }
+       
     }
     else if ([_aContact class] == [Room class]){
         Room * contact = (Room *) _aContact;
@@ -134,15 +126,42 @@
     
     self.navigationController.navigationBar.tintColor = APPLICATION_BLUE_COLOR;
     
-  // check if call is available
-   
-   UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
-   
     
-    UIBarButtonItem *videoCallButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(videoCallButtonClicked:)];
-    self.navigationItem.rightBarButtonItems = @[videoCallButton,callButton];
+    if ([_aContact class] == [Contact class]) {
+        
+        UIBarButtonItem *callButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"call-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(callButtonClicked:)];
+        
+        
+        UIBarButtonItem *videoCallButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"video-not-filled-icon"] style:UIBarButtonItemStylePlain target:self action:@selector(videoCallButtonClicked:)];
+        
+        self.navigationItem.rightBarButtonItems = @[videoCallButton,callButton];
+    }
     
-  
+    
+}
+
+#pragma mark - Call Actions
+-(void)handleRefresh : (id)sender // load more messages for current conversation ..
+{
+    isFetchMoreMessages = YES;
+    [messagesBrowser nextPageWithCompletionHandler:^(NSArray *addedCacheItems, NSArray *removedCacheItems, NSArray *updatedCacheItems, NSError *error) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.tableView reloadData];
+            if (addedCacheItems.count) {
+                isFetchMoreMessages = NO;
+                NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            }
+            
+            
+        });
+        
+        [refreshControl endRefreshing];
+    }];
+    
+    
 }
 
 -(void) callButtonClicked:(id)sender {
@@ -154,37 +173,37 @@
 }
 
 -(void) openCallViewControllerWithVideoFalg:(BOOL)isVideo {
+    
     CallViewController * viewController = [[CallViewController alloc]initWithNibName:@"CallViewController" bundle:nil];
+    
     viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    if ([_aContact class] == [Contact class]) {
-        Contact * contact = (Contact *) _aContact;
-        viewController.aContact = contact;
-        viewController.isVideoCall = isVideo;
+    
+    Contact * contact = (Contact *) _aContact;
+    
+    viewController.aContact = contact;
+    
+    viewController.isVideoCall = isVideo;
+    
+    [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
+    
+    
+    [self presentViewController:viewController animated:NO completion:^{
         
-        [[ServicesManager sharedInstance].rtcService requestMicrophoneAccess];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
-        
-        
-        [self presentViewController:viewController animated:NO completion:^{
-            
-        }];
-    }
-    else if ([_aContact class] == [Room class]){
-        
-        
-    }
+    }];
+
+    
+    
  
 }
-
-
 
 - (void) didUpdateMessagesUnreadCount : (NSNotification *) notification {
     
@@ -206,16 +225,9 @@
             
             [[ServicesManager sharedInstance].conversationsManagerService markAsReadByMeAllMessageForConversation:currentConversation];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-                NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
-                [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-            });
+           
         }
-        
-
     }
-    
 }
 
 - (void) didUpdateConversation : (NSNotification *) notification {
@@ -225,8 +237,8 @@
 
         
     }
-    
 }
+
 #pragma mark - TableView Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -242,81 +254,95 @@
     Message *  message = [messagesArray objectAtIndex:indexPath.row];
     
     if (message.type == 2 || message.type == 1) {
-        
-        static NSString *CellIdentifier = @"MessageCell";
-        
-        MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        if (cell == nil) {
-            [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        }
-        
-        cell.dateLabel.text = [self getItemDateString:message.date];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        if (message.isOutgoing) {
-            cell.MessageImageView.image = [self balloonImageForSending];
-            [cell.myUserImageView setHidden:NO];
-            [cell.contactImageView setHidden:YES];
-            cell.messagebodyLabel.textColor = [UIColor darkGrayColor];
-            cell.dateLabel.textColor = [UIColor grayColor];
-            switch (message.state) {
-                    
-                case 2:
-                    cell.seenImageView.image = [UIImage imageNamed:@"recieved-icon"];
-                    break;
-                case 3:
-                    cell.seenImageView.image = [UIImage imageNamed:@"seen-icon"];
-                    break;
-                case 4:
-                    cell.seenImageView.image = [UIImage imageNamed:@"error-gray-icon"];
-                    break;
-                    
-                default:
-                    cell.seenImageView.image = [UIImage imageNamed:@"deliverd-icon"];
-                    break;
+        if (message.attachment != nil) {
+            static NSString *CellIdentifier = @"MediaCell";
+            MediaTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (cell == nil) {
+                [tableView registerNib:[UINib nibWithNibName:@"MediaTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             }
             
-            if ([[ServicesManager sharedInstance] myUser].contact.photoData) {
-                cell.myUserImageView.image = [UIImage imageWithData:[[ServicesManager sharedInstance] myUser].contact.photoData];
-            }
-            else{
-                cell.myUserImageView.image = [UIImage imageNamed:@"placeholder"];
-            }
+            NSString * urlString = [NSString stringWithFormat:@"%@/%@",message.attachment.url,message.attachment.fileName];
+           
+            return cell;
         }
         else{
-            cell.MessageImageView.image = [self balloonImageForReceiving];
-            [cell.myUserImageView setHidden:YES];
-            [cell.contactImageView setHidden:NO];
-            cell.messagebodyLabel.textColor = [UIColor whiteColor];
-            cell.dateLabel.textColor = [UIColor groupTableViewBackgroundColor];
-            cell.seenImageView.image = nil;
+            static NSString *CellIdentifier = @"MessageCell";
             
-            if ([_aContact class] == [Contact class]) {
-                Contact * contact = (Contact *) _aContact;
-                if (contact.photoData) {
-                    cell.contactImageView.image = [UIImage imageWithData:contact.photoData];
+            MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (cell == nil) {
+                [tableView registerNib:[UINib nibWithNibName:@"MessageTableViewCell" bundle:nil] forCellReuseIdentifier:CellIdentifier];
+                cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            }
+            
+            cell.dateLabel.text = [SharedDataObject getItemDateString:message.date];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            if (message.isOutgoing) {
+                cell.MessageImageView.image = [self balloonImageForSending];
+                [cell.myUserImageView setHidden:NO];
+                [cell.contactImageView setHidden:YES];
+                cell.messagebodyLabel.textColor = [UIColor darkGrayColor];
+                cell.dateLabel.textColor = [UIColor grayColor];
+                
+                switch (message.state) {
+                        
+                    case 2:
+                        cell.seenImageView.image = [UIImage imageNamed:@"recieved-icon"];
+                        break;
+                    case 3:
+                        cell.seenImageView.image = [UIImage imageNamed:@"seen-icon"];
+                        break;
+                    case 4:
+                        cell.seenImageView.image = [UIImage imageNamed:@"error-gray-icon"];
+                        break;
+                        
+                    default:
+                        cell.seenImageView.image = [UIImage imageNamed:@"deliverd-icon"];
+                        break;
+                }
+                
+                if ([[ServicesManager sharedInstance] myUser].contact.photoData) {
+                    cell.myUserImageView.image = [UIImage imageWithData:[[ServicesManager sharedInstance] myUser].contact.photoData];
                 }
                 else{
-                    
+                    cell.myUserImageView.image = [UIImage imageNamed:@"placeholder"];
                 }
             }
-            else if ([_aContact class] == [Room class]){
-                //Room * contact = (Contact *) message.peer;
+            else{
+                cell.MessageImageView.image = [self balloonImageForReceiving];
+                [cell.myUserImageView setHidden:YES];
+                [cell.contactImageView setHidden:NO];
+                cell.messagebodyLabel.textColor = [UIColor whiteColor];
+                cell.dateLabel.textColor = [UIColor groupTableViewBackgroundColor];
+                cell.seenImageView.image = nil;
                 
-                cell.contactImageView.image = [UIImage imageNamed:@"group-placeholder-icon"];
+                if ([_aContact class] == [Contact class]) {
+                    Contact * contact = (Contact *) _aContact;
+                    if (contact.photoData) {
+                        cell.contactImageView.image = [UIImage imageWithData:contact.photoData];
+                    }
+                    else{
+                        
+                    }
+                }
+                else if ([_aContact class] == [Room class]){
+                    //Room * contact = (Contact *) message.peer;
+                    
+                    cell.contactImageView.image = [UIImage imageNamed:@"group-placeholder-icon"];
+                    
+                }
                 
             }
             
-           
-            
-            
+            cell.messagebodyLabel.text = message.body;
+            return cell;
+
         }
         
-         cell.messagebodyLabel.text = message.body;
-         return cell;
-
+        
     }
     
  
@@ -338,7 +364,7 @@
             
             cell.titleLabel.textColor = [UIColor redColor];
             cell.detailLabel.textColor = [UIColor redColor];
-            cell.detailLabel.text = [self getItemDateString:message.callLog.date];
+            cell.detailLabel.text = [SharedDataObject getItemDateString:message.callLog.date];
             if (!message.callLog.isOutgoing) {
             
                 text = @"%@ missed a call from you";
@@ -352,7 +378,7 @@
             
             cell.titleLabel.textColor = [UIColor darkGrayColor];
             cell.detailLabel.textColor = [UIColor grayColor];
-            cell.detailLabel.text = [self formatTimeFromSeconds:message.callLog.duration];
+            cell.detailLabel.text = [SharedDataObject formatTimeFromSeconds:message.callLog.duration];
             
             if (!message.callLog.isOutgoing) {
                 text = @"You called %@";
@@ -373,7 +399,6 @@
 
     }
     
-
     return cell;
 }
 
@@ -384,6 +409,10 @@
 
    
     if (message.type == 2 || message.type == 1) {
+        if (message.attachment != nil) {
+            return 120;
+        }
+        
         
         static NSString *CellIdentifier = @"MessageCell";
         
@@ -412,6 +441,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
+#pragma mark - Chat cell style
 - (UIImage *)balloonImageForReceiving
 {
     UIImage *bubble = [UIImage imageNamed:@"bubble-receive-icon"];
@@ -446,6 +476,7 @@
 }
 
 #pragma mark - TextView Delegate
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
    
     return YES;
@@ -503,6 +534,8 @@
 
 }
 
+#pragma mark - Keyboard Notifications
+
 - (void)keyboardDidShow:(NSNotification *)notification
 {
    
@@ -532,6 +565,7 @@
    
 }
 
+#pragma mark - Chat Actions
 - (IBAction)showAttachmentMethod:(id)sender {
     
 }
@@ -545,9 +579,7 @@
         [self itemsBrowser:messagesBrowser didAddCacheItems:@[message] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.tableView reloadData];
-//            NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
-//            [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+
             _MessageTextView.text = @" ";
             _MessageTextView.textColor = [UIColor colorWithRed:190.0/255.0 green:190.0/255.0 blue:190.0/255.0 alpha:1];
             [self.sendButton setEnabled:NO];
@@ -564,6 +596,7 @@
 }
 
 #pragma mark - CKItemsBrowserDelegate
+
 -(void) itemsBrowser:(CKItemsBrowser*)browser didAddCacheItems:(NSArray*)newItems atIndexes:(NSIndexSet*)indexes {
   
     int count = (int)newItems.count;
@@ -579,11 +612,10 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (!isFetchMoreMessages) {
-            //[self.tableView reloadData];
-            //[self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height)];
             [self.tableView reloadData];
             NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
             [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+           
         }
        
 
@@ -624,74 +656,6 @@
      NSLog(@"Done!");
 }
 
-#pragma mark - format  string
 
--(NSString *)formatTimeFromSeconds:(NSString *)numberOfSeconds
-{
-    
-    int seconds = [numberOfSeconds intValue] % 60;
-    int minutes = ([numberOfSeconds intValue] / 60) % 60;
-    int hours = [numberOfSeconds intValue] / 3600;
-    
-    
-    if (hours) {
-        if (hours == 1) {
-            return [NSString stringWithFormat:@"%d hr %02d mins", hours, minutes];
-        }
-        return [NSString stringWithFormat:@"%d hrs %02d mins", hours, minutes];
-    }
-   
-    if (minutes) {
-        if (minutes == 1) {
-            
-            return [NSString stringWithFormat:@"%d min %02d sec", minutes, seconds];
-
-        }
-        return [NSString stringWithFormat:@"%d mins %02d sec", minutes, seconds];
-    }
-    
-    if (seconds == 1) {
-        return [NSString stringWithFormat:@"%d sec", seconds];
-    }
-    return [NSString stringWithFormat:@"%d secs", seconds];
-}
-
--(NSString *)getItemDateString:(NSDate *)date{
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    
-    NSDateComponents *todayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:[NSDate date]];
-    
-    NSDateComponents *messageDayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:date];
-    
-    NSDateComponents *components = [[NSDateComponents alloc] init];
-    [components setDay:-1];
-    
-    NSDate *yesterdayDate = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:[NSDate date] options:0];
-    
-    NSDateComponents *yesterdayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:yesterdayDate];
-    
-    
-    
-    if([todayComponent day] == [messageDayComponent day] &&
-       [todayComponent month] == [messageDayComponent month] &&
-       [todayComponent year] == [messageDayComponent year] &&
-       [todayComponent era] == [messageDayComponent era]) {
-        
-        [formatter setDateFormat:@"hh:mm aa"];
-        return [formatter stringFromDate:date];
-    }
-    else if([yesterdayComponent day] == [messageDayComponent day] &&
-            [yesterdayComponent month] == [messageDayComponent month] &&
-            [yesterdayComponent year] == [messageDayComponent year] &&
-            [yesterdayComponent era] == [messageDayComponent era]) {
-        
-        return  @"Yesterday";
-    }
-    else{
-        [formatter setDateFormat:@"E, d MMM"];
-        return [formatter stringFromDate:date];
-    }
-}
 
 @end

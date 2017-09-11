@@ -36,9 +36,8 @@
     }
     else{
        
-        
+       // [SharedDataObject registerAllRainbowNotifications];
         [[UITabBar appearance] setTintColor:APPLICATION_BLUE_COLOR];
-        
          self.navigationController = [[UINavigationController alloc] initWithRootViewController: [SharedDataObject setupTabbarController]];
         
     }

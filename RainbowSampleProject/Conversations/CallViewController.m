@@ -227,9 +227,6 @@
     });
    }
 
-- (void) startCounter {
-    
-}
 
 
 -(void)timerTick:(NSTimer *)sender

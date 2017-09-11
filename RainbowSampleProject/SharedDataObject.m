@@ -12,56 +12,27 @@
 #import "SettingsViewController.h"
 #import "RecentViewController.h"
 #import "LoginViewController.h"
+#import "CallViewController.h"
 
 @implementation SharedDataObject
 
 + (void) registerAllRainbowNotifications {
     
     ContactsViewController * contactsViewController = [[ContactsViewController alloc]init];
+    CallViewController     * callViewController     = [[CallViewController alloc]init];
     
+    // Request Address Book Access
     [[ServicesManager sharedInstance].contactsManagerService requestAddressBookAccess];
     
-     [[NSNotificationCenter defaultCenter] addObserver:contactsViewController selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
-    
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:loginViewController selector:@selector(willLogin:) name:kLoginManagerWillLogin object:nil];
-//    
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:loginViewController selector:@selector(didLogin:) name:kLoginManagerDidLoginSucceeded object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:loginViewController selector:@selector(failedToConnect:) name:kLoginManagerDidFailedToAuthenticate object:nil];
-    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNewMessage:) name:kConversationsManagerDidReceiveNewMessageForConversation object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateConversation:) name:kConversationsManagerDidUpdateConversation object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAckMessageNotification:) name:kConversationsManagerDidAckMessageNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateMessagesUnreadCount:) name:kConversationsManagerDidUpdateMessagesUnreadCount object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
-//    
-   
-//
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReciveInvitaion:) name:kContactsManagerServiceDidAddInvitation object:nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name:kContactsManagerServiceDidUpdateContact object:nil];
-    
+    // Add Observer for Adding Contacts
+    [[NSNotificationCenter defaultCenter] addObserver:contactsViewController selector:@selector(didAddContact:) name:kContactsManagerServiceDidAddContact object:nil];
+    // Add Observers for Audio/Video Calls
+    [[NSNotificationCenter defaultCenter] addObserver:callViewController selector:@selector(didCallSuccess:) name:kRTCServiceDidAddCallNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:callViewController selector:@selector(didUpdateCall:) name:kRTCServiceDidUpdateCallNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:callViewController selector:@selector(statusChanged:) name:kRTCServiceCallStatsNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:callViewController selector:@selector(didRemoveCall:) name:kRTCServiceDidRemoveCallNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:callViewController selector:@selector(didAllowMicrophone:) name:kRTCServiceDidAllowMicrophoneNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:callViewController selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
     
 }
 
@@ -102,6 +73,75 @@
     
     return tabBarController;
     
+}
+
+#pragma mark - format date string
++ (NSString *)getItemDateString:(NSDate *)date{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    NSDateComponents *todayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:[NSDate date]];
+    
+    NSDateComponents *messageDayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:date];
+    
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setDay:-1];
+    
+    NSDate *yesterdayDate = [[NSCalendar currentCalendar] dateByAddingComponents:components toDate:[NSDate date] options:0];
+    
+    NSDateComponents *yesterdayComponent = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:yesterdayDate];
+    
+    
+    
+    if([todayComponent day] == [messageDayComponent day] &&
+       [todayComponent month] == [messageDayComponent month] &&
+       [todayComponent year] == [messageDayComponent year] &&
+       [todayComponent era] == [messageDayComponent era]) {
+        
+        [formatter setDateFormat:@"hh:mm aa"];
+        return [formatter stringFromDate:date];
+    }
+    else if([yesterdayComponent day] == [messageDayComponent day] &&
+            [yesterdayComponent month] == [messageDayComponent month] &&
+            [yesterdayComponent year] == [messageDayComponent year] &&
+            [yesterdayComponent era] == [messageDayComponent era]) {
+        
+        return  @"Yesterday";
+    }
+    else{
+        [formatter setDateFormat:@"E,d MMM"];
+        return [formatter stringFromDate:date];
+    }
+}
+
++(NSString *)formatTimeFromSeconds:(NSString *)numberOfSeconds
+{
+    
+    int seconds = [numberOfSeconds intValue] % 60;
+    int minutes = ([numberOfSeconds intValue] / 60) % 60;
+    int hours = [numberOfSeconds intValue] / 3600;
+    
+    
+    if (hours) {
+        if (hours == 1) {
+            return [NSString stringWithFormat:@"%d hr %02d mins", hours, minutes];
+        }
+        return [NSString stringWithFormat:@"%d hrs %02d mins", hours, minutes];
+    }
+    
+    if (minutes) {
+        if (minutes == 1) {
+            
+            return [NSString stringWithFormat:@"%d min %02d sec", minutes, seconds];
+            
+        }
+        return [NSString stringWithFormat:@"%d mins %02d sec", minutes, seconds];
+    }
+    
+    if (seconds == 1) {
+        return [NSString stringWithFormat:@"%d sec", seconds];
+    }
+    return [NSString stringWithFormat:@"%d secs", seconds];
 }
 
 @end
