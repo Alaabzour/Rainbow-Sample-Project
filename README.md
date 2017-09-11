@@ -493,7 +493,10 @@ The following Methods are supported:
 
 
 ## Audio/ Video Call
+
 You can start Audio call or video call with contact as follow,
+
+### Register for Notfications
 
 ```objective-c
 
@@ -513,7 +516,7 @@ You can start Audio call or video call with contact as follow,
         
 ```
 
-Start Video Call
+### Start Video Call
 
 ```objective-c
 RTCCall * currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureLocalVideo)];
@@ -523,7 +526,7 @@ RTCCall * currentCall = [[ServicesManager sharedInstance].rtcService beginNewOut
 This will begin a new video call with selected contact and notify **kRTCServiceDidAddCallNotification**
 
 OR
-Start Audio Call
+### Start Audio Call
 
 ```objective-c
 RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
@@ -574,13 +577,14 @@ RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNe
 }
 
 ```
+### Add Video to Audio Call
 
 If you start Audio Call you can Add Video to current call later as follow,
 ```objective-c
 [[ServicesManager sharedInstance].rtcService addVideoMediaToCall:currentCall];       
 [[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject addRenderer:_localVideoStream]; // _localVideoStream is RTCEAGLVideoView 
 ```
-
+### Remove Video from call
 You can remove Video From current call as follow,
 ```objective-c
 
@@ -588,12 +592,14 @@ You can remove Video From current call as follow,
 [[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject removeRenderer:_localVideoStream];
 
 ```
-Cancel Current Call
+### Cancel Current Call
+
 ```objective-c
  [[ServicesManager sharedInstance].rtcService cancelOutgoingCall:currentCall];
  [[ServicesManager sharedInstance].rtcService hangupCall:currentCall];
 ```
 
+### RTC Call Status
 The following Status are supported for current call,
 
 | Presence constant | value | Meaning |
