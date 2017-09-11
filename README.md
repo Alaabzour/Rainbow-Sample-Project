@@ -3,10 +3,6 @@
 
 Welcome to the Alcatel-Lucent Enterprise **Rainbow Software Development Kit for iOS**!
 
-The Alcatel-Lucent Enterprise (ALE) Rainbow Software Development Kit (SDK) is an npm package for connecting your iOS application to Rainbow.
-
-
-
 ## Preamble
 ---
 
@@ -281,25 +277,35 @@ If you want to mark all messages as read for a conversation you can use `markAsR
 ```
 
 
-
-
 ### Listen to receipts
 
-Receipts allow to know if the message has been successfully delivered to your recipient. Use the ID of your originated message to be able to link with the receipt received.
+Receipts allow to know if the message has been successfully delivered to your recipient.following are the list of status for each message,
 
+| message State | value | Meaning |
+|------------------ | ----- | ------- |
+| **`MessageDeliveryStateSent`** | 0 | The message state is **send** to server |
+| **`MessageDeliveryStateDelivered`** | 1 | The message state is **Delevered**  |
+| **`MessageDeliveryStateReceived`** | 2 | The message state is **Received**  |
+| **`MessageDeliveryStateRead`** | 3 | The message state is **Read** |
+| **`MessageDeliveryStateFailed`** | 4 | The message state is **Failed** to send |
 
+You Can check paramerter **state** for each message as follow,
+```objective-c
+Message *message = // message to check state
+NSLog(@"%ld",(long)message.state);
+```
 ### Get Conversation History
 
 You can get history for selected conversation, as follow,
 
 ```objective-c
 
-// pageSize The maximum number of retrieved .
-// preload retreive imediately from the local cache.
+// pageSize The maximum number of retrieved for example 20.
+// preload retreive imediately from the local cache 
 
- MessagesBrowser *messagesBrowser = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
+MessagesBrowser *messagesBrowser = [[ServicesManager sharedInstance].conversationsManagerService messagesBrowserForConversation:currentConversation withPageSize:20 preloadMessages:YES];
                         
- messagesBrowser.delegate = self;
+messagesBrowser.delegate = self;
             
 ```
 
@@ -307,18 +313,12 @@ You can get history for selected conversation, as follow,
 #pragma mark - CKItemsBrowserDelegate
 -(void) itemsBrowser:(CKItemsBrowser*)browser didAddCacheItems:(NSArray*)newItems atIndexes:(NSIndexSet*)indexes {
 
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         [messagesArray insertObjects:newItems atIndexes:indexes];
         [self.tableView reloadData];
-         NSIndexPath *rowIndexPath = [NSIndexPath indexPathForRow:messagesArray.count-1 inSection:0];
-         [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-
-    });
-  
-    
-
+    }); 
 }
+
 -(void) itemsBrowser:(CKItemsBrowser*)browser didRemoveCacheItems:(NSArray*)removedItems atIndexes:(NSIndexSet*)indexes{
     NSLog(@"Removed!");
 }
@@ -512,17 +512,24 @@ You can start Audio call or video call with contact as follow,
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(didRefuseMicrophone:) name:kRTCServiceDidRefuseMicrophoneNotification object:nil];
         
 ```
-Start Audio Call
+
+Start Video Call
+
 ```objective-c
 RTCCall * currentCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureLocalVideo)];
 
-````
+```
+
+This will begin a new video call with selected contact and notify **kRTCServiceDidAddCallNotification**
+
 OR
-Start Video Call
+Start Audio Call
 
 ```objective-c
 RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNewOutgoingCallWithContact:_aContact withFeatures:(RTCCallFeatureAudio)];
 ```
+
+ This will begin a new call with selected contact and notify **kRTCServiceDidAddCallNotification**
 
 ```objective-c
 - (void) didCallSuccess : (NSNotification * ) notification {
@@ -538,7 +545,7 @@ RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNe
     if ([notification.object class] == [RTCCall class]) {
         currentCall = notification.object;
     }
-    // change status 
+    // change status, do something with UI 
     
 }
 
@@ -568,13 +575,13 @@ RTCCall *currentVideoCall = [[ServicesManager sharedInstance].rtcService beginNe
 
 ```
 
-Add Video to Audio Call
+If you start Audio Call you can Add Video to current call later as follow,
 ```objective-c
 [[ServicesManager sharedInstance].rtcService addVideoMediaToCall:currentCall];       
 [[[ServicesManager sharedInstance].rtcService localVideoStreamForCall:currentCall].videoTracks.lastObject addRenderer:_localVideoStream]; // _localVideoStream is RTCEAGLVideoView 
 ```
 
-Remove Video From Call
+You can remove Video From current call as follow,
 ```objective-c
 
 [[ServicesManager sharedInstance].rtcService removeVideoMediaFromCall:currentCall];
@@ -587,7 +594,7 @@ Cancel Current Call
  [[ServicesManager sharedInstance].rtcService hangupCall:currentCall];
 ```
 
-The following Status are supported:
+The following Status are supported for current call,
 
 | Presence constant | value | Meaning |
 |------------------ | ----- | ------- |
