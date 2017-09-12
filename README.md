@@ -14,7 +14,7 @@ This documentation will help you to use it.
 ## Rainbow developer account
 ---
 
-Your need a Rainbow **developer** account in order to use the Rainbow SDK for iOS.
+You need a Rainbow **developer** account in order to use the Rainbow SDK for iOS.
 
 Please contact the Rainbow [support](mailto:support@openrainbow.com) team if you need one.
 
