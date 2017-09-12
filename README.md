@@ -458,7 +458,7 @@ The presence and status of a Rainbow user can take several values as described i
 |----------------|--------------|---------|
 | **`ContactPresenceAvailable`** | | The contact is connected to Rainbow through a desktop application and is available |
 | **`ContactPresenceAvailable`** | **mobile** | The contact is connected to Rainbow through a mobile application and is available |
-| *`ContactPresenceAway`** | | The contact is connected to Rainbow but hasn't have any activity for several minutes |
+| **`ContactPresenceAway`** | | The contact is connected to Rainbow but hasn't have any activity for several minutes |
 | **`ContactPresenceDoNotDisturb`** | | The contact is connected to Rainbow and doesn't want to be disturbed at this time |
 | **`ContactPresenceBusy`** | **presentation** | The contact is connected to Rainbow and uses an application in full screen (presentation mode) |
 | **`ContactPresenceBusy`** | **phone** | The contact is connected to Rainbow and currently engaged in an audio call (PBX) |
