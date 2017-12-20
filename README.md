@@ -440,11 +440,11 @@ You can remove a contact from your network using this notification:`kContactsMan
 When the presence of a contact changes, the following event is fired:
 
 ```objective-c
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdadeContact:) name: kContactsManagerServiceDidUpdateContact object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUpdateContact:) name: kContactsManagerServiceDidUpdateContact object:nil];
   
 ```
 ```objective-c
--(void) didUpdadeContact:(NSNotification *) notification {
+-(void) didUpdateContact:(NSNotification *) notification {
     
     Contact *contact = (Contact *)[notification.object objectForKey:@"contact"];
     // check property **presence**
