@@ -56,6 +56,7 @@
 		46F09C1B1F24C7B00081F7D7 /* ContactsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46F09C191F24C7B00081F7D7 /* ContactsViewController.xib */; };
 		46F09C211F24CECA0081F7D7 /* ContactsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F09C1F1F24CECA0081F7D7 /* ContactsTableViewCell.m */; };
 		46F09C221F24CECA0081F7D7 /* ContactsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46F09C201F24CECA0081F7D7 /* ContactsTableViewCell.xib */; };
+		712566251FEB963A004DF2AA /* SampleVideo_1280x720_1mb.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 712566241FEB963A004DF2AA /* SampleVideo_1280x720_1mb.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +167,7 @@
 		46F09C1E1F24CECA0081F7D7 /* ContactsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactsTableViewCell.h; path = Contacts/ContactsTableViewCell.h; sourceTree = "<group>"; };
 		46F09C1F1F24CECA0081F7D7 /* ContactsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactsTableViewCell.m; path = Contacts/ContactsTableViewCell.m; sourceTree = "<group>"; };
 		46F09C201F24CECA0081F7D7 /* ContactsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ContactsTableViewCell.xib; path = Contacts/ContactsTableViewCell.xib; sourceTree = "<group>"; };
+		712566241FEB963A004DF2AA /* SampleVideo_1280x720_1mb.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SampleVideo_1280x720_1mb.mp4; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +319,7 @@
 		46F09BD41F24B7EB0081F7D7 /* RainbowSampleProject */ = {
 			isa = PBXGroup;
 			children = (
+				712566241FEB963A004DF2AA /* SampleVideo_1280x720_1mb.mp4 */,
 				46BCFAA71F5FCBA000CA365F /* Ringtones */,
 				46BCFAA21F5ED53F00CA365F /* RainbowSampleProject.entitlements */,
 				46F09C241F25CDF00081F7D7 /* Modules */,
@@ -533,6 +536,7 @@
 				46697D2C1F306AD8008696CB /* SettingsViewController.xib in Resources */,
 				46BCFAA11F5ED48900CA365F /* RainbowSampleProject.entitlement in Resources */,
 				463873521F42F3B9003E2450 /* CallViewController.xib in Resources */,
+				712566251FEB963A004DF2AA /* SampleVideo_1280x720_1mb.mp4 in Resources */,
 				46BCFAAB1F5FCBA000CA365F /* hangup.wav in Resources */,
 				464C1C9B1F373E8500E0D1D1 /* MessageTableViewCell.xib in Resources */,
 				46CF309D1F39D93E001D827F /* SettingsTableViewCell.xib in Resources */,

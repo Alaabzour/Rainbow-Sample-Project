@@ -22,8 +22,9 @@
     UIRefreshControl * refreshControl;
     Conversation     *currentConversation;
     MessagesBrowser  *messagesBrowser;
-    
+    UIImage * profileImage ;
     BOOL isFetchMoreMessages;
+    File * fileToSend;
 }
 
 #pragma mark - Application LifeCycle
@@ -254,7 +255,7 @@
     Message *  message = [messagesArray objectAtIndex:indexPath.row];
     
     if (message.type == 2 || message.type == 1) {
-        if (message.attachment != nil) {
+        if (message.attachment != nil && [message.body isEqualToString:@""]) {
             static NSString *CellIdentifier = @"MediaCell";
             MediaTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             
@@ -263,8 +264,14 @@
                 cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
             }
             
-            NSString * urlString = [NSString stringWithFormat:@"%@/%@",message.attachment.url,message.attachment.fileName];
-           
+            if (message.attachment.type == FileTypeImage) {
+                [[ServicesManager sharedInstance].fileSharingService downloadDataForFile:message.attachment withCompletionHandler:^(File *file, NSError *error) {
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         cell.mediaImageView.image = [UIImage imageWithData:file.data];
+                     });
+                    
+                }];
+            }
             return cell;
         }
         else{
@@ -439,6 +446,7 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"select cell : %ld",indexPath.row);
 }
 
 #pragma mark - Chat cell style
@@ -503,10 +511,11 @@
 - (void)textViewDidChange:(UITextView *)textView{
     
     if ([textView.text  length] ==0 ) {
-        _MessageTextView.text = @" New Message ...";
+        _MessageTextView.text = nil;
+        //_MessageTextView.text = @" New Message ...";
         _MessageTextView.textColor = [UIColor colorWithRed:190.0/255.0 green:190.0/255.0 blue:190.0/255.0 alpha:1];
         
-        [self.sendButton setEnabled:NO];
+        //[self.sendButton setEnabled:NO];
        
         _heightConstraint.constant = 44;
        [_MessageTextView resignFirstResponder];
@@ -567,22 +576,48 @@
 
 #pragma mark - Chat Actions
 - (IBAction)showAttachmentMethod:(id)sender {
+    _MessageTextView.text = nil;
+    UIImage * image = [UIImage imageNamed:@"test1-img"];
+    NSData * dataToSend = UIImagePNGRepresentation(image);
+    fileToSend = [[ServicesManager sharedInstance].fileSharingService createTemporaryFileWithFileName:@"IMG_TEST1" andData:dataToSend];
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:nil
+                                 message:@"file attached!"
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action) {
+                                    
+                                    
+                                }];
+    [alert addAction:yesButton];
+  
+    
+    [self presentViewController:alert animated:YES completion:nil];
     
 }
 
 - (IBAction)sendMessage:(id)sender {
-   
-    [[ServicesManager sharedInstance].conversationsManagerService sendMessage:_MessageTextView.text fileAttachment:nil to:currentConversation completionHandler:^(Message *message, NSError *error) {
-        [messagesArray addObject:message];
+    // open gallery and select
+    [[ServicesManager sharedInstance].conversationsManagerService sendMessage:_MessageTextView.text fileAttachment:fileToSend to:currentConversation completionHandler:^(Message *message, NSError *error) {
+        fileToSend = nil;
+        //[messagesArray addObject:message];
         
         NSInteger idx = [messagesBrowser insertItemAtProperIndex:message];
-        [self itemsBrowser:messagesBrowser didAddCacheItems:@[message] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
+        if (idx != NSNotFound) {
+             [self itemsBrowser:messagesBrowser didAddCacheItems:@[message] atIndexes:[NSIndexSet indexSetWithIndex:idx]];
+        }
+       
         
         dispatch_async(dispatch_get_main_queue(), ^{
 
             _MessageTextView.text = @" ";
             _MessageTextView.textColor = [UIColor colorWithRed:190.0/255.0 green:190.0/255.0 blue:190.0/255.0 alpha:1];
-            [self.sendButton setEnabled:NO];
+           // [self.sendButton setEnabled:NO];
         });
       
       
@@ -603,11 +638,10 @@
     NSMutableArray * reversedArray = [NSMutableArray array];
     for (int i = count -1; i >= 0; i--) {
         [reversedArray addObject:[newItems objectAtIndex:i]];
-        
+
     }
-    
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, reversedArray.count)];
-    [messagesArray insertObjects:reversedArray atIndexes:indexSet];
+
+    [messagesArray addObjectsFromArray:reversedArray];
    
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -617,20 +651,15 @@
             [self.tableView scrollToRowAtIndexPath:rowIndexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
            
         }
-       
-
     });
-  
-    
-
 }
 -(void) itemsBrowser:(CKItemsBrowser*)browser didRemoveCacheItems:(NSArray*)removedItems atIndexes:(NSIndexSet*)indexes{
     NSLog(@"Done!");
 }
 -(void) itemsBrowser:(CKItemsBrowser*)browser didUpdateCacheItems:(NSArray*)changedItems atIndexes:(NSIndexSet*)indexes {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [messagesArray replaceObjectsAtIndexes:indexes withObjects:changedItems];
-        [self.tableView reloadData];
+        //[messagesArray replaceObjectsAtIndexes:indexes withObjects:changedItems];
+        //[self.tableView reloadData];
         
     });
 

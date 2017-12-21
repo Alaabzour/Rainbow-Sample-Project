@@ -88,6 +88,7 @@
     contactsArray = [NSMutableArray new];
     invitedcontactsArray = [NSMutableArray new];
     
+    
 
 }
 
